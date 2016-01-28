@@ -34,7 +34,12 @@ var schema = new mongoose.Schema({
     }
 });
 
+schema.methods.getFullName = function () {
+    return this.firstName + this.lastName;
+};
+
 // method to remove sensitive information from user objects before sending them out
+
 schema.methods.sanitize = function() {
     return _.omit(this.toJSON(), ['password', 'salt']);
 };
