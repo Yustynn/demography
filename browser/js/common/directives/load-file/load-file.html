@@ -1,0 +1,6 @@
+<h4>Upload on file select</h4>
+<button type="file" ngf-select="uploadFiles($file)" ngf-multiple="false" accept=".csv">
+    Select File</button>
+<br>
+<br> File:
+<div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}</div>
