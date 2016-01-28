@@ -3,5 +3,5 @@
 // anywhere the User model needs to be used.
 require('./user');
 require('./dashboard');
-require('./project');
+require('./dataSet');
 require('./chart');
