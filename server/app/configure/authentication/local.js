@@ -54,4 +54,20 @@ module.exports = function (app) {
 
     });
 
+    // A POST /signup route is created to handle signup.
+    app.post('/signup', function(req, res, next) {
+        User.create(req.body)
+            .then(function(user) {
+                req.logIn(user, function(loginErr) {
+                    if (loginErr) return next(loginErr);
+                    else res.status(201).send({
+                        user: user.sanitize()
+                    });
+                });
+            }).then(null, function(err) {
+                console.log("Signup error: ", err);
+                next(err);
+            });
+    });
+
 };

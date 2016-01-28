@@ -9,6 +9,8 @@ module.exports = function (app) {
 
     var googleConfig = app.getValue('env').GOOGLE;
 
+    console.log("googleConfig: ", googleConfig);
+
     var googleCredentials = {
         clientID: googleConfig.clientID,
         clientSecret: googleConfig.clientSecret,
@@ -16,6 +18,8 @@ module.exports = function (app) {
     };
 
     var verifyCallback = function (accessToken, refreshToken, profile, done) {
+
+        console.log("verifyCallback RAN!!!");
 
         UserModel.findOne({ 'google.id': profile.id }).exec()
             .then(function (user) {
@@ -26,7 +30,10 @@ module.exports = function (app) {
                     return UserModel.create({
                         google: {
                             id: profile.id
-                        }
+                        },
+                        firstName: profile.name.givenName,
+                        lastName: profile.name.familyName,
+                        email: profile.emails[0].value
                     });
                 }
 
@@ -51,6 +58,7 @@ module.exports = function (app) {
     app.get('/auth/google/callback',
         passport.authenticate('google', { failureRedirect: '/login' }),
         function (req, res) {
+            console.log("Successfully logged in with Google!");
             res.redirect('/');
         });
 
