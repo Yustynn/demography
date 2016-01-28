@@ -1,3 +1,4 @@
+@import 'variables';
 * {
   box-sizing: border-box;
 }
@@ -19,9 +20,21 @@ body {
   margin: 0 auto;
 }
 
+.spacer {
+    margin-top: 30px;
+}
+
+.big-spacer {
+    margin-top: 60px;
+}
+
 @import 'directives/main';
 @import 'home/main';
 @import 'about/main';
 @import 'tutorial/main';
 @import 'login/main';
+<<<<<<< HEAD
 @import 'dashboard/main';
+=======
+@import 'signup/main';
+>>>>>>> master
