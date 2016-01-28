@@ -2,10 +2,10 @@
 app.controller('DashboardCtrl', function ($scope, $timeout){
 
     $scope.gridsterOptions = {
-        margins: [20, 20],
-        columns: 4,
+        margins: [12, 12],
+        columns: 12,        // min widget size
         draggable: {
-            handle: 'h3'
+            handle: 'h3'    // which part of the widget is draggable
         }
     };
 
@@ -33,9 +33,10 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
 
     $scope.addWidget = function() {
         $scope.dashboard.widgets.push({
-            name: "New Graph",
-            sizeX: 1,
-            sizeY: 1
+            //default widget settings
+            name: "New Widget",
+            sizeX: 2,
+            sizeY: 2
         });
     };
 
