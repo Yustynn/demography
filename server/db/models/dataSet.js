@@ -16,4 +16,4 @@ var schema = new mongoose.Schema({
     }
 });
 
-mongoose.model('Project', schema);
+mongoose.model('DataSet', schema);
