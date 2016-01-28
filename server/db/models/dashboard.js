@@ -13,7 +13,7 @@ var schema = new mongoose.Schema({
         required: true
     },
     lastUpdated: {
-    	type: Date, 
+    	type: Date,
     	default: Date.now
     },
     public: {
