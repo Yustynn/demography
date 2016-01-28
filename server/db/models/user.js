@@ -5,11 +5,11 @@ var _ = require('lodash');
 
 var schema = new mongoose.Schema({
     name: {
-        type: String;
+        type: String
     },
     email: {
-        type: String
-        required: true;
+        type: String,
+        required: true
     },
     password: {
         type: String
