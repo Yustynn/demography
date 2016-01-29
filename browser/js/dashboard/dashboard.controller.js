@@ -1,12 +1,25 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('DashboardCtrl', function ($scope, $timeout){
-
+    $scope.editMode = false;
+    //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
         margins: [12, 12],  //spacing between widgets
         columns: 12,        // min widget size
         draggable: {
-            handle: 'h3'    // which part of the widget is draggable
-        }
+            handle: '.box-header',    // '.my-class' which part of the widget is draggable
+            enabled: false
+        },
+        resizable:{
+            enabled: false
+            //handles: ['n', 'e', 's', 'w', 'se', 'sw']
+        },
+        maxSizeX: 6, // maximum column width of an item
+        minSizeX: 2, // minimum column width of an item
+        minSizeY: 2, // minimum column width of an item
+        minRows: 2, // the minimum height of the grid, in rows
+
+        mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
+        mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
     $scope.dashboard = {
@@ -29,9 +42,10 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
             }]
     };
 
-    $scope.editMode = true;
     $scope.toggleEditMode = function() {
         $scope.editMode = !$scope.editMode;
+        $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
+        $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
     };
 
     $scope.clear = function() {
@@ -73,7 +87,4 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
     //         $scope.dashboard = $scope.dashboards[1];
     //     }
     // });
-
-    // // init dashboard
-    // $scope.selectedDashboardId = '1';
 });
