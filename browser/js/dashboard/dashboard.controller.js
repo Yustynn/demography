@@ -1,5 +1,5 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function ($scope, $timeout){
+app.controller('DashboardCtrl', function ($scope, $timeout, DashboardFactory){
     $scope.editMode = false;
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
@@ -46,6 +46,13 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
         $scope.editMode = !$scope.editMode;
         $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
+    };
+
+    $scope.save = function() {
+        DashboardFactory.create($scope.dashboard)
+        .then(function(db){
+            console.log('Dashboard saved:', db);
+        });
     };
 
     $scope.clear = function() {

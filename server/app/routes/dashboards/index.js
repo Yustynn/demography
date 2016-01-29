@@ -43,7 +43,7 @@ router.delete("/:dashboardId", function(req, res, next) {
 		if(!err) res.status(200).send("Deleted dashboard successfully!");
 		else {
 			console.error(err);
-			res.status(404).send("We're sorry... There is no dashboard with that ID in our database.");		
+			res.status(404).send("We're sorry... There is no dashboard with that ID in our database.");
 		}
 	})
 })

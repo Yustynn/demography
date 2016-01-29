@@ -3,7 +3,10 @@ app.factory('DashboardFactory', function ($http) {
 
         //save new dashboard upon creation
         create: function(dashboard) {
-            //$http.post()
+            $http.post('/api/dashboards',dashboard)
+            .then(function(response){
+                return response.data;
+            })
         },
 
         fetchAllByUser: function(user) {
