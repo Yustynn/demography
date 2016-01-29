@@ -23,9 +23,10 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
     };
 
     $scope.dashboard = {
-            id: '1',
+            id: 1,
             name: 'My First Dashboard',
             widgets: [{
+                id: 1,
                 col: 0,
                 row: 0,
                 sizeY: 2,
@@ -33,6 +34,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
                 name: "Widget 1",
                 type: 'widget'
             }, {
+                id: 2,
                 col: 2,
                 row: 1,
                 sizeY: 4,
@@ -41,6 +43,8 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
                 type: 'graph'
             }]
     };
+
+    $scope.dashboard.nextWidgetId = 3;
 
     $scope.chartTypes = {
         graphs:[
@@ -62,32 +66,39 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
     $scope.addWidgetPlaceholder = function() {
         $scope.dashboard.widgets.push({
             //default widget settings
+            id: $scope.dashboard.nextWidgetId,
             name: "New Widget",
             type: 'widget',
             sizeX: 2,
             sizeY: 2
         });
+        $scope.dashboard.nextWidgetId ++;
     };
 
     $scope.addGraphPlaceholder = function() {
         $scope.dashboard.widgets.push({
+            id: $scope.dashboard.nextWidgetId,
             name: "New Graph",
             type: 'graph',
             sizeX: 4,
             sizeY: 4
         });
+        $scope.dashboard.nextWidgetId ++;
     };
 
     $scope.addTextPanelPlaceholder = function() {
         $scope.dashboard.widgets.push({
+            id: $scope.dashboard.nextWidgetId,
             name: "New Text Panel",
             type: 'text',
             sizeX: 4,
             sizeY: 1
         });
+        $scope.dashboard.nextWidgetId ++;
     };
 
-    $scope.addGraph = function() {
+    $scope.addGraph = function(graphId) {
+        console.log(graphId);
         if($scope.chartTypes.selectedType) {
             //make a graph inside this widget
             //what is the widget id?
