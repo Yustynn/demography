@@ -9,18 +9,31 @@ app.config(function($stateProvider) {
                 return AuthService.getLoggedInUser()
                     .then(function(user) {
                         $stateParams.userId = user._id
-                        return user
-                    })
+                        return user;
+                    });
             }
         }
     });
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, loggedInUser) {
+app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFactory) {
 
-    $scope.user = loggedInUser.firstName + " " + loggedInUser.lastName
+    $scope.user = loggedInUser.firstName + " " + loggedInUser.lastName;
 
-    // $scope.projects = DEFINE PROJECT FACTORY
+    $scope.chooseFile = function(file) {
+        $scope.file = file;
+    }
+
+    $scope.submitProject = function(projectName) {
+        var projectObj = {
+            user: loggedInUser._id,
+            title: projectName
+        };
+
+        ProfileFactory.submitProject($scope.file, projectObj);
+    }
+
+    // $scope.projects;
 
 });

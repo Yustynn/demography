@@ -10,19 +10,19 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
         row: widget.row
     };
 
-    $scope.sizeOptions = [{
-        id: '1',
-        name: '1'
-    }, {
-        id: '2',
-        name: '2'
-    }, {
-        id: '3',
-        name: '3'
-    }, {
-        id: '4',
-        name: '4'
-    }];
+    // $scope.sizeOptions = [{
+    //     id: '1',
+    //     name: '1'
+    // }, {
+    //     id: '2',
+    //     name: '2'
+    // }, {
+    //     id: '3',
+    //     name: '3'
+    // }, {
+    //     id: '4',
+    //     name: '4'
+    // }];
 
     $scope.dismiss = function() {
         $uibModalInstance.dismiss();
