@@ -1,8 +1,10 @@
 <div id="load-file-container">
-    <h4>Start a new project</h4>
-    <form id="project-form" name="projectForm" ng-submit="file && submitProject(projectName)">
-        <label for="projectName">Project name</label>
-        <input type="text" ng-model="projectName" name="projectName" class="form-control" id="project-name" placeholder="Enter project name">
+    <h4>Upload a new dataset</h4>
+    <form id="dataset-form" name="datasetForm" ng-submit="file && uploadDataset(metaData)">
+        <label for="datasetTitle">Dataset title</label>
+        <input type="text" ng-model="metaData.title" name="dataset-title" class="form-control" id="dataset-title" placeholder="Enter dataset title">
+        <label for="datasetTitle">Short description</label>
+        <input type="text" ng-model="metaData.shortDescription" name="dataset-shortDescription" class="form-control" id="dataset-shortDescription" placeholder="Enter short description">
         <input type="file" ngf-select="chooseFile($file)" ngf-multiple="false" accept=".csv" id="input-btn">
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
