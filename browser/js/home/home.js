@@ -7,71 +7,68 @@ app.config(function($stateProvider) {
 });
 
 app.controller('HomeCtrl', function($scope) {
-
+    var graphCount = 0;
     var myData;
+    var ndx;
+    var margin = {
+            top: 30,
+            right: 20,
+            bottom: 30,
+            left: 50
+        },
+        width = 600 - margin.left - margin.right,
+        height = 270 - margin.top - margin.bottom;
 
-    var data = [{
-        date: "12/27/2012",
-        http_404: 2,
-        http_200: 190,
-        http_302: 100
-    }, {
-        date: "12/28/2012",
-        http_404: 2,
-        http_200: 10,
-        http_302: 100
-    }, {
-        date: "12/29/2012",
-        http_404: 1,
-        http_200: 300,
-        http_302: 200
-    }, {
-        date: "12/30/2012",
-        http_404: 2,
-        http_200: 90,
-        http_302: 0
-    }, {
-        date: "12/31/2012",
-        http_404: 2,
-        http_200: 90,
-        http_302: 0
-    }, {
-        date: "01/01/2013",
-        http_404: 2,
-        http_200: 90,
-        http_302: 0
-    }, {
-        date: "01/02/2013",
-        http_404: 1,
-        http_200: 10,
-        http_302: 1
-    }, {
-        date: "01/03/2013",
-        http_404: 2,
-        http_200: 90,
-        http_302: 0
-    }, {
-        date: "01/04/2013",
-        http_404: 2,
-        http_200: 90,
-        http_302: 0
-    }, {
-        date: "01/05/2013",
-        http_404: 2,
-        http_200: 90,
-        http_302: 0
-    }, {
-        date: "01/06/2013",
-        http_404: 2,
-        http_200: 200,
-        http_302: 1
-    }, {
-        date: "01/07/2013",
-        http_404: 1,
-        http_200: 200,
-        http_302: 100
-    }];
+    $scope.test3 = function(chartType) {
+        var margin = {
+                top: 30,
+                right: 20,
+                bottom: 30,
+                left: 50
+            },
+            width = 600 - margin.left - margin.right,
+            height = 270 - margin.top - margin.bottom;
 
+        d3.select('body').append('div')
+            .attr("id", "testId")
+
+        console.log(ndx)
+
+        var all = ndx.groupAll()
+        var leagueDim = ndx.dimension(function(d) {
+            var prop = Object.keys(d)[2]
+            return d[prop];
+        })
+
+        var playerDim = ndx.dimension(function(d) {
+            return d.Player
+        })
+
+        var hrGroup = leagueDim.group().reduceSum(function(d) {
+            return d.HR;
+        })
+
+
+        var avgGroup = leagueDim.group().reduceSum(function(d) {
+            return d.RBI
+        })
+
+        var playerHrGroup = playerDim.group().reduceSum(function(d) {
+            return d.HR
+        })
+
+        var chart = dc[chartType]('#testId2');
+        chart
+            .width(280)
+            .height(180)
+            .radius(100)
+            .innerRadius(30)
+            .dimension(playerDim)
+            .group(playerHrGroup)
+
+
+        dc.renderAll();
+    }
 
     $scope.test2 = function() {
         var margin = {
@@ -87,14 +84,13 @@ app.controller('HomeCtrl', function($scope) {
             .attr("id", "testId")
 
 
-        var ndx = crossfilter(myData);
         var all = ndx.groupAll()
         var leagueDim = ndx.dimension(function(d) {
             var prop = Object.keys(d)[2]
             return d[prop];
         })
 
-        var playerDim = ndx.dimension(function(d){
+        var playerDim = ndx.dimension(function(d) {
             return d.Player
         })
 
@@ -103,11 +99,11 @@ app.controller('HomeCtrl', function($scope) {
         })
 
 
-        var avgGroup = leagueDim.group().reduceSum(function(d){
+        var avgGroup = leagueDim.group().reduceSum(function(d) {
             return d.RBI
         })
 
-        var playerHrGroup = playerDim.group().reduceSum(function(d){
+        var playerHrGroup = playerDim.group().reduceSum(function(d) {
             return d.HR
         })
 
@@ -120,14 +116,72 @@ app.controller('HomeCtrl', function($scope) {
             .dimension(leagueDim)
             .group(hrGroup);
 
-        var pieChart2 = dc.pieChart('#testId2');
-        pieChart2 /* dc.pieChart('#quarter-chart', 'chartGroup') */
-            .width(280)
-            .height(180)
-            .radius(100)
-            .innerRadius(30)
-            .dimension(playerDim)
-            .group(playerHrGroup)
+
+        dc.renderAll();
+
+
+    }
+
+    $scope.createGraph = function(chartType, x, y, groupType) {
+        var id = "testId" + graphCount;
+        graphCount++;
+        d3.select('body').append('div')
+            .attr("id", id);
+
+        var all = ndx.groupAll()
+
+        var userDimension = ndx.dimension(function(d) {
+            return d[x];
+        })
+
+
+        var userGroup = userDimension.group().reduceSum(function(d) {
+            return d[y];
+        })
+
+
+
+        // var userGroup = userDimension.group().reduceSum(function(d) {
+        //     return d.HR;
+        // })
+        var chart = dc[chartType]("#" + id)
+            // var chart = dc[chartType](id);
+
+        if (chartType === "pieChart") {
+            chart
+                .width(280)
+                .height(180)
+                .radius(100)
+                .innerRadius(30)
+                .dimension(userDimension)
+                .group(userGroup)
+        } else if (chartType === "barChart") {
+            chart
+                .width(580)
+                .height(180)
+                .margins({
+                    top: 10,
+                    right: 50,
+                    bottom: 30,
+                    left: 40
+                })
+                .dimension(userDimension)
+                .group(userGroup)
+                .elasticY(true)
+                .centerBar(true)
+                .x(d3.scale.ordinal())
+                .xUnits(dc.units.ordinal)
+                .renderHorizontalGridLines(true)
+        }
+
+
+
+
+        // chart.xAxis().tickFormat(
+        //     function(v) {
+        //         return v + '%';
+        //     });
+        // chart.yAxis().ticks(5);
 
         dc.renderAll();
 
@@ -142,9 +196,11 @@ app.controller('HomeCtrl', function($scope) {
                     d.Team = d.TEAM
 
             });
-
             myData = data
-
+            ndx = crossfilter(myData);
+            console.log("NDX:", data)
+            $scope.optionArray = Object.keys(data[0])
+            $scope.$apply()
         })
 
 
