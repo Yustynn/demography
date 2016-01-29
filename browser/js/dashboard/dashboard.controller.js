@@ -42,6 +42,13 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
             }]
     };
 
+    $scope.chartTypes = {
+        graphs:[
+            {id:'barChart', name:'Bar Chart'},
+            {id:'pieChart', name:'Pie Chart'}
+        ]
+    };
+
     $scope.toggleEditMode = function() {
         $scope.editMode = !$scope.editMode;
         $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
@@ -52,7 +59,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
         $scope.dashboard.widgets = [];
     };
 
-    $scope.addWidget = function() {
+    $scope.addWidgetPlaceholder = function() {
         $scope.dashboard.widgets.push({
             //default widget settings
             name: "New Widget",
@@ -62,7 +69,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
         });
     };
 
-    $scope.addGraph = function() {
+    $scope.addGraphPlaceholder = function() {
         $scope.dashboard.widgets.push({
             name: "New Graph",
             type: 'graph',
@@ -71,7 +78,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
         });
     };
 
-    $scope.addTextPanel = function() {
+    $scope.addTextPanelPlaceholder = function() {
         $scope.dashboard.widgets.push({
             name: "New Text Panel",
             type: 'text',
@@ -79,6 +86,13 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
             sizeY: 1
         });
     };
+
+    $scope.addGraph = function() {
+        if($scope.chartTypes.selectedType) {
+            //make a graph inside this widget
+            //what is the widget id?
+        }
+    }
 
     // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
     //     if (newVal !== oldVal) {
