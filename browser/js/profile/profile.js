@@ -26,8 +26,12 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
     }
 
     $scope.submitProject = function(projectName) {
-        $scope.file.projectName = projectName;
-        ProfileFactory.submitProject($scope.file);
+        var projectObj = {
+            user: loggedInUser._id,
+            title: projectName
+        };
+
+        ProfileFactory.submitProject($scope.file, projectObj);
     }
 
     // $scope.projects;

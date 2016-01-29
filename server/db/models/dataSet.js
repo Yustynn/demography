@@ -9,10 +9,11 @@ var schema = new mongoose.Schema({
         type: String
     },
     shortDescription: {
-    	type: String 
+    	type: String
     },
     public: {
-    	type: Boolean
+    	type: Boolean,
+        default: false
     }
 });
 
