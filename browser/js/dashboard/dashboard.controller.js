@@ -1,12 +1,12 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function ($scope, $timeout){
+app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
     $scope.editMode = false;
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
         margins: [12, 12],  //spacing between widgets
         columns: 12,        // min widget size
         draggable: {
-            handle: '.box-header',    // '.my-class' which part of the widget is draggable
+            handle: '.box-header',    // optional if you only want a specific element to be the drag handle
             enabled: false
         },
         resizable:{
@@ -98,10 +98,8 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
     };
 
     $scope.addGraph = function(graphId) {
-        console.log(graphId);
         if($scope.chartTypes.selectedType) {
-            //make a graph inside this widget
-            //what is the widget id?
+            GraphService.create(graphId,$scope.chartTypes.selectedType, 'League','HR','sum')
         }
     }
 

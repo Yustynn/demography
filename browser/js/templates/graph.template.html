@@ -1,15 +1,10 @@
 <div class="graph-template">
-    <form class="form-inline" id="graphSelectForm" ng-submit="addGraph(thisId)">
+    <form class="form-inline" ng-submit="addGraph(thisId)">
       <div class="form-group">
         <label for="graphSelector"> Select Graph Type: </label>
         <select  class="form-control" name="graphSelector" id="graphSelector" ng-model="chartTypes.selectedType">
           <option ng-repeat="graph in chartTypes.graphs" value="{{graph.id}}">{{graph.name}}</option>
         </select>
-<!--         <label for="graphSelector">Select Graph Type:</label>
-        <select class="form-control" form="graphSelectForm">
-          <option value="barChart">bar chart</option>
-          <option value="pieChart">pie chart</option>
-        </select> -->
       </div>
       <button type="submit" class="btn btn-danger">Make Graph</button>
     </form>

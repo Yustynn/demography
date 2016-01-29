@@ -13,7 +13,7 @@
 <div gridster="gridsterOptions">
     <ul>
         <li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
-            <div class="box" ng-controller="CustomWidgetCtrl">
+            <div class="box" ng-controller="CustomWidgetCtrl" ng-attr-id="{{ 'widget-container-' + widget.id }}">
                 <div class="box-header">
                     <h3>{{ widget.name }}</h3>
                     <div ng-show="editMode" toggle-class="whatever" class="box-header-btns pull-right">
@@ -22,9 +22,10 @@
                     </div>
                 </div>
                 <div class="box-content">
-                <span ng-show="widget.type==='graph'"><graph-template this-id='widget.id'></graph-template></span>
-                <!-- We'll deal with other widget types later -->
-                <span ng-show="widget.type!=='graph'">new {{widget.type}}</span>
+                    <span ng-show="widget.type==='graph'"><graph-template this-id='widget.id'></graph-template></span>
+                    <!-- We'll deal with templates for other widget types later -->
+                    <span ng-show="widget.type!=='graph'">new {{widget.type}}</span>
+                    <div class="widget-content-container"></div>
                 </div>
             </div>
         </li>

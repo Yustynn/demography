@@ -140,6 +140,7 @@ app.controller('HomeCtrl', function($scope) {
         // var userGroup = userDimension.group().reduceSum(function(d) {
         //     return d.HR;
         // })
+
         var chart = dc[chartType]("#" + id)
             // var chart = dc[chartType](id);
 
