@@ -1,9 +1,9 @@
 <section id="home">
     <rando-greeting></rando-greeting>
     <button ng-click="test()">Load Data</button>
-    <button ng-click="test2()">Make Pie</button>
-    <button ng-click="test3('pieChart')">Make Pie2</button>
-    <button ng-click="createGraph('barChart','League','HR','sum')">Make Pie2</button>
+    <button ng-click="test2()">Test2</button>
+    <button ng-click="test3('pieChart')">Test3(pie)</button>
+    <button ng-click="createGraph('barChart','League','HR','sum')">createGraph(bar)</button>
     <form ng-submit="createGraph(selection.chart,selection.x,selection.y,selection.group)">
         Chart Type
         <select  ng-model="selection.chart">

@@ -19,6 +19,7 @@ app.controller('HomeCtrl', function($scope) {
         width = 600 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
 
+    //make another pie
     $scope.test3 = function(chartType) {
         var margin = {
                 top: 30,
@@ -69,6 +70,7 @@ app.controller('HomeCtrl', function($scope) {
         dc.renderAll();
     }
 
+    //make pie
     $scope.test2 = function() {
         var margin = {
                 top: 30,
@@ -117,6 +119,7 @@ app.controller('HomeCtrl', function($scope) {
         dc.renderAll();
     }
 
+    //create graph from function
     $scope.createGraph = function(chartType, x, y, groupType) {
         var id = "testId" + graphCount;
         graphCount++;
@@ -178,6 +181,7 @@ app.controller('HomeCtrl', function($scope) {
 
     }
 
+    //load data
     $scope.test = function(options) {
         d3.csv('../data/baseballData.csv', function(data) {
 
@@ -194,8 +198,8 @@ app.controller('HomeCtrl', function($scope) {
         });
     };
 
-    function type(d) {
-        d.frequency = +d.frequency;
-        return d;
-    };
+    // function type(d) {
+    //     d.frequency = +d.frequency;
+    //     return d;
+    // };
 });
