@@ -2,7 +2,7 @@
 app.controller('DashboardCtrl', function ($scope, $timeout){
 
     $scope.gridsterOptions = {
-        margins: [12, 12],
+        margins: [12, 12],  //spacing between widgets
         columns: 12,        // min widget size
         draggable: {
             handle: 'h3'    // which part of the widget is draggable
@@ -15,16 +15,23 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 1,
-                sizeX: 1,
-                name: "Graph 1"
+                sizeY: 2,
+                sizeX: 2,
+                name: "Widget 1",
+                type: 'widget'
             }, {
                 col: 2,
                 row: 1,
-                sizeY: 1,
-                sizeX: 1,
-                name: "Graph 2"
+                sizeY: 4,
+                sizeX: 4,
+                name: "Graph 2",
+                type: 'graph'
             }]
+    };
+
+    $scope.editMode = true;
+    $scope.toggleEditMode = function() {
+        $scope.editMode = !$scope.editMode;
     };
 
     $scope.clear = function() {
@@ -35,8 +42,27 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
         $scope.dashboard.widgets.push({
             //default widget settings
             name: "New Widget",
+            type: 'widget',
             sizeX: 2,
             sizeY: 2
+        });
+    };
+
+    $scope.addGraph = function() {
+        $scope.dashboard.widgets.push({
+            name: "New Graph",
+            type: 'graph',
+            sizeX: 4,
+            sizeY: 4
+        });
+    };
+
+    $scope.addTextPanel = function() {
+        $scope.dashboard.widgets.push({
+            name: "New Text Panel",
+            type: 'text',
+            sizeX: 4,
+            sizeY: 1
         });
     };
 
