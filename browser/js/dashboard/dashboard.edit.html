@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="box-content">
-                This is new {{widget.type}}
+                <span ng-show="widget.type==='graph'"><graph-template></graph-template></span><span ng-show="widget.type!=='graph'">new {{widget.type}}</span>
                 </div>
             </div>
         </li>
