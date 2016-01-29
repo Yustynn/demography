@@ -16,7 +16,7 @@ body {
 }
 
 #main {
-  padding-top: 60px;
+  padding-top: 40px;
   margin: 0 auto;
 }
 
@@ -35,3 +35,4 @@ body {
 @import 'login/main';
 @import 'dashboard/main';
 @import 'signup/main';
+@import 'profile/main';
