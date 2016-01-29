@@ -1,5 +1,6 @@
+var mongoose = require('mongoose');
+var Dashboard = mongoose.model('Dashboard');
 var router = require('express').Router();
-var Dashboard = require('../../../db/models/dashboard')
 module.exports = router;
 
 // /api/dashboards
