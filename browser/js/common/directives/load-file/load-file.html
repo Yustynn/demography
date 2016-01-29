@@ -1,6 +1,9 @@
-<h4>Upload on file select</h4>
-<button type="file" ngf-select="uploadFiles($file)" ngf-multiple="false" accept=".csv">
-    Select File</button>
-<br>
-<br> File:
-<div style="font:smaller">{{f.name}} {{errFile.name}} {{errFile.$error}} {{errFile.$errorParam}}</div>
+<div id="load-file-container">
+    <h4>Start a new project</h4>
+    <form id="project-form" name="projectForm" ng-submit="submitProject(projectName)">
+        <label for="projectName">Project name</label>
+        <input type="text" ng-model="projectName" name="projectName" class="form-control" id="project-name" placeholder="Enter project name">
+        <input type="file" ngf-select="chooseFile($file)" ngf-multiple="false" accept=".csv" id="input-btn">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>

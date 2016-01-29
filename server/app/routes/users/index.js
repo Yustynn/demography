@@ -13,7 +13,9 @@ var upload = multer({ dest: uploadFilePath });
 
 // Post route
     // POST /api/users/uploads
-router.post('/uploads', upload.single('file'), function(req, res, next) {
+router.post('/uploads/:projectName', upload.single('file'), function(req, res, next) {
     var file = req.file;
+    file.projectName = req.params.projectName;
+    console.log("File: ", file);
     res.send(file);
 });
