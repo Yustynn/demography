@@ -12,6 +12,8 @@ app.service('GraphService', function (DashboardFactory) {
     var self = this;
     var ndx, myData;
 
+    this.data = myData;
+
     this.create = function(id, chartType, xAxis, yAxis, groupType) {
 
         var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];

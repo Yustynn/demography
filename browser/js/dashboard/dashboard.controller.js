@@ -22,6 +22,8 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
+    $scope.data = GraphService.data;
+
     $scope.dashboard = {
             id: 1,
             name: 'My First Dashboard',
