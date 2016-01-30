@@ -1,0 +1,21 @@
+{
+  "name": "FullstackGeneratedApp",
+  "description": "A generated project at Fullstack Academy",
+  "main": "server/start.js",
+  "authors": [
+    "John L <john.m.lenehan@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/JonatanS/demography",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "dcjs": "~1.7.5"
+  }
+}

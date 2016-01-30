@@ -1,12 +1,12 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function ($scope, $timeout){
+app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
     $scope.editMode = false;
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
         margins: [12, 12],  //spacing between widgets
         columns: 12,        // min widget size
         draggable: {
-            handle: '.box-header',    // '.my-class' which part of the widget is draggable
+            handle: '.box-header',    // optional if you only want a specific element to be the drag handle
             enabled: false
         },
         resizable:{
@@ -23,9 +23,10 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
     };
 
     $scope.dashboard = {
-            id: '1',
+            id: 1,
             name: 'My First Dashboard',
             widgets: [{
+                id: 1,
                 col: 0,
                 row: 0,
                 sizeY: 2,
@@ -33,6 +34,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
                 name: "Widget 1",
                 type: 'widget'
             }, {
+                id: 2,
                 col: 2,
                 row: 1,
                 sizeY: 4,
@@ -40,6 +42,15 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
                 name: "Graph 2",
                 type: 'graph'
             }]
+    };
+
+    $scope.dashboard.nextWidgetId = 3;
+
+    $scope.chartTypes = {
+        graphs:[
+            {id:'barChart', name:'Bar Chart'},
+            {id:'pieChart', name:'Pie Chart'}
+        ]
     };
 
     $scope.toggleEditMode = function() {
@@ -52,33 +63,45 @@ app.controller('DashboardCtrl', function ($scope, $timeout){
         $scope.dashboard.widgets = [];
     };
 
-    $scope.addWidget = function() {
+    $scope.addWidgetPlaceholder = function() {
         $scope.dashboard.widgets.push({
             //default widget settings
+            id: $scope.dashboard.nextWidgetId,
             name: "New Widget",
             type: 'widget',
             sizeX: 2,
             sizeY: 2
         });
+        $scope.dashboard.nextWidgetId ++;
     };
 
-    $scope.addGraph = function() {
+    $scope.addGraphPlaceholder = function() {
         $scope.dashboard.widgets.push({
+            id: $scope.dashboard.nextWidgetId,
             name: "New Graph",
             type: 'graph',
             sizeX: 4,
             sizeY: 4
         });
+        $scope.dashboard.nextWidgetId ++;
     };
 
-    $scope.addTextPanel = function() {
+    $scope.addTextPanelPlaceholder = function() {
         $scope.dashboard.widgets.push({
+            id: $scope.dashboard.nextWidgetId,
             name: "New Text Panel",
             type: 'text',
             sizeX: 4,
             sizeY: 1
         });
+        $scope.dashboard.nextWidgetId ++;
     };
+
+    $scope.addGraph = function(graphId) {
+        if($scope.chartTypes.selectedType) {
+            GraphService.create(graphId,$scope.chartTypes.selectedType, 'League','HR','sum')
+        }
+    }
 
     // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
     //     if (newVal !== oldVal) {
