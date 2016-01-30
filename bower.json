@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "dcjs": "~1.7.5"
+    "dcjs": "~1.7.5",
+    "angular-ui-grid": "~3.1.0"
   }
 }
