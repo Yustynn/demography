@@ -1,10 +1,7 @@
 <section id="home">
     <rando-greeting></rando-greeting>
-    <button ng-click="test()">Load Data</button>
-    <button ng-click="test2()">Test2</button>
-    <button ng-click="test3('pieChart')">Test3(pie)</button>
-    <button ng-click="createGraph('barChart','League','HR','sum')">createGraph(bar)</button>
-    <button ng-click="createGraph('pieChart','League','HR','sum')">createGraph(pie)</button>
+    <button ng-click="loadData()">Load Data</button>
+    
     <form ng-submit="createGraph(selection.chart,selection.x,selection.y,selection.group)">
         Chart Type
         <select  ng-model="selection.chart">
@@ -25,7 +22,8 @@
         Submit
         <input type="submit">
     </form>
-    {{optionArray}}
+    <div class="col-xs-6 gridContainer">
+        <div ui-grid="{data: myData,columnDefs: myDefs}" class="myGrid"></div>
+    </div>
 </section>
 
-{{se}}
