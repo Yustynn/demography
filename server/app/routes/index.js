@@ -2,8 +2,6 @@
 var router = require('express').Router();
 module.exports = router;
 
-router.use('/members', require('./members'));
-
 router.use('/users', require('./users'));
 router.use('/dashboards', require('./dashboards'));
 router.use('/datasets', require('./datasets'));
