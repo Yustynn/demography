@@ -26,6 +26,6 @@ router.get("/:userId", function(req, res, next) {
 // DELETE /api/users/:userId
 router.delete("/:userId", function(req, res, next) {
     User.remove({ _id: req.params.userId })
-    .then(response => res.status(202).send("User successfully removed"))
+    .then(response => res.status(200).send("User successfully removed"))
     .then(null, next);
 });
