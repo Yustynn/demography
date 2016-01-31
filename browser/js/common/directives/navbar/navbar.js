@@ -7,17 +7,19 @@ app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state) {
         link: function(scope) {
 
             scope.items = [{
-                label: ' Browse Repository',
-                state: 'repository',
-                class: 'glyphicon glyphicon-search'
-            }, {
                 label: ' Dashboard',
                 state: 'dashboard',
-                class: 'glyphicon glyphicon-wrench'
+                class: 'glyphicon glyphicon-wrench',
+                auth: true
             }, {
                 label: ' Profile',
                 state: 'profile',
                 class: 'glyphicon glyphicon-user',
+                auth: true
+            }, {
+                label: ' Browse Repository',
+                state: 'repository',
+                class: 'glyphicon glyphicon-search',
                 auth: true
             }, {
                 label: 'Documentation',
