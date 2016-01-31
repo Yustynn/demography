@@ -3,29 +3,23 @@ var Dashboard = mongoose.model('Dashboard');
 var router = require('express').Router();
 module.exports = router;
 
-// /api/dashboards
+// /api/dashboards/?filterCriteria=XYZ
 router.get("/", function(req, res, next) {
-	Dashboard.find()
-		.then(function(allDashboards) {
-			res.status(200).send(allDashboards);
-		})
+	Dashboard.find(req.query)
+		.then(allDashboards => res.status(200).send(allDashboards))
 		.then(null, next)
 })
 
 // /api/dashboards/id
 router.get("/:dashboardId", function(req, res, next) {
 	Dashboard.findById(req.params.dashboardId)
-		.then(function(dashboard) {
-			res.status(200).send(dashboard);
-		})
+		.then(dashboard => res.status(200).send(dashboard))
 		.then(null, next)
 })
 
 router.post("/", function(req, res, next) {
 	Dashboard.create(req.body)
-		.then(function(createdDashboard) {
-			res.status(201).send(createdDashboard);
-		})
+		.then(createdDashboard => res.status(201).send(createdDashboard))
 		.then(null, next)
 })
 
