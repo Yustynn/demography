@@ -67,7 +67,7 @@ router.put('/:datasetId/:originalUserId', function(req, res, next) {
 });
 
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
-// PUT /api/datasets/:datasetId/:originalUserId
+// DELETE /api/datasets/:datasetId/:originalUserId
 // BOBBY NOTE: Need to figure out how to go about updating the files in the filesystem
 router.delete('/:datasetId/:originalUserId', function(req, res, next) {
     var filePath = getFilePath(req.params.originalUserId, req.params.datasetId);
