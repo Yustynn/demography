@@ -1,18 +1,20 @@
-<nav class="navbar navbar-static-top">
+<nav class="navbar">
     <div class="container">
         <div class="navbar-header">
-            <fullstack-logo></fullstack-logo>
+            <h2><a ui-sref="home">Demography</a></h2>
+        </div>
+        <div id="welcome-or-login" class="pull-right">
+            <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
+            <button ng-show="!user" ui-sref="signup" class="btn signup-button">Signup</button>
+            <div ng-show="user" class="welcome">
+                <span>Welcome, {{ user.firstName }}!</span>
+                <a ng-click="logout()">Logout</a>
+            </div>
         </div>
         <ul class="nav navbar-nav">
             <li ng-repeat="item in items" ng-show="!item.auth || isLoggedIn()">
-                <a ui-sref-active="active" ui-sref="{{ item.state }}">{{ item.label }}</a>
+                <a ui-sref-active="active" ui-sref="{{ item.state }}" class="{{ item.class }}">{{ item.label }}</a>
             </li>
         </ul>
-        <button ng-show="!user" ui-sref="login" class="btn login-button">Login</button>
-        <button ng-show="!user" ui-sref="signup" class="btn signup-button">Signup</button>
-        <div ng-show="user" class="welcome">
-            <span>Welcome, {{ user.firstName }}!</span>
-            <a ng-click="logout()">Logout</a>
-        </div>
     </div>
 </nav>
