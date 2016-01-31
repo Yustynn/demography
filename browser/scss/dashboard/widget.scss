@@ -1,3 +1,7 @@
+.modal-content {
+    margin-top: 200px;
+}
+
 .box-content {
     width:100%;
     height:100%;
@@ -8,4 +12,9 @@
     clear:both;
     width:100%;
     height:100%;
+}
+
+.dc-chart {
+	text-align: center;
+	overflow: hidden;
 }

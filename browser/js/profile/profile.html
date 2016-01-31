@@ -1,14 +1,22 @@
 <div class="container">
     <div class="row">
         <div class="col-xs-3">
-            <load-file></load-file>
             <img id="profile-img" src="https://lh3.googleusercontent.com/-1p0-ELNl0mk/AAAAAAAAAAI/AAAAAAAAAAA/xeGC2Eu7i0o/photo.jpg">
-            <h4>{{user}}</h4>
+            <h3>{{user}}</h3>
+            <hr>
+            <load-file></load-file>
         </div>
         <div class="col-xs-9">
-            <div ng-repeat="project in projects">
-                <h3>{{project.name}}</h3>
+            <ul class="nav nav-tabs">
+                <li role="presentation" ng-click="toggleView()" ng-class="{active: dashboardsVisible}"><a>Dashboards</a></li>
+                <li role="presentation" ng-click="toggleView()" ng-class="{active: !dashboardsVisible}"><a>Data-Sets</a></li>
+            </ul>
+            <div ng-if="dashboardsVisible" ng-repeat="dashboard in dashboards">
+                <a ui-sref="#"><h3>{{dashboard.title}}</h3></a>
             </div>
+            <div ng-if="!dashboardsVisible" ng-repeat="dataSet in dataSets">
+                <a ui-sref="#"><h3>{{dataSet.title}}</h3></a>
+            </div>           
         </div>
     </div>
 </div>
