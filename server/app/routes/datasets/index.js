@@ -74,6 +74,6 @@ router.delete('/:datasetId/:originalUserId', function(req, res, next) {
     DataSet.remove({ _id: req.params.datasetId })
     .then(response => {
         fsp.unlink(filePath)
-        .then(response => res.status(202).send("Data set successfully removed"));
+        .then(response => res.status(200).send("Data set successfully removed"));
     }).then(null, next);
 });
