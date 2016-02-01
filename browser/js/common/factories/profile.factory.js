@@ -1,4 +1,4 @@
-app.factory('ProfileFactory', function ($http, Upload, $timeout) {
+app.factory('ProfileFactory', function ($http, Upload, $timeout, AuthService) {
 
     var ProfileFactory = {};
 
@@ -15,6 +15,17 @@ app.factory('ProfileFactory', function ($http, Upload, $timeout) {
         });
     }
 
+    //Assuming GET /api/datasets returns array of obj, w/ each obj containing a given data-set's meta info
+    ProfileFactory.getAllDatasets = function(user) {
+        return $http.get("/api/datasets/?user=" + user._id)
+            .then(response => response.data)
+    }
+
+    ProfileFactory.getAllDashboards = function(user) {
+        return $http.get("/api/dashboards/?user=" + user._id)
+            .then(response => response.data)        
+    }
+    
     return ProfileFactory;
 
 });
