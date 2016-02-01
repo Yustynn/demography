@@ -17,7 +17,7 @@ var schema = new mongoose.Schema({
     	default: Date.now
     },
     isPublic: {
-    	type: Boolean, default: false
+    	type: Boolean
     }
 });
 
