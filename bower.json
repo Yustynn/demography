@@ -3,6 +3,7 @@
   "description": "A generated project at Fullstack Academy",
   "main": "server/start.js",
   "authors": [
+    "Tom Sharon <tsharon@wesleyan.edu>",
     "John L <john.m.lenehan@gmail.com>"
   ],
   "license": "MIT",
