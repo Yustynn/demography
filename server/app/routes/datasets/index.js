@@ -54,7 +54,6 @@ router.get("/", function(req, res, next) {
     });
 });
 
-// Route to retrieve all datasets
 // GET /api/datasets/:datasetId
 router.get("/:datasetId", function(req, res, next) {
     var returnDataObject;
