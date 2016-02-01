@@ -6,18 +6,18 @@ var schema = new mongoose.Schema({
         required: true
     },
     title: {
-        type: String
+        type: String, required: true
     },
-    project: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Project',
+    dataset: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'DataSet',
         required: true
     },
     lastUpdated: {
     	type: Date,
     	default: Date.now
     },
-    public: {
-    	type: Boolean
+    isPublic: {
+    	type: Boolean, default: false
     }
 });
 

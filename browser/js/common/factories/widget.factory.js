@@ -1,3 +1,4 @@
+//use this to save graphs
 app.factory('WidgetFactory', function ($http){
     return {
 
