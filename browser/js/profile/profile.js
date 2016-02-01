@@ -33,6 +33,20 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
         ProfileFactory.uploadDataset($scope.file, metaData);
     }
 
+    $scope.getAllDatasets = function(loggedInUser) {
+        return ProfileFactory.getAllDatasets(loggedInUser)
+            .then(usersDatasets => {
+                $scope.datasets = usersDatasets
+            })
+    }
+
+    $scope.getAllDashboards = function(loggedInUser) {
+        return ProfileFactory.getAllDashboards(loggedInUser)
+            .then(usersDashboards => {
+                $scope.dashboards = usersDashboards
+            })
+    }
+
     //Toggle between dashboard and data-source views on profile
     $scope.dashboardsVisible = true
     $scope.toggleView = function() {
