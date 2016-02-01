@@ -8,7 +8,11 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('StreamCtrl', function($scope, $state) {
+app.controller('StreamCtrl', function($scope, $state, DashboardFactory) {
 
+    DashboardFactory.fetchAll()
+        .then(function(allDashboards) {
+            $scope.allDashboards = allDashboards
+        })
 
 });
