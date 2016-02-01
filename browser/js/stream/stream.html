@@ -1,33 +1,14 @@
 <div class="container">
     <div class="row">
-        <div class="stream">
+        <div class="col-xs-3">
+            <label for="searchBar">Looking for anything in particular?</label>
+            <input type="text" placeholder="Filter through all of the data we have" size="33"></input>
+        </div>
+        <div class="stream col-xs-9">
             <div ng-repeat="dashboard in allDashboards" class="dashboard">
+                <!-- snapshot of dashboard? -->
                 <h4>{{dashboard.title}}</h4>
             </div>
-            <!-- <div class="dashboard">
-                <h4>Dashboard 2</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 3</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 4</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 5</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 6</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 7</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 8</h4>
-            </div>
-            <div class="dashboard">
-                <h4>Dashboard 9</h4>
-            </div> -->
         </div>
     </div>
 </div>
