@@ -4,4 +4,4 @@
 require('./user');
 require('./dashboard');
 require('./dataSet');
-require('./chart');
+require('./widget');
