@@ -45,12 +45,13 @@ app.service('GraphService', function(DashboardFactory) {
         //var chart = dc[chartType](chartContainer);
         var chart = dc[chartType]('#widget-container-' + id + '> .box-content > .widget-content-container');
 
-        //Add chart to Dictionart with a reference to the chart, and it's specific type (pie,bar,etc)
+        //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
         //Is there a way to find out what kind of chart it is by checking the instance itself?
         charts['chart' + id] = {
             chart: chart,
             chartType: chartType
         };
+
 
         if (chartType === "pieChart") {
             chart

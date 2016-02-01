@@ -5,7 +5,7 @@
     <form ng-submit="createGraph(selection.chart,selection.x,selection.y,selection.group)">
         Chart Type
         <select  ng-model="selection.chart">
-            <option ng-repeat="option in ['pieChart','barChart']">{{option}}</option>
+            <option ng-repeat="option in ['pieChart','barChart','rowChart']">{{option}}</option>
         </select>
         X-axis
         <select ng-model="selection.x">
@@ -17,11 +17,12 @@
         </select>
         Group Type
         <select ng-model="selection.group">
-            <option ng-repeat="option in ['sum']">{{option}}</option>
+            <option ng-repeat="option in ['sum','count']">{{option}}</option>
         </select>
         Submit
         <input type="submit">
     </form>
+    <button ng-click="resize()"></button>
     <div class="col-xs-6 gridContainer">
         <div ui-grid="{data: myData,columnDefs: myDefs}" class="myGrid"></div>
     </div>

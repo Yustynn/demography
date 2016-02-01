@@ -18,31 +18,44 @@ app.controller('HomeCtrl', function($scope) {
         },
         width = 600 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
-    
+
     //Ui-grid column definitions
+    var charts = {};
     $scope.myDefs = [];
 
     //create graph from function
     $scope.createGraph = function(chartType, x, y, groupType) {
         var id = "testId" + graphCount;
+        console.log(id)
         graphCount++;
         d3.select('body').append('div')
             .attr("id", id);
 
-
+        // var xAxisType = Number
         var all = ndx.groupAll()
 
         var userDimension = ndx.dimension(function(d) {
+
             return d[x];
         })
 
+        if (groupType === "sum") {
+            var userGroup = userDimension.group().reduceSum(function(d) {
+                return d[y];
+            });
+        } else if (groupType === "count") {
+            var userGroup = userDimension.group().reduceCount(function(d) {
+                return d[y];
+            });
+        }
 
-        var userGroup = userDimension.group().reduceSum(function(d) {
-            return d[y];
-        })
+        var chart = dc[chartType]("#" + id);
 
-        var chart = dc[chartType]("#" + id)
-            
+        charts['chart' + graphCount] = {
+            chart: chart,
+            chartType: chartType
+        };
+
         if (chartType === "pieChart") {
             chart
                 .width(280)
@@ -63,11 +76,27 @@ app.controller('HomeCtrl', function($scope) {
                 })
                 .dimension(userDimension)
                 .group(userGroup)
+                .filter("American")
                 .elasticY(true)
                 .centerBar(false)
                 .x(d3.scale.ordinal())
                 .xUnits(dc.units.ordinal)
                 .renderHorizontalGridLines(true)
+        } else if (chartType === "rowChart") {
+            chart
+                .height(220)
+                .margins({
+                    top: 5,
+                    left: 10,
+                    right: 10,
+                    bottom: 20
+                })
+                .dimension(userDimension)
+                .group(userGroup)
+                .title(function(d) {
+                    return d.value;
+                })
+                .elasticX(true)
         }
 
         dc.renderAll();
@@ -84,7 +113,7 @@ app.controller('HomeCtrl', function($scope) {
             $scope.myData = data;
 
             $scope.optionArray = Object.keys(data[0])
-            
+
             //Adjusts ui-grid column options
             $scope.optionArray.forEach(function(title) {
                 var cellObj = {
@@ -96,6 +125,22 @@ app.controller('HomeCtrl', function($scope) {
             $scope.$apply()
         });
     };
+
+    var chartOptions = function(id, chartOptions) {
+        //Will be id instead of being hardcoded when switched to graph.service
+        var chart = charts['chart' + 1].chart;
+
+        var obj = {width: 200, height: 200}
+        var keys = Object.keys(obj);
+        keys.forEach(function(key){
+            console.log(typeof key)
+            chart[key](obj[key])
+        })
+
+        dc.renderAll()
+    }
+
+    $scope.resize = chartOptions;
 
 });
 
@@ -151,51 +196,50 @@ app.controller('HomeCtrl', function($scope) {
 //     }
 
 //make pie
-    // $scope.test2 = function() {
-    //     var margin = {
-    //             top: 30,
-    //             right: 20,
-    //             bottom: 30,
-    //             left: 50
-    //         },
-    //         width = 600 - margin.left - margin.right,
-    //         height = 270 - margin.top - margin.bottom;
+// $scope.test2 = function() {
+//     var margin = {
+//             top: 30,
+//             right: 20,
+//             bottom: 30,
+//             left: 50
+//         },
+//         width = 600 - margin.left - margin.right,
+//         height = 270 - margin.top - margin.bottom;
 
-    //     d3.select('body').append('div')
-    //         .attr("id", "testId")
+//     d3.select('body').append('div')
+//         .attr("id", "testId")
 
 
-    //     var all = ndx.groupAll()
-    //     var leagueDim = ndx.dimension(function(d) {
-    //         var prop = Object.keys(d)[2]
-    //         return d[prop];
-    //     })
+//     var all = ndx.groupAll()
+//     var leagueDim = ndx.dimension(function(d) {
+//         var prop = Object.keys(d)[2]
+//         return d[prop];
+//     })
 
-    //     var playerDim = ndx.dimension(function(d) {
-    //         return d.Player
-    //     })
+//     var playerDim = ndx.dimension(function(d) {
+//         return d.Player
+//     })
 
-    //     var hrGroup = leagueDim.group().reduceSum(function(d) {
-    //         return d.HR;
-    //     })
+//     var hrGroup = leagueDim.group().reduceSum(function(d) {
+//         return d.HR;
+//     })
 
-    //     var avgGroup = leagueDim.group().reduceSum(function(d) {
-    //         return d.RBI
-    //     })
+//     var avgGroup = leagueDim.group().reduceSum(function(d) {
+//         return d.RBI
+//     })
 
-    //     var playerHrGroup = playerDim.group().reduceSum(function(d) {
-    //         return d.HR
-    //     })
+//     var playerHrGroup = playerDim.group().reduceSum(function(d) {
+//         return d.HR
+//     })
 
-    //     var pieChart = dc.pieChart('#testId');
-    //     pieChart /* dc.pieChart('#quarter-chart', 'chartGroup') */
-    //         .width(180)
-    //         .height(180)
-    //         .radius(80)
-    //         .innerRadius(30)
-    //         .dimension(leagueDim)
-    //         .group(hrGroup);
+//     var pieChart = dc.pieChart('#testId');
+//     pieChart /* dc.pieChart('#quarter-chart', 'chartGroup') */
+//         .width(180)
+//         .height(180)
+//         .radius(80)
+//         .innerRadius(30)
+//         .dimension(leagueDim)
+//         .group(hrGroup);
 
-    //     dc.renderAll();
-    // }
-
+//     dc.renderAll();
+// }
