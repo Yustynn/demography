@@ -34,7 +34,23 @@ var schema = new mongoose.Schema({
     id: {
         type: Number,
         required: true
+    },
+    lastUpdated: {
+        type: Date,
+        default: Date.now
+    },
+    //attributes entail
+    attributes: {
+        type: Object,
     }
+});
+
+
+schema.pre('save', function (next) {
+
+    this.lastUpdated = Date.now()
+    next();
+
 });
 
 mongoose.model('Widget', schema);
