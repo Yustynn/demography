@@ -55,7 +55,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         $scope.dashboard.widgets.push({
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
-            name: "New Widget",
+            title: "New Widget",
             type: 'widget',
             sizeX: 2,
             sizeY: 2
@@ -66,7 +66,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
     $scope.addGraphPlaceholder = function() {
         $scope.dashboard.widgets.push({
             id: $scope.dashboard.nextWidgetId,
-            name: "New Graph",
+            title: "New Graph",
             type: 'graph',
             sizeX: 4,
             sizeY: 4
@@ -77,7 +77,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
     $scope.addTextPanelPlaceholder = function() {
         $scope.dashboard.widgets.push({
             id: $scope.dashboard.nextWidgetId,
-            name: "New Text Panel",
+            title: "New Text Panel",
             type: 'text',
             sizeX: 4,
             sizeY: 1
@@ -102,7 +102,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
                 row: 0,
                 sizeY: 2,
                 sizeX: 2,
-                name: "Widget 1",
+                title: "Widget 1",
                 type: 'widget'
             }, {
                 id: 2,
@@ -110,7 +110,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
                 row: 1,
                 sizeY: 4,
                 sizeX: 4,
-                name: "Graph 2",
+                title: "Graph 2",
                 type: 'graph'
             }]
         };
