@@ -7,6 +7,8 @@
 <!--     <a class="pull-right btn btn-default active" toggle-class="active" ng-click="toggleEditMode()"> -->
     <a class="pull-right btn btn-default" ng-click="toggleEditMode()">
     <span ng-show="editMode"><i class="glyphicon glyphicon-eye-open"></i> View</span><span ng-hide="editMode"><i class="glyphicon glyphicon-cog"></i> Edit</span></a>
+    <a class="pull-right btn btn-success" ng-click="updateDashboard()"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
+    <a class="pull-right btn btn-default" ng-click="showDataset()"><i class="glyphicon glyphicon-stats"></i> Dataset</a>
     <h1>{{dashboard.name}}</h1>
 </div>
 

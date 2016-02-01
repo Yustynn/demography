@@ -13,11 +13,17 @@ router.get("/", function(req, res, next) {
 // /api/dashboards/id
 router.get("/:dashboardId", function(req, res, next) {
 	Dashboard.findById(req.params.dashboardId)
-		.then(dashboard => res.status(200).send(dashboard))
-		.then(null, next)
-})
+		.then(function(dashboard){
+            if (dashboard.isPublic || dashboard.user._id === req.user._id){
+                res.status(201).send(dashboard);
+            }
+            else res.status(401).send("You are not authorized to view this dashboard");
+        })
+		.then(null, next);
+});
 
 router.post("/", function(req, res, next) {
+    console.dir(req.body);
 	Dashboard.create(req.body)
 		.then(createdDashboard => res.status(201).send(createdDashboard))
 		.then(null, next)
@@ -38,7 +44,7 @@ router.delete("/:dashboardId", function(req, res, next) {
 		if(!err) res.status(200).send("Deleted dashboard successfully!");
 		else {
 			console.error(err);
-			res.status(404).send("We're sorry... There is no dashboard with that ID in our database.");		
+			res.status(404).send("We're sorry... There is no dashboard with that ID in our database.");
 		}
 	})
 })

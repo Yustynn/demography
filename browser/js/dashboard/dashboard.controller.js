@@ -1,6 +1,13 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
+app.controller('DashboardCtrl', function ($scope, $timeout, GraphService, DashboardFactory){
+    $scope.user = loggedInUser;
     $scope.editMode = false;
+
+    //TODO: MAke this dynamic, for now hardcoded:
+    $scope.datasetId = "56af8e3b8c6e223906e3e12c";
+
+
+
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
         margins: [12, 12],  //spacing between widgets
@@ -106,6 +113,10 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
         if($scope.chartTypes.selectedType) {
             GraphService.create(graphId,$scope.chartTypes.selectedType, 'League','HR','sum')
         }
+    };
+
+    $scope.updateDashboard = function() {
+
     }
 
     // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
@@ -115,4 +126,11 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
     //         $scope.dashboard = $scope.dashboards[1];
     //     }
     // });
+
+    var loadDataset = function(datasetId) {
+
+    }
+
+
+
 });

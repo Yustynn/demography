@@ -9,14 +9,14 @@ var schema = new mongoose.Schema({
         type: String
     },
     dataset: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'dataSet',
+        type: mongoose.Schema.Types.ObjectId, ref: 'DataSet',
         required: true
     },
     lastUpdated: {
     	type: Date,
     	default: Date.now
     },
-    public: {
+    isPublic: {
     	type: Boolean
     }
 });
