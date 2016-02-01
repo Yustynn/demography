@@ -8,8 +8,8 @@ var schema = new mongoose.Schema({
     title: {
         type: String
     },
-    project: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'Project',
+    dataset: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'dataSet',
         required: true
     },
     lastUpdated: {
