@@ -38,6 +38,11 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
             .then(usersDatasets => $scope.datasets = usersDatasets)
     }
 
+    $scope.getAllDashboards = function(loggedInUser) {
+        return ProfileFactory.getAllDashboards(loggedInUser)
+            .then(usersDashboards => $scope.dashboards = usersDashboards)
+    }
+
     //Toggle between dashboard and data-source views on profile
     $scope.dashboardsVisible = true
     $scope.toggleView = function() {
