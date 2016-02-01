@@ -3,34 +3,46 @@ app.factory('DashboardFactory', function ($http) {
 
         //save new dashboard upon creation
         create: function(dashboard) {
-            $http.post(dashboard)
+            $http.post('/api/dashboards',dashboard)
             .then(function(response){
                 return response.data;
             });
         },
 
-        fetchAllPublic: function() {
-            //write special route
+        fetchAll: function() {
+            //route makes sure to only return public dashboards
+            //and those created by current user
+            $http.get('/api/dashboards')
+            .then(function(response){
+                return response.data;
+            });
         },
 
-        fetchAllByUser: function(user) {
-
+        fetchAllByUser: function(userId) {
+            $http.get('/api/dashboards?user=' + userId)
+            .then(function(response){
+                return response.data;
+            });
         },
 
         fetchOne: function(id) {
-            //must write backend logic to make sure the user
-            //has access to this dashboard
+            //route makes sure to only return public dashboards
+            //and those created by current user
+            $http.get('api/dashboards/' + id)
+            .then(function(response){
+                return response.data;
+            });
         },
 
         update: function(dashboard) {
-            $http.put(dashboard)
+            $http.put('/api/dashboards/' + dashboard._id, dashboard)
             .then(function(response) {
                 return response.data;
             });
         },
 
         delete: function(dashboard) {
-            $http.delete(dashboard._id)
+            $http.delete('/api/dashboards/' + dashboard._id)
             .then(function(response){
                 return response.data;
             });
