@@ -17,6 +17,7 @@ app.factory('ProfileFactory', function ($http, Upload, $timeout, AuthService) {
 
     //Assuming GET /api/datasets returns array of obj, w/ each obj containing a given data-set's meta info
     ProfileFactory.getAllDatasets = function(user) {
+        console.log("YOOOO", user)
         return $http.get("/api/datasets/?user=" + user._id)
             .then(response => response.data)
     }
