@@ -35,12 +35,16 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
 
     $scope.getAllDatasets = function(loggedInUser) {
         return ProfileFactory.getAllDatasets(loggedInUser)
-            .then(usersDatasets => $scope.datasets = usersDatasets)
+            .then(usersDatasets => {
+                $scope.datasets = usersDatasets
+            })
     }
 
     $scope.getAllDashboards = function(loggedInUser) {
         return ProfileFactory.getAllDashboards(loggedInUser)
-            .then(usersDashboards => $scope.dashboards = usersDashboards)
+            .then(usersDashboards => {
+                $scope.dashboards = usersDashboards
+            })
     }
 
     //Toggle between dashboard and data-source views on profile
