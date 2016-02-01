@@ -103,6 +103,20 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
         }
     }
 
+    //use this event to tell GraphService to re-render graph:
+    $scope.$on('gridster-item-resized', function(item) {
+        console.log("item has been resized");
+        console.dir(item);
+        // item.gridster
+        // item.row
+        // item.col
+        // item.sizeX
+        // item.sizeY
+        // item.minSizeX
+        // item.minSizeY
+        // item.maxSizeX
+        // item.maxSizeY
+    });
     // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
     //     if (newVal !== oldVal) {
     //         $scope.dashboard = $scope.dashboards[newVal];

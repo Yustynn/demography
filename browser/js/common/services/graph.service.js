@@ -8,7 +8,7 @@
 *
 */
 
-app.service('GraphService', function (DashboardFactory) {
+app.service('GraphService', function ($rootScope, DashboardFactory) {
     var self = this;
     var ndx, myData;
 
@@ -18,7 +18,7 @@ app.service('GraphService', function (DashboardFactory) {
         var chartWidth = chartContainer.offsetWidth;
         var chartHeight = chartContainer.offsetHeight;
         var chartRadius = chartWidth < chartHeight ? chartWidth/2 : chartHeight/2;
-        console.log(chartWidth, chartHeight, chartRadius);
+        //console.log(chartWidth, chartHeight, chartRadius);
         ///var all = ndx.groupAll()
 
         var dim = ndx.dimension(function(d) {
@@ -41,7 +41,7 @@ app.service('GraphService', function (DashboardFactory) {
                 .width(chartWidth)
                 .height(chartHeight)
                 .radius((chartWidth < chartHeight ? chartWidth/2 : chartHeight/2)*.8)
-                .innerRadius(chartWidth/6)
+                .innerRadius(chartRadius/4)
                 .dimension(dim)
                 .group(grp)
         } else if (chartType === "barChart") {
@@ -71,17 +71,18 @@ app.service('GraphService', function (DashboardFactory) {
         dc.renderAll();
     };
 
-    this.resize = function(){
+    this.resize = function(id){
         //http://plnkr.co/edit/kJDKH0?p=preview
+        var chart = dc[chartType]('#widget-container-' + id + '> .box-content > .widget-content-container');
         var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];
         var chartWidth = chartContainer.offsetWidth;
           // var newWidth = document.getElementById('box-test').offsetWidth;
-          // chart.width(newWidth)
-          //   .transitionDuration(0);
-          // pie.transitionDuration(0);
-          // dc.renderAll();
-          // chart.transitionDuration(750);
-          // pie.transitionDuration(750);
+          chart.width(chartWidth)
+            .transitionDuration(0);
+          pie.transitionDuration(0);
+          dc.renderAll();
+          chart.transitionDuration(750);
+          pie.transitionDuration(750);
     }
 
     //load data
@@ -100,6 +101,27 @@ app.service('GraphService', function (DashboardFactory) {
             //$scope.$apply()
         });
     };
+
+    $rootScope.$on('gridster-resized', function(sizes, gridster) {
+        // sizes[0] = width
+        // sizes[1] = height
+        // gridster.
+        console.log("the canvas has been resized");
+    });
+
+    $rootScope.$on('gridster-item-resized', function(item) {
+        console.log("Do Sth");
+        console.dir(item.$element);
+        // item.gridster
+        // item.row
+        // item.col
+        // item.sizeX
+        // item.sizeY
+        // item.minSizeX
+        // item.minSizeY
+        // item.maxSizeX
+        // item.maxSizeY
+    })
 
     //for now init data here
     loadData();
