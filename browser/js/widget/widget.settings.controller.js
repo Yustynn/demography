@@ -3,26 +3,10 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
     $scope.widget = widget;
 
     $scope.form = {
-        name: widget.name,
-        sizeX: widget.sizeX,
-        sizeY: widget.sizeY,
-        col: widget.col,
-        row: widget.row
+        title: widget.title,
+        labelX: widget.labelX,
+        labelY: widget.labelY
     };
-
-    // $scope.sizeOptions = [{
-    //     id: '1',
-    //     name: '1'
-    // }, {
-    //     id: '2',
-    //     name: '2'
-    // }, {
-    //     id: '3',
-    //     name: '3'
-    // }, {
-    //     id: '4',
-    //     name: '4'
-    // }];
 
     $scope.dismiss = function() {
         $uibModalInstance.dismiss();
