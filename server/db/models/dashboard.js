@@ -6,7 +6,7 @@ var schema = new mongoose.Schema({
         required: true
     },
     title: {
-        type: String
+        type: String, required: true
     },
     dataset: {
         type: mongoose.Schema.Types.ObjectId, ref: 'DataSet',
