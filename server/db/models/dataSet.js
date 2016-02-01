@@ -5,13 +5,16 @@ var schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, ref: 'User',
         required: true
     },
+    fileType: {
+        type: String
+    },
     title: {
         type: String
     },
     shortDescription: {
     	type: String
     },
-    public: {
+    isPublic: {
     	type: Boolean,
         default: false
     }
