@@ -4,7 +4,7 @@
 *   create and update of all chart types.
 *
 *   'public' functions: this.someFunc = function(){}
-    'private' functions: function someFunc(){}
+*   'private' functions: function someFunc(){}
 *
 */
 
@@ -20,8 +20,14 @@ app.service('GraphService', function(DashboardFactory) {
         return myData;
     }
 
+    this.populateCharts = function(chartArr){
+        chartArr.forEach(function(chartObj){
+            self.create(chartObj.id,chartObj.chartType,chartObj.xAxis,chartObj.yAxis,chartObj.groupType,chartObj.chartOptions)
+        })
+    }
     this.create = function(id, chartType, xAxis, yAxis, groupType,chartOptions) {
         var chartOptions = {}; //initialize for now to be empty, users will eventually submit this
+    //Gets called after data load, accepts array of chartObjects 
         var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];
         var chartWidth = chartContainer.offsetWidth;
         var chartHeight = chartContainer.offsetHeight;
