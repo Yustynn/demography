@@ -1,24 +1,24 @@
 <div class="container">
 <div class="page-header">
 <!--     <a class="pull-right btn btn-danger" ng-click="clear()"><i class="glyphicon glyphicon-trash"></i> Clear</a> -->
-    <a class="pull-right btn btn-default" ng-click="addGraphPlaceholder()"><i class="glyphicon glyphicon-stats"></i> Add Graph</a>
-    <a class="pull-right btn btn-default" ng-click="addTextPanelPlaceholder()"><i class="glyphicon glyphicon-text-background"></i> Add Text</a>
-    <a class="pull-right btn btn-default" ng-click="addWidgetPlaceholder()"><i class="glyphicon glyphicon-plus"></i> Add Widget</a>
+    <a class="pull-right btn btn-default" ng-click="addWidgetPlaceholder('graph')"><i class="glyphicon glyphicon-stats"></i> Add Graph</a>
+    <a class="pull-right btn btn-default" ng-click="addWidgetPlaceholder('text')"><i class="glyphicon glyphicon-text-background"></i> Add Text</a>
+    <a class="pull-right btn btn-default" ng-click="addWidgetPlaceholder('widget')"><i class="glyphicon glyphicon-plus"></i> Add Widget</a>
 <!--     <a class="pull-right btn btn-default active" toggle-class="active" ng-click="toggleEditMode()"> -->
     <a class="pull-right btn btn-default" ng-click="toggleEditMode()">
     <span ng-show="editMode"><i class="glyphicon glyphicon-eye-open"></i> View</span><span ng-hide="editMode"><i class="glyphicon glyphicon-cog"></i> Edit</span></a>
-    <a class="pull-right btn btn-success" ng-click="updateDashboard()"><i class="glyphicon glyphicon-floppy-disk"></i> Save</a>
+    <a class="pull-right btn btn-success" ng-click="updateDashboard()"><i class="glyphicon glyphicon-floppy-disk"></i> Update</a>
     <a class="pull-right btn btn-success" ng-click="loadDashboard()"><i class="glyphicon glyphicon glyphicon-floppy-open"></i> Load</a>
     <a class="pull-right btn btn-default" ng-click="showDataset()"><i class="glyphicon glyphicon-stats"></i> Dataset</a>
-    <h1>{{dashboard.name}}</h1>
+    <h1>{{dashboard.title}}</h1>
 </div>
 
 <div gridster="gridsterOptions">
     <ul>
         <li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
-            <div class="box" ng-controller="CustomWidgetCtrl" ng-attr-id="{{ 'widget-container-' + widget.id }}">
+            <div class="box" ng-controller="WidgetCtrl" ng-attr-id="{{ 'widget-container-' + widget.id }}">
                 <div class="box-header">
-                    <h3>{{ widget.name }}</h3>
+                    <h3>{{ widget.title }}</h3>
                     <div ng-show="editMode" toggle-class="whatever" class="box-header-btns pull-right">
                         <a title="settings" ng-click="openSettings(widget)"><i class="glyphicon glyphicon-cog"></i></a>
                         <a title="Remove widget" ng-click="remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>

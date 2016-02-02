@@ -1,5 +1,5 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uibModalInstance, widget) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, WidgetFactory) {
     $scope.widget = widget;
 
     $scope.form = {
@@ -18,8 +18,9 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
     };
 
     $scope.submit = function() {
-        angular.extend(widget, $scope.form);
+        angular.extend(widget, $scope.form); //update widget with settings from form
         $uibModalInstance.close(widget);
+        WidgetFactory.update(widget);
     };
 
 });
