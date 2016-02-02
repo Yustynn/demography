@@ -28,6 +28,14 @@ schema.pre('save', function (next) {
     next();
 });
 
+schema.pre('remove', function (next) {
+    //remove all of it's widgets
+    Widget.remove({dashboard: this._id})
+    .then(function(){
+        next();
+    });
+});
+
 schema.methods.getWidgets = function getWidgets() {
     return Widget.find({dashboard: this._id})
     .then(function(widgets){
