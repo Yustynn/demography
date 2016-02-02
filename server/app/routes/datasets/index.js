@@ -13,7 +13,7 @@ var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 // Helper function to construct a file path
 var getFilePath = function(userId, datasetId, fileType) {
     if (fileType === "text/csv") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.csv';
-    else if (fileType === "text/json") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.json';
+    else if (fileType === "application/json") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.json';
 }
 
 // Helper function to convert csv to json
@@ -47,7 +47,7 @@ router.get("/", function(req, res, next) {
     if (queryObject.user && !searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject["isPublic"] = true;
 
     DataSet.find(queryObject)
-    .then(datasets => res.status(200).send(datasets))
+    .then(datasets => res.status(200).json(datasets))
     .then(null, function(err) {
         err.message = "Something went wrong when trying to access these datasets";
         next(err);
@@ -71,12 +71,12 @@ router.get("/:datasetId", function(req, res, next) {
         .then(rawFile => {
             // Convert csv file to a json object if needed
             // BOBBY NOTE: Need to test this out when the file is json to start
-            var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : rawFile;
+            var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
 
             // Add the json as a property of the return object, so it an be sent with the metadata
             returnDataObject["jsonData"] = dataArray;
 
-            res.status(200).send(returnDataObject);
+            res.status(200).json(returnDataObject);
         });
     })
     .then(null, function(err) {
@@ -100,7 +100,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
     var metaData = req.body;
     var returnDataObject;
     metaData.fileType = req.file.mimetype;
-    if (metaData.fileType !== "text/csv") res.status(422).send("This is not valid file type. Upload either .csv or .json");
+    if (metaData.fileType !== "text/csv" && metaData.fileType !== "application/json") res.status(422).json("This is not valid file type. Upload either .csv or .json");
     var originalFilePath;
     var newFilePath;
     DataSet.create(metaData)
@@ -118,12 +118,12 @@ router.post('/', upload.single('file'), function(req, res, next) {
             .then(rawFile => {
                 // Convert csv file to a json object if needed
                 // BOBBY NOTE: Need to test this out when the file is json to start
-                var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : rawFile;
+                var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
 
                 // Add the json as a property of the return object, so it an be sent with the metadata
                 returnDataObject["jsonData"] = dataArray;
 
-                res.status(201).send(returnDataObject);
+                res.status(201).json(returnDataObject);
             });
         })
     })

@@ -5,4 +5,4 @@ npm-debug.log
 public
 .DS_Store
 coverage
-server/db/upload-files/
+server/db/upload-files
