@@ -6,7 +6,6 @@
     z-index: 2000;
     width: 100%;
     display: block;
-    background: $ivory;
     border-bottom: 1px solid black;
     box-shadow: 1px 1px 14px -3px black;
     padding-bottom: 10px;
@@ -17,7 +16,6 @@
     }
     .navbar-header {
         h2 {
-            color: $ivory;
             margin-right: 60px;
             margin-top: 14px;
             a {
@@ -33,21 +31,20 @@
     }
     a {
         margin-top: 7px;
-        color: black;
         font-size: 16px;
     }
     .nav > li {
         display: inline-block;
+        margin-top: 25px;
     }
     .nav > li > a {
         cursor: pointer;
+        display: inline;
         transition: color 0.2s;
         &.active {
-            color: darken(#f31214, 10%);
         }
         &:hover {
             background: none;
-            color: #f31214;
         }
         &:focus {
             background: none;
@@ -58,7 +55,6 @@
         float: right;
         border: 1px solid black;
         margin-top: 16px;
-        background: $ivory;
         outline: none !important;
         margin-right: 5px;
     }
@@ -66,25 +62,24 @@
         float: right;
         border: 1px solid black;
         margin-top: 16px;
-        background: $ivory;
         outline: none !important;
     }
     .welcome {
         float: right;
         margin-top: 21px;
         span {
-            color: black;
             font-size: 16px;
             margin-right: 5px;
         }
         a {
-            color: #f30046;
             cursor: pointer;
             &:hover {
-                color: blue;
                 transition: color .3s;
                 text-decoration: none;
             }
         }
+    }
+    .glyphicon {
+        display: inline;
     }
 }
