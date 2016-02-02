@@ -17,7 +17,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFactory, DashboardFactory) {
+app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFactory, DashboardFactory, DatasetFactory) {
 
     $scope.user = loggedInUser
 
@@ -36,14 +36,22 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
     $scope.getAllDatasets = function(loggedInUser) {
         return ProfileFactory.getAllDatasets(loggedInUser)
             .then(usersDatasets => {
-                $scope.datasets = usersDatasets
+                $scope.datasets = usersDatasets;
             })
+    }
+
+    // BOBBY NOTE: We need to have $scope updated when datasets are removed
+    $scope.removeDataset = function(dataset) {
+        DatasetFactory.removeDataset(dataset)
+        .then(function(response) {
+            console.log(response);
+        });
     }
 
     $scope.getAllDashboards = function(loggedInUser) {
         return ProfileFactory.getAllDashboards(loggedInUser)
             .then(usersDashboards => {
-                $scope.dashboards = usersDashboards
+                $scope.dashboards = usersDashboards;
             })
     }
 
@@ -56,10 +64,14 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
         });
     };
 
+    $scope.removeDashboard = function(dashboard) {
+        DashboardFactory.delete(dashboard);
+    }
+
     //Toggle between dashboard and data-source views on profile
-    $scope.dashboardsVisible = true
+    $scope.dashboardsVisible = true;
     $scope.toggleView = function() {
-        $scope.dashboardsVisible = !$scope.dashboardsVisible
+        $scope.dashboardsVisible = !$scope.dashboardsVisible;
     }
 
 });
