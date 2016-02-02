@@ -26,7 +26,12 @@ router.get("/:id", function(req, res, next) {
 	Dashboard.findById(req.params.id)
 		.then(function(dashboard){
             if (dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()){
-                res.status(201).send(dashboard);
+                dashboard.getWidgets()
+                .then(function(widgets){
+                    var myDash = dashboard.toJSON();
+                    myDash['widgets'] = widgets.toJSON();
+                    res.status(201).send(dashboard);
+                });
             }
             else res.status(401).send("You are not authorized to view this dashboard");
         })

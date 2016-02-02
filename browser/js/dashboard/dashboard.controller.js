@@ -1,12 +1,14 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphService, DashboardFactory){
+app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
-    console.log($scope.user);
+
+    $scope.dashboard = {};
+
+    console.log($scope.dashboard);
     $scope.editMode = false;
 
     //TODO: MAke this dynamic, for now hardcoded:
     $scope.datasetId = "56af8e3b8c6e223906e3e12c";
-
 
 
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
@@ -35,11 +37,6 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
 
     $scope.data = GraphService.data;
 
-    $scope.dashboard = {};
-
-    $scope.dashboard.nextWidgetId = 3;
-
-
 
     $scope.toggleEditMode = function() {
         $scope.editMode = !$scope.editMode;
@@ -47,43 +44,38 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
     };
 
-    $scope.clear = function() {
-        $scope.dashboard.widgets = [];
-    };
+    // $scope.clear = function() {
+    //     $scope.dashboard.widgets = [];
+    // };
 
-    $scope.addWidgetPlaceholder = function() {
-        $scope.dashboard.widgets.push({
+    $scope.addWidgetPlaceholder = function(widgetType) {
+        console.dir($scope.dashboard);
+        var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
-            title: "New Widget",
-            type: 'widget',
-            sizeX: 2,
-            sizeY: 2
-        });
-        $scope.dashboard.nextWidgetId ++;
+            title: "New " + widgetType,
+            type: widgetType,
+            sizeX: widgetType === 'widget' ? 2 : 4,
+            sizeY: widgetType === 'widget' ? 2 : widgetType === 'text' ? 1 : 4
+        };
+        $scope.dashboard.widgets.push(newWidget);
+        $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
+        createWidget(newWidget);
     };
 
-    $scope.addGraphPlaceholder = function() {
-        $scope.dashboard.widgets.push({
-            id: $scope.dashboard.nextWidgetId,
-            title: "New Graph",
-            type: 'graph',
-            sizeX: 4,
-            sizeY: 4
-        });
-        $scope.dashboard.nextWidgetId ++;
-    };
+    var createWidget = function(newWidget) {
+        newWidget.dashboard = $scope.dashboard._id;
+        WidgetFactory.create(newWidget)
+        .then(function(createdWidget){
+            for(var i = 0; i < $scope.dashboard.widgets.length; i++) {
+                if ($scope.dashboard.widgets[i].id === newWidget.id) {
+                    $scope.dashboard.widgets[i] = createdWidget;
+                }
+            }
 
-    $scope.addTextPanelPlaceholder = function() {
-        $scope.dashboard.widgets.push({
-            id: $scope.dashboard.nextWidgetId,
-            title: "New Text Panel",
-            type: 'text',
-            sizeX: 4,
-            sizeY: 1
+            console.log($scope.dashboard.widgets);
         });
-        $scope.dashboard.nextWidgetId ++;
-    };
+    }
 
     $scope.updateDashboard = function() {
         DashboardFactory.update($scope.dashboard);
@@ -98,23 +90,27 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
             title: 'My First Dashboard',
             widgets: [{
                 id: 1,
-                col: 0,
-                row: 0,
+                dashboard: '56af9be19b297822070ecfc4',
+                // col: 0,
+                // row: 0,
                 sizeY: 2,
                 sizeX: 2,
                 title: "Widget 1",
                 type: 'widget'
             }, {
                 id: 2,
-                col: 2,
-                row: 1,
+                dashboard: '56af9be19b297822070ecfc4',
+                // col: 2,
+                // row: 1,
                 sizeY: 4,
                 sizeX: 4,
                 title: "Graph 2",
                 type: 'graph'
             }]
         };
-    }
+        $scope.dashboard.nextWidgetId = Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1;
+    };
+
 
     // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
     //     if (newVal !== oldVal) {

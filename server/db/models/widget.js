@@ -16,12 +16,12 @@ var schema = new mongoose.Schema({
         enum: widgetTypes
     },
     col: {
-        type: Number,
-        required: true
+        type: Number
+        //required: true
     },
     row: {
-        type: Number,
-        required: true
+        type: Number
+        //required: true
     },
     sizeX: {
         type: Number,
@@ -39,9 +39,11 @@ var schema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    //attributes entail
+    //attributes entail all settings for the specific widget, such as spreadsheet or chart
+    //including it's type ('pie', 'bar' etc), colors, axis labels etc
     attributes: {
         type: Object,
+        default: {}
     }
 });
 
