@@ -1,12 +1,12 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory) {
 
-    $scope.remove = function(widget) {
+    $scope.remove = function (widget) {
         if(widget._id) WidgetFactory.delete(widget._id);
         $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
     };
 
-    $scope.openSettings = function(widget) {
+    $scope.openSettings = function (widget) {
         $uibModal.open({
             scope: $scope,
             templateUrl: 'js/widget/widget.settings.html',
