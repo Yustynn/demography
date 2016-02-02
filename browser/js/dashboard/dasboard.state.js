@@ -13,7 +13,7 @@ app.config(function ($stateProvider) {
             currentDashboard:function(DashboardFactory, $stateParams ) {
                 return DashboardFactory.fetchOne($stateParams.dashboardId)
                 .then(function(dash){
-                    //merge and return stuff
+                    //merge and return stuff??
                     return dash;
                 });
             },

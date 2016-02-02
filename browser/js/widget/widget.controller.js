@@ -19,6 +19,7 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory) {
         });
     };
 
+
     // $scope.$on('gridster-item-initialized', function(item) {
     //     console.log("INIT in custom widget ctrl");
     //     console.log(item);

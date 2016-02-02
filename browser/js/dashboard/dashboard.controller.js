@@ -94,7 +94,15 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     // var loadDataset = function(datasetId) {
 
     // }
+    // $rootScope.$on('$viewContentLoaded', function (event) {
+    //         console.log('lock & loaded')
+    // })
+    var renderGraphs = function(){
+        setTimeout(function(){
+            GraphService.populateCharts($scope.dashboard.widgets);
 
-    //$scope.loadDashboard();
+        }, 2000);
+    };
 
+    renderGraphs();
 });

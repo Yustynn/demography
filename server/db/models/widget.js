@@ -39,9 +39,9 @@ var schema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    //attributes entail all settings for the specific widget, such as spreadsheet or chart
+    //chartObjects entail all settings for the specific widget, such as spreadsheet or chart
     //including it's type ('pie', 'bar' etc), colors, axis labels etc
-    attributes: {
+    chartObject: {
         type: Object,
         default: {}
     }

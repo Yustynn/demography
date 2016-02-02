@@ -20,14 +20,15 @@ app.service('GraphService', function(DashboardFactory) {
         return myData;
     }
 
-    this.populateCharts = function(chartArr){
-        chartArr.forEach(function(chartObj){
+    this.populateCharts = function(widgetArr){
+        widgetArr.forEach(function(widgetObj){
+            var chartObj = widgetObj.chartObject;
             self.create(chartObj.id,chartObj.chartType,chartObj.xAxis,chartObj.yAxis,chartObj.groupType,chartObj.chartOptions)
         })
     }
     this.create = function(id, chartType, xAxis, yAxis, groupType,chartOptions) {
         var chartOptions = {}; //initialize for now to be empty, users will eventually submit this
-    //Gets called after data load, accepts array of chartObjects 
+    //Gets called after data load, accepts array of chartObjects
         var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];
         var chartWidth = chartContainer.offsetWidth;
         var chartHeight = chartContainer.offsetHeight;
@@ -73,6 +74,11 @@ app.service('GraphService', function(DashboardFactory) {
         charts['chart' + id] = {
             chart: chart,
             chartType: chartType,
+            id: id,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            groupType: groupType,
+            chartOptions: chartOptions
         };
 
 
@@ -103,7 +109,7 @@ app.service('GraphService', function(DashboardFactory) {
         //passing in graphCount(i.e. the id) to keep functions expected input the same for both graph
         //creation and graph editing
         createChart(id, chartObj)
-        return charts;
+        return charts['chart' + id];
     };
 
     this.resize = function(id) {
@@ -111,7 +117,7 @@ app.service('GraphService', function(DashboardFactory) {
 
         setTimeout(function() {
             //This setTimeout allows the graph to resize once the widget has
-            //finished resizing to the set width 
+            //finished resizing to the set width
             //Alternatively can pass in the size of the widget in the function
             //then grab the gridster-desktop elements offsetWidth and height then
             //divide that by the passed in width and height.
@@ -209,16 +215,16 @@ app.service('GraphService', function(DashboardFactory) {
                 right: 10,
                 bottom: 20
             },
-            centerBar: false, //'boolean' 
+            centerBar: false, //'boolean'
             // x: d3.scale.linear().domain([0,50]).range(['white','black']),//defaults to d3.scale.ordinal, if linear, do some math to figure out domain
             x: d3.scale.ordinal(),
             xUnits: dc.units.ordinal,
-            title: function(d) { //{ /*Default to both, give option for either*/ } 
+            title: function(d) { //{ /*Default to both, give option for either*/ }
                 return [d.key, d.value].join(' : ');
             },
-            yAxisLabel: y, // 'value'  
-            xAxisLabel: x, //'value' 
-            elasticY: true, //'value' 
+            yAxisLabel: y, // 'value'
+            xAxisLabel: x, //'value'
+            elasticY: true, //'value'
             //if linear then domain needs to be specified? Outside of options, in function
             gap: 20,
             renderHorizontalGridLines: true
