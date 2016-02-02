@@ -1,6 +1,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('dashboard', {
-        url: '/dashboard',
+        url: '/:userId/dashboards/:dashboardId',
         templateUrl: 'js/dashboard/dashboard.edit.html',
         controller: 'DashboardCtrl',
         resolve: {

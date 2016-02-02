@@ -17,7 +17,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFactory) {
+app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFactory, DashboardFactory) {
 
     $scope.user = loggedInUser
 
@@ -46,6 +46,13 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
                 $scope.dashboards = usersDashboards
             })
     }
+
+    $scope.createDashboard = function(datasetId) {
+        return DashboardFactory.create({user:$scope.user._id, dataset: datasetId, title: 'some Title', isPublic: true})
+        .then(function(newDashboard){
+            //render dashboard page
+        });
+    };
 
     //Toggle between dashboard and data-source views on profile
     $scope.dashboardsVisible = true
