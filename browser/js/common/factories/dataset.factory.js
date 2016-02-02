@@ -8,8 +8,8 @@ app.factory('DatasetFactory', function($http) {
             .then(null, console.error);
     }
 
-    DatasetFactory.removeDataset = function(datasetId) {
-        return $http.delete("/api/datasets/" + datasetId)
+    DatasetFactory.removeDataset = function(dataset) {
+        return $http.delete("/api/datasets/" + dataset._id)
             .then(response => response.data)
             .then(null, console.error);
     }

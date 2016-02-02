@@ -41,8 +41,8 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
     }
 
     // BOBBY NOTE: We need to have $scope updated when datasets are removed
-    $scope.removeDataset = function(datasetId) {
-        DatasetFactory.removeDataset(datasetId)
+    $scope.removeDataset = function(dataset) {
+        DatasetFactory.removeDataset(dataset)
         .then(function(response) {
             console.log(response);
         });
@@ -63,6 +63,10 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
             //$state.go('dashboard');
         });
     };
+
+    $scope.removeDashboard = function(dashboard) {
+        DashboardFactory.delete(dashboard);
+    }
 
     //Toggle between dashboard and data-source views on profile
     $scope.dashboardsVisible = true;
