@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+//var User = require('./../models/user.js);
+var Widget = mongoose.models.Widget;
 
 var schema = new mongoose.Schema({
     user: {
@@ -21,12 +23,24 @@ var schema = new mongoose.Schema({
     }
 });
 
-
 schema.pre('save', function (next) {
-
     this.lastUpdated = Date.now()
     next();
-
 });
+
+schema.pre('remove', function (next) {
+    //remove all of it's widgets
+    Widget.remove({dashboard: this._id})
+    .then(function(){
+        next();
+    });
+});
+
+schema.methods.getWidgets = function getWidgets() {
+    return Widget.find({dashboard: this._id})
+    .then(function(widgets){
+        return widgets;
+    });
+};
 
 mongoose.model('Dashboard', schema);
