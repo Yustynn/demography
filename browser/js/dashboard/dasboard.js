@@ -1,3 +1,33 @@
+app.config(function ($stateProvider) {
+    $stateProvider.state('dashboard', {
+        url: '/:userId/datasets/:datasetId/dashboards/:dashboardId',
+        templateUrl: 'js/dashboard/dashboard.edit.html',
+        controller: 'DashboardCtrl',
+        resolve: {
+            loggedInUser: function(AuthService ) {
+                return AuthService.getLoggedInUser()
+                .then(function(user) {
+                    return user;
+                });
+            },
+            currentDashboard:function(DashboardFactory, $stateParams ) {
+                return DashboardFactory.fetchOne($stateParams.dashboardId)
+                .then(function(dash){
+                    //merge and return stuff??
+                    return dash;
+                });
+            },
+            currentDataset: function(DatasetFactory, $stateParams ) {
+
+                return DatasetFactory.fetchById($stateParams.datasetId)
+                .then(function(dataset){
+                    return dataset;
+                })
+            }
+        }
+    });
+});
+
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
@@ -48,14 +78,24 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
     };
 
-    $scope.addWidgetPlaceholder = function(widgetType) {
+    $scope.addWidget = function(widgetType) {
+
+        var _graphType, _widgetType;
+        var wType = function() {
+            if(widgetType.split('-')[1] === 'graph') {
+                _graphType = widgetType.split('-')[0];
+                _widgetType = 'graph';
+            }
+            else return widgetType;
+        };
 
         $scope.editMode = false;
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
             title: "New " + widgetType,
-            type: widgetType,
+            type: wType(),
+            graphType: graphType,
             sizeX: widgetType === 'widget' ? 2 : 4,
             sizeY: widgetType === 'widget' ? 2 : widgetType === 'text' ? 1 : 4
         };
@@ -72,11 +112,10 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     }
 
-    // $rootScope.$on('$viewContentLoaded', function (event) {
-    //         console.log('lock & loaded')
-    // })
     var renderGraphs = function(){
+        console.log('rendering in 800ms')
         setTimeout(function(){
+            console.log('now');
             GraphService.populateCharts($scope.dashboard.widgets.filter(function(widget){
                 return widget.type === 'graph';
             }));

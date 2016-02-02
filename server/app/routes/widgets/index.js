@@ -13,7 +13,6 @@ var ensureAuthenticated = function (req, res, next) {
 
 // /api/widgets
 router.post("/", ensureAuthenticated, function (req, res, next) {
-    console.log(req.body);
     Widget.create(req.body)
     .then(newWidget => res.status(201).send(newWidget))
     .then(null, next);
