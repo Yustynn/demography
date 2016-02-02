@@ -51,6 +51,8 @@ router.put("/:id", ensureAuthenticated, function(req, res, next) {
     }).then(null, next)
 });
 
+// Route to delete an existing dashboard in MongoDB
+// DELETE /api/dashboards/:dashboardId
 router.delete("/:id", ensureAuthenticated, function(req, res, next) {
 	Dashboard.remove({_id: req.params.id}, function (err) {
 		if(!err) res.status(200).send("Deleted dashboard successfully!");

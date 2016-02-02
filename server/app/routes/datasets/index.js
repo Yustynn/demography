@@ -151,7 +151,7 @@ router.put("/:datasetId", function(req, res, next) {
     });
 });
 
-// Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
+// Route to delete an existing dataset in MongoDB and the saved csv file in the filesystem
 // DELETE /api/datasets/:datasetId
 // BOBBY NOTE: Do we need a separate route to update the metadate and the file in the filesystem?
 router.delete("/:datasetId", function(req, res, next) {

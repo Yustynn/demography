@@ -13,11 +13,12 @@
             </ul>
             <div ng-if="dashboardsVisible" ng-repeat="dashboard in dashboards">
                 <a ui-sref="dashboard({dashboardId: dashboard._id})"><h3>{{dashboard.title}}</h3></a>
+                <button ng-click="removeDashboard(dashboard)">Remove dashboard</button>
             </div>
             <div ng-if="!dashboardsVisible" ng-repeat="dataset in datasets">
                 <a ui-sref="dataset({datasetId: dataset._id})"><h3>{{dataset.title}}</h3></a>
                 <a ng-click="createDashboard(dataset._id)"><h3>make dashboard for {{dataset.title}}</h3></a>
-                <button ng-click="removeDataset(dataset._id)">Remove dataset</button>
+                <button ng-click="removeDataset(dataset)">Remove dataset</button>
             </div>
         </div>
     </div>

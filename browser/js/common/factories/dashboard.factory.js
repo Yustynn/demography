@@ -43,9 +43,8 @@ app.factory('DashboardFactory', function ($http) {
 
         delete: function(dashboard) {
             return $http.delete('/api/dashboards/' + dashboard._id)
-            .then(function(response){
-                return response.data;
-            });
+            .then(response => response.data)
+            .then(null, console.error);
         }
     };
 });
