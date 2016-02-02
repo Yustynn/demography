@@ -2,7 +2,7 @@
     <rando-greeting></rando-greeting>
     <button ng-click="loadData()">Load Data</button>
     
-    <form ng-submit="createGraph(selection.chart,selection.x,selection.y,selection.group)">
+    <form ng-submit="createGraph(selection.chart,selection.x,selection.y,selection.group,{})">
         Chart Type
         <select  ng-model="selection.chart">
             <option ng-repeat="option in ['pieChart','barChart','rowChart']">{{option}}</option>

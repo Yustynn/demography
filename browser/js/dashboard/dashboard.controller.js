@@ -13,6 +13,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
             enabled: false,
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
                 GraphService.resize(c.id);
+                //Probably want to pass in the widget size vs finding size inside of the function
             }
             //handles: ['n', 'e', 's', 'w', 'se', 'sw']
         },
@@ -101,7 +102,7 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
         });
         $scope.dashboard.nextWidgetId ++;
     };
-
+    //Needs to be not hardcoded, take: graphId, xaxis, yaxis, groupType
     $scope.addGraph = function(graphId) {
         if($scope.chartTypes.selectedType) {
             GraphService.create(graphId,$scope.chartTypes.selectedType, 'League','HR','sum')
