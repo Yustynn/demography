@@ -72,10 +72,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     }
 
-    $scope.updateDashboard = function() {
-        DashboardFactory.update($scope.dashboard);
-    }
-
     // $rootScope.$on('$viewContentLoaded', function (event) {
     //         console.log('lock & loaded')
     // })
