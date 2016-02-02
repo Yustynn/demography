@@ -8,6 +8,8 @@
         </div>
         <div class="col-xs-9">
             <ul class="nav nav-tabs">
+                <!-- <li ui-sref-active="active" class="active"><a ui-sref="profile.dashboard">Dashboards</a></li>
+                <li ui-sref-active="active" class="active"><a ui-sref="profile.datasets">Datasets</a></li> -->
                 <li role="presentation" ng-click="toggleView(); getAllDashboards(user);" ng-class="{active: dashboardsVisible}"><a>Dashboards</a></li>
                 <li role="presentation" ng-click="toggleView(); getAllDatasets(user);" ng-class="{active: !dashboardsVisible}"><a>Data-Sets</a></li>
             </ul>
