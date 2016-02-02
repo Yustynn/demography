@@ -1,12 +1,21 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphService, DashboardFactory){
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
-    console.log($scope.user);
+    $scope.dashboard = currentDashboard;
+    if($scope.dashboard.widgets) {
+        $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
+            Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
+            : 1;
+    }
+    else {
+        $scope.dashboard.widgets = [];
+        $scope.dashboard.nextWidgetId = 0;
+    }
+
     $scope.editMode = false;
 
-    //TODO: MAke this dynamic, for now hardcoded:
-    $scope.datasetId = "56af8e3b8c6e223906e3e12c";
-
+    //change this:
+    $scope.data = GraphService.data;
 
 
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
@@ -34,12 +43,6 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
-    $scope.data = GraphService.data;
-
-    $scope.dashboard = {};
-
-    $scope.dashboard.nextWidgetId = 3;
-
 
 
     $scope.toggleEditMode = function() {
@@ -48,87 +51,50 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
     };
 
-    $scope.clear = function() {
-        $scope.dashboard.widgets = [];
-    };
-
-    $scope.addWidgetPlaceholder = function() {
-        $scope.dashboard.widgets.push({
+    $scope.addWidgetPlaceholder = function(widgetType) {
+        var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
-            name: "New Widget",
-            type: 'widget',
-            sizeX: 2,
-            sizeY: 2
-        });
-        $scope.dashboard.nextWidgetId ++;
+            title: "New " + widgetType,
+            type: widgetType,
+            sizeX: widgetType === 'widget' ? 2 : 4,
+            sizeY: widgetType === 'widget' ? 2 : widgetType === 'text' ? 1 : 4
+        };
+        $scope.dashboard.widgets.push(newWidget);
+        $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
+        createWidget(newWidget);
     };
 
-    $scope.addGraphPlaceholder = function() {
-        $scope.dashboard.widgets.push({
-            id: $scope.dashboard.nextWidgetId,
-            name: "New Graph",
-            type: 'graph',
-            sizeX: 4,
-            sizeY: 4
+    var createWidget = function(newWidget) {
+        newWidget.dashboard = $scope.dashboard._id;
+        WidgetFactory.create(newWidget)
+        .then(function(createdWidget){
+            for(var i = 0; i < $scope.dashboard.widgets.length; i++) {
+                if ($scope.dashboard.widgets[i].id === newWidget.id) {
+                    $scope.dashboard.widgets[i] = createdWidget;
+                }
+            }
         });
-        $scope.dashboard.nextWidgetId ++;
-    };
-
-    $scope.addTextPanelPlaceholder = function() {
-        $scope.dashboard.widgets.push({
-            id: $scope.dashboard.nextWidgetId,
-            name: "New Text Panel",
-            type: 'text',
-            sizeX: 4,
-            sizeY: 1
-        });
-        $scope.dashboard.nextWidgetId ++;
-    };
+    }
 
     $scope.updateDashboard = function() {
         DashboardFactory.update($scope.dashboard);
     }
 
-    $scope.loadDashboard = function(){
-        //temporary hardcoded. Should fetch it from Server:
-        $scope.dashboard = {
-            _id: '56af9be19b297822070ecfc4',
-            dataset: '56af8e3b8c6e223906e3e12c',
-            user: loggedInUser._id,
-            title: 'My First Dashboard',
-            widgets: [{
-                id: 1,
-                col: 0,
-                row: 0,
-                sizeY: 2,
-                sizeX: 2,
-                name: "Widget 1",
-                type: 'widget'
-            }, {
-                id: 2,
-                col: 2,
-                row: 1,
-                sizeY: 4,
-                sizeX: 4,
-                name: "Graph 2",
-                type: 'graph'
-            }]
-        };
-    }
+    // $scope.loadDashboard = function(){
+    //     return DashboardFactory.fetchOne($scope.currentDashboard._id)
+    //     .then(function(dash){
+    //         $scope.dashboard = dash;
+    //         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
+    //             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
+    //             : 1;
+    //     });
+    // };
 
-    // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
-    //     if (newVal !== oldVal) {
-    //         $scope.dashboard = $scope.dashboards[newVal];
-    //     } else {
-    //         $scope.dashboard = $scope.dashboards[1];
-    //     }
-    // });
+    // var loadDataset = function(datasetId) {
 
-    var loadDataset = function(datasetId) {
+    // }
 
-    }
-
-    $scope.loadDashboard();
+    //$scope.loadDashboard();
 
 });
