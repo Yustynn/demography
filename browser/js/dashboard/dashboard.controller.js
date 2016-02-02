@@ -4,7 +4,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
     $scope.dashboard = {};
     $scope.editMode = false;
 
-    //TODO: Make this dynamic, for now hardcoded:
+    //TODO: Make this dynamic from profile or stream page, for now hardcoded:
     $scope.datasetId = "56af8e3b8c6e223906e3e12c";
     $scope.dashboardId = '56af9be19b297822070ecfc4';
 
@@ -75,7 +75,9 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         return DashboardFactory.fetchOne($scope.dashboardId)
         .then(function(dash){
             $scope.dashboard = dash;
-            $scope.dashboard.nextWidgetId = Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1;
+            $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
+                Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
+                : 1;
         });
     };
 

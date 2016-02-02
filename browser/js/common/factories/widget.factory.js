@@ -18,8 +18,8 @@ app.factory('WidgetFactory', function ($http){
             });
         },
 
-        delete: function(widget) {
-            $http.delete('/api/widgets/' + widget._id)
+        delete: function(widgetId) {
+            return $http.delete('/api/widgets/' + widgetId)
             .then(function(response){
                 return response.data;
             });
