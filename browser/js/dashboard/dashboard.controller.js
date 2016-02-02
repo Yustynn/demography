@@ -20,6 +20,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
             enabled: false,
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
                 GraphService.resize(c.id);
+                //Probably want to pass in the widget size vs finding size inside of the function
             }
             //handles: ['n', 'e', 's', 'w', 'se', 'sw']
         },

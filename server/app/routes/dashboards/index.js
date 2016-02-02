@@ -16,6 +16,7 @@ var ensureAuthenticated = function (req, res, next) {
 router.get("/", function (req, res, next) {
 	Dashboard.find(req.query)
 	.then(allDashboards => {
+		//send the dashboard if it is public OR if it belongs to the user requesting it
         res.status(200).send(allDashboards.filter(d => d.isPublic || d.user._id.toString() === req.user._id.toString()))
     })
 	.then(null, next)

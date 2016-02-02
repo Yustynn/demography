@@ -1,0 +1,15 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-3">
+            <label for="searchBar">Looking for anything in particular?</label>
+            <input type="text" placeholder="Filter through all of the data we have" size="33"></input>
+        </div>
+        <div class="stream col-xs-9">
+            <div ng-repeat="dashboard in allDashboards" class="dashboard">
+                <!-- snapshot of dashboard? -->
+                <h4>{{dashboard.title}}</h4>
+                <!-- short description of dashboard? -->
+            </div>
+        </div>
+    </div>
+</div>
