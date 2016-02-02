@@ -1,12 +1,22 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
-    $scope.dashboard = {};
+    $scope.dashboard = currentDashboard;
+    if($scope.dashboard.widgets) {
+        $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
+            Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
+            : 1;
+    }
+    else {
+        $scope.dashboard.widgets = [];
+        $scope.dashboard.nextWidgetId = 0;
+    }
+
     $scope.editMode = false;
 
-    //TODO: Make this dynamic from profile or stream page, for now hardcoded:
-    $scope.datasetId = "56af8e3b8c6e223906e3e12c";
-    $scope.dashboardId = '56af9be19b297822070ecfc4';
+    //change this:
+    $scope.data = GraphService.data;
+
 
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
@@ -33,7 +43,6 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
-    $scope.data = GraphService.data;
 
 
     $scope.toggleEditMode = function() {
@@ -72,20 +81,20 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         DashboardFactory.update($scope.dashboard);
     }
 
-    $scope.loadDashboard = function(){
-        return DashboardFactory.fetchOne($scope.dashboardId)
-        .then(function(dash){
-            $scope.dashboard = dash;
-            $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
-                Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
-                : 1;
-        });
-    };
+    // $scope.loadDashboard = function(){
+    //     return DashboardFactory.fetchOne($scope.currentDashboard._id)
+    //     .then(function(dash){
+    //         $scope.dashboard = dash;
+    //         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
+    //             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
+    //             : 1;
+    //     });
+    // };
 
-    var loadDataset = function(datasetId) {
+    // var loadDataset = function(datasetId) {
 
-    }
+    // }
 
-    $scope.loadDashboard();
+    //$scope.loadDashboard();
 
 });

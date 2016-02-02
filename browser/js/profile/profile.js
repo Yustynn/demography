@@ -51,6 +51,8 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
         return DashboardFactory.create({user:$scope.user._id, dataset: datasetId, title: 'some Title', isPublic: true})
         .then(function(newDashboard){
             //render dashboard page
+            $state.go('dashboard',{"dashboardId":newDashboard._id,"datasetId":newDashboard.dataset, userId:newDashboard.user});
+            //$state.go('dashboard');
         });
     };
 
