@@ -33,7 +33,7 @@ app.service('GraphService', function(DashboardFactory) {
         var chartWidth = chartContainer.offsetWidth;
         var chartHeight = chartContainer.offsetHeight;
         var chartRadius = chartWidth < chartHeight ? chartWidth / 2 : chartHeight / 2;
-        console.log(chartWidth, chartHeight, chartRadius);
+        //console.log(chartWidth, chartHeight, chartRadius);
         ///var all = ndx.groupAll()
 
 
@@ -176,7 +176,7 @@ app.service('GraphService', function(DashboardFactory) {
         var keys = Object.keys(chartOptions);
 
         keys.forEach(function(key) {
-            console.log(key, ":", chartOptions[key])
+            //console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
         dc.renderAll();

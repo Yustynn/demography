@@ -17,7 +17,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     //change this:
     $scope.data = GraphService.data;
 
-
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
         margins: [12, 12],  //spacing between widgets
@@ -43,8 +42,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
-
-
     $scope.toggleEditMode = function() {
         $scope.editMode = !$scope.editMode;
         $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
@@ -52,6 +49,8 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     };
 
     $scope.addWidgetPlaceholder = function(widgetType) {
+
+        $scope.editMode = false;
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
@@ -62,10 +61,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         };
         $scope.dashboard.widgets.push(newWidget);
         $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
-        createWidget(newWidget);
-    };
-
-    var createWidget = function(newWidget) {
         newWidget.dashboard = $scope.dashboard._id;
         WidgetFactory.create(newWidget)
         .then(function(createdWidget){
@@ -81,19 +76,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         DashboardFactory.update($scope.dashboard);
     }
 
-    // $scope.loadDashboard = function(){
-    //     return DashboardFactory.fetchOne($scope.currentDashboard._id)
-    //     .then(function(dash){
-    //         $scope.dashboard = dash;
-    //         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
-    //             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
-    //             : 1;
-    //     });
-    // };
-
-    // var loadDataset = function(datasetId) {
-
-    // }
     // $rootScope.$on('$viewContentLoaded', function (event) {
     //         console.log('lock & loaded')
     // })
