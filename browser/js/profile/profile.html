@@ -17,6 +17,7 @@
             <div ng-if="!dashboardsVisible" ng-repeat="dataset in datasets">
                 <a ui-sref="dataset({datasetId: dataset._id})"><h3>{{dataset.title}}</h3></a>
                 <a ng-click="createDashboard(dataset._id)"><h3>make dashboard for {{dataset.title}}</h3></a>
+                <button ng-click="removeDataset(dataset._id)">Remove dataset</button>
             </div>
         </div>
     </div>
