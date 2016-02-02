@@ -66,7 +66,7 @@ app.service('GraphService', function(DashboardFactory) {
         //Is there a way to find out what kind of chart it is by checking the instance itself?
         charts['chart' + id] = {
             chart: chart,
-            chartType: chartType
+            chartType: chartType,
         };
 
 
@@ -97,6 +97,7 @@ app.service('GraphService', function(DashboardFactory) {
         //passing in graphCount(i.e. the id) to keep functions expected input the same for both graph
         //creation and graph editing
         createChart(id, chartObj)
+        return charts;
     };
 
     this.resize = function(id) {
