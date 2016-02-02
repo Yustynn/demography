@@ -11,7 +11,6 @@ app.factory('WidgetFactory', function ($http){
         },
 
         update: function(widget) {
-            debugger;
             $http.put('/api/widgets/' + widget._id, widget)
             .then(function(response) {
                 return response.data;

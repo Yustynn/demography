@@ -19,34 +19,16 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory) {
         });
     };
 
-    // $scope.$on('gridster-item-initialized', function(item) {
-    //     console.log("INIT in custom widget ctrl");
-    //     console.log(item);
-
-    //     // item.$element
-    //     // item.gridster
-    //     // item.row
-    //     // item.col
-    //     // item.sizeX
-    //     // item.sizeY
-    //     // item.minSizeX
-    //     // item.minSizeY
-    //     // item.maxSizeX
-    //     // item.maxSizeY
-    // });
-
     $scope.$on('gridster-item-transition-end', function (item) {
         console.log("RESIZED in custom widget ctrl");
         console.log(item);
-    // item.$element
-    // item.gridster
-    // item.row
-    // item.col
-    // item.sizeX
-    // item.sizeY
-    // item.minSizeX
-    // item.minSizeY
-    // item.maxSizeX
-    // item.maxSizeY
-})
+        var updatedWidget = {
+            col: item.targetScope.widget.col,
+            row: item.targetScope.widget.row,
+            sizeX: item.targetScope.widget.sizeX,
+            sizeY: item.targetScope.widget.sizeY,
+            _id: item.targetScope.widget._id
+        };
+        WidgetFactory.update(updatedWidget);    //no ().then necessary here
+    });
 });
