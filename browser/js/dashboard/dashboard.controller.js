@@ -99,9 +99,11 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     // })
     var renderGraphs = function(){
         setTimeout(function(){
-            GraphService.populateCharts($scope.dashboard.widgets);
+            GraphService.populateCharts($scope.dashboard.widgets.filter(function(widget){
+                return widget.type === 'graph';
+            }));
 
-        }, 2000);
+        }, 800);
     };
 
     renderGraphs();
