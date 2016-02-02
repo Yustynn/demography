@@ -15,7 +15,7 @@
                 <a ui-sref="#"><h3>{{dashboard.title}}</h3></a>
             </div>
             <div ng-if="!dashboardsVisible" ng-repeat="dataset in datasets">
-                <a ui-sref="#"><h3>{{dataset.title}}</h3></a>
+                <a ui-sref="dataset({datasetId: dataset._id})"><h3>{{dataset.title}}</h3></a>
             </div>           
         </div>
     </div>
