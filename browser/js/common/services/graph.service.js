@@ -100,7 +100,10 @@ app.service('GraphService', function(DashboardFactory) {
             if(chartObj.gap*size >= chartHeight){
                 chartObj.gap = chartHeight*.5/size;
             }
+        } else if (chartType === "pieChart") {
+            chartObj = makeLineChartObject(chartOptions)
         };
+
         chartObj.width = chartWidth;
         chartObj.height = chartHeight;
         chartObj.dimension = dim;
@@ -274,5 +277,11 @@ app.service('GraphService', function(DashboardFactory) {
         })
 
         return rowChartOptions;
+    }
+
+    function makeLineChartObject() {
+        var lineChartOptions = {
+            
+        }
     }
 })
