@@ -29,8 +29,8 @@ router.get("/:id", function(req, res, next) {
                 dashboard.getWidgets()
                 .then(function(widgets){
                     var myDash = dashboard.toJSON();
-                    myDash['widgets'] = widgets.toJSON();
-                    res.status(201).send(dashboard);
+                    myDash['widgets'] = widgets;
+                    res.status(201).send(myDash);
                 });
             }
             else res.status(401).send("You are not authorized to view this dashboard");
@@ -46,16 +46,6 @@ router.post("/", ensureAuthenticated, function(req, res, next) {
     else res.status(401).send("You are not authorized to create this dashboard")
     .then(null, next);
 });
-
-// router.put("/:id", function(req, res, next) {
-// 	Dashboard.update({ _id: req.params.id}, req.body, function(err) {
-// 		if(!err) res.status(200).send("Updated dashboard successfully!");
-// 		else {
-// 			console.error(err);
-// 			res.status(404).send("We're sorry... There is no dashboard with that ID in our database.");
-// 		}
-// 	});
-// })
 
 router.put("/:id", ensureAuthenticated, function(req, res, next) {
     Widget.findByIdAndUpdate(req.params.id, req.body)

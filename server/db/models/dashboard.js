@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 //var User = require('./../models/user.js);
-var Widget = require(__dirname + '/widget.js');
+var Widget = mongoose.models.Widget;
 
 var schema = new mongoose.Schema({
     user: {
@@ -29,7 +29,7 @@ schema.pre('save', function (next) {
 });
 
 schema.methods.getWidgets = function getWidgets() {
-    return Widget.find({user: this._id})
+    return Widget.find({dashboard: this._id})
     .then(function(widgets){
         return widgets;
     });

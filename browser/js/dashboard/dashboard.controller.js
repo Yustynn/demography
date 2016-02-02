@@ -1,15 +1,12 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
-
     $scope.dashboard = {};
-
-    console.log($scope.dashboard);
     $scope.editMode = false;
 
-    //TODO: MAke this dynamic, for now hardcoded:
+    //TODO: Make this dynamic, for now hardcoded:
     $scope.datasetId = "56af8e3b8c6e223906e3e12c";
-
+    $scope.dashboardId = '56af9be19b297822070ecfc4';
 
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
@@ -44,12 +41,7 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
     };
 
-    // $scope.clear = function() {
-    //     $scope.dashboard.widgets = [];
-    // };
-
     $scope.addWidgetPlaceholder = function(widgetType) {
-        console.dir($scope.dashboard);
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
@@ -72,8 +64,6 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
                     $scope.dashboard.widgets[i] = createdWidget;
                 }
             }
-
-            console.log($scope.dashboard.widgets);
         });
     }
 
@@ -82,43 +72,12 @@ app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphS
     }
 
     $scope.loadDashboard = function(){
-        //temporary hardcoded. Should fetch it from Server:
-        $scope.dashboard = {
-            _id: '56af9be19b297822070ecfc4',
-            dataset: '56af8e3b8c6e223906e3e12c',
-            user: loggedInUser._id,
-            title: 'My First Dashboard',
-            widgets: [{
-                id: 1,
-                dashboard: '56af9be19b297822070ecfc4',
-                // col: 0,
-                // row: 0,
-                sizeY: 2,
-                sizeX: 2,
-                title: "Widget 1",
-                type: 'widget'
-            }, {
-                id: 2,
-                dashboard: '56af9be19b297822070ecfc4',
-                // col: 2,
-                // row: 1,
-                sizeY: 4,
-                sizeX: 4,
-                title: "Graph 2",
-                type: 'graph'
-            }]
-        };
-        $scope.dashboard.nextWidgetId = Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1;
+        return DashboardFactory.fetchOne($scope.dashboardId)
+        .then(function(dash){
+            $scope.dashboard = dash;
+            $scope.dashboard.nextWidgetId = Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1;
+        });
     };
-
-
-    // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
-    //     if (newVal !== oldVal) {
-    //         $scope.dashboard = $scope.dashboards[newVal];
-    //     } else {
-    //         $scope.dashboard = $scope.dashboards[1];
-    //     }
-    // });
 
     var loadDataset = function(datasetId) {
 
