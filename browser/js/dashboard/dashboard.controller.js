@@ -1,6 +1,14 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
+app.controller('DashboardCtrl', function (loggedInUser, $scope, $timeout, GraphService, DashboardFactory){
+    $scope.user = loggedInUser;
+    console.log($scope.user);
     $scope.editMode = false;
+
+    //TODO: MAke this dynamic, for now hardcoded:
+    $scope.datasetId = "56af8e3b8c6e223906e3e12c";
+
+
+
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
         margins: [12, 12],  //spacing between widgets
@@ -28,36 +36,11 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
 
     $scope.data = GraphService.data;
 
-    $scope.dashboard = {
-            id: 1,
-            name: 'My First Dashboard',
-            widgets: [{
-                id: 1,
-                col: 0,
-                row: 0,
-                sizeY: 2,
-                sizeX: 2,
-                name: "Widget 1",
-                type: 'widget'
-            }, {
-                id: 2,
-                col: 2,
-                row: 1,
-                sizeY: 4,
-                sizeX: 4,
-                name: "Graph 2",
-                type: 'graph'
-            }]
-    };
+    $scope.dashboard = {};
 
     $scope.dashboard.nextWidgetId = 3;
 
-    $scope.chartTypes = {
-        graphs:[
-            {id:'barChart', name:'Bar Chart'},
-            {id:'pieChart', name:'Pie Chart'}
-        ]
-    };
+
 
     $scope.toggleEditMode = function() {
         $scope.editMode = !$scope.editMode;
@@ -102,11 +85,36 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
         });
         $scope.dashboard.nextWidgetId ++;
     };
-    //Needs to be not hardcoded, take: graphId, xaxis, yaxis, groupType
-    $scope.addGraph = function(graphId) {
-        if($scope.chartTypes.selectedType) {
-            GraphService.create(graphId,$scope.chartTypes.selectedType, 'League','HR','sum')
-        }
+
+    $scope.updateDashboard = function() {
+        DashboardFactory.update($scope.dashboard);
+    }
+
+    $scope.loadDashboard = function(){
+        //temporary hardcoded. Should fetch it from Server:
+        $scope.dashboard = {
+            _id: '56af9be19b297822070ecfc4',
+            dataset: '56af8e3b8c6e223906e3e12c',
+            user: loggedInUser._id,
+            title: 'My First Dashboard',
+            widgets: [{
+                id: 1,
+                col: 0,
+                row: 0,
+                sizeY: 2,
+                sizeX: 2,
+                name: "Widget 1",
+                type: 'widget'
+            }, {
+                id: 2,
+                col: 2,
+                row: 1,
+                sizeY: 4,
+                sizeX: 4,
+                name: "Graph 2",
+                type: 'graph'
+            }]
+        };
     }
 
     // $scope.$watch('selectedDashboardId', function(newVal, oldVal) {
@@ -116,4 +124,11 @@ app.controller('DashboardCtrl', function ($scope, $timeout, GraphService){
     //         $scope.dashboard = $scope.dashboards[1];
     //     }
     // });
+
+    var loadDataset = function(datasetId) {
+
+    }
+
+    $scope.loadDashboard();
+
 });

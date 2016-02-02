@@ -19,9 +19,9 @@ app.config(function($stateProvider) {
 
 app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFactory) {
 
-    $scope.user = loggedInUser.firstName + " " + loggedInUser.lastName;
+    $scope.user = loggedInUser
 
-    // Funtcion to add the uploaded file to the scope
+    // Function to add the uploaded file to the scope
     // This is separate from "uploadDataset" so the file can be sent with the metadata on form submission
     $scope.chooseFile = function(file) {
         $scope.file = file;
@@ -31,6 +31,20 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, ProfileFact
     $scope.uploadDataset = function(metaData) {
         metaData.user = loggedInUser._id;
         ProfileFactory.uploadDataset($scope.file, metaData);
+    }
+
+    $scope.getAllDatasets = function(loggedInUser) {
+        return ProfileFactory.getAllDatasets(loggedInUser)
+            .then(usersDatasets => {
+                $scope.datasets = usersDatasets
+            })
+    }
+
+    $scope.getAllDashboards = function(loggedInUser) {
+        return ProfileFactory.getAllDashboards(loggedInUser)
+            .then(usersDashboards => {
+                $scope.dashboards = usersDashboards
+            })
     }
 
     //Toggle between dashboard and data-source views on profile

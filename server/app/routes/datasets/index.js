@@ -11,25 +11,78 @@ var path = require('path');
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 
 // Helper function to construct a file path
-var getFilePath = function(userId, datasetId) {
-    return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.csv';
+var getFilePath = function(userId, datasetId, fileType) {
+    if (fileType === "text/csv") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.csv';
+    else if (fileType === "text/json") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.json';
+}
+
+// Helper function to convert csv to json
+var convertCsvToJson = function(rawFile) {
+    var fileStr = rawFile.toString();
+    var rawDataArray = fileStr.split("\n").map(function(line, index) {
+        return line.split(",");
+    });
+    var headerArray = rawDataArray.shift();
+
+    return rawDataArray.map(function(line) {
+        var dataFieldObject = {};
+        line.forEach(function(item, index) {
+            dataFieldObject[headerArray[index]] = item;
+        });
+        return dataFieldObject;
+    });
+}
+
+// Helper function to determine if the user in the search is the same as the user making the request
+var searchUserEqualsRequestUser = function(searchUser, requestUser) {
+    return searchUser.toString() === requestUser._id.toString();
 }
 
 // Route to retrieve all datasets
+    // This sends metadata only. The GET /:datasetId will need to be used to access the actual data
 // GET /api/datasets/
-// BOBBY NOTE: Need to figure out the best way of retrieving multiple files from the filesystem
 router.get("/", function(req, res, next) {
-    res.status(200).send("Ability to retrieve all files is TBU");
+    // If a specific user data is requested by a different user, only send the public data
+    var queryObject = req.query;
+    if (queryObject.user && !searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject["isPublic"] = true;
+
+    DataSet.find(queryObject)
+    .then(datasets => res.status(200).send(datasets))
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to access these datasets";
+        next(err);
+    });
 });
 
-// Route to retrieve all datasets
-// GET /api/datasets/:datasetId/:originalUserId
-// BOBBY NOTE: May need to convert this to JSON on the response, if we can't save it as json
-router.get("/:datasetId/:originalUserId", function(req, res, next) {
-    var filePath = getFilePath(req.params.originalUserId, req.params.datasetId);
-    fsp.readFile(filePath, { encoding: 'utf8' })
-    .then(file => res.status(200).send(file))
-    .then(null, next);
+// GET /api/datasets/:datasetId
+router.get("/:datasetId", function(req, res, next) {
+    var returnDataObject;
+    DataSet.findById(req.params.datasetId) // .lean() allows the mongo object to be mutable. We may want to use a lodash method here instead
+    .then(dataset => {
+        // Throw an error if a different user tries to access a private dataset
+        if (!searchUserEqualsRequestUser(dataset.user, req.user) && !dataset.isPublic) res.status(401).send("You are not authorized to access this dataset");
+
+        // Save the metadata on the return object
+        returnDataObject = dataset.toJSON();
+
+        // Retrieve the file so it can be sent back with the metadata
+        var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        fsp.readFile(filePath, { encoding: 'utf8' })
+        .then(rawFile => {
+            // Convert csv file to a json object if needed
+            // BOBBY NOTE: Need to test this out when the file is json to start
+            var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : rawFile;
+
+            // Add the json as a property of the return object, so it an be sent with the metadata
+            returnDataObject["jsonData"] = dataArray;
+
+            res.status(200).send(returnDataObject);
+        });
+    })
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to access this dataset";
+        next(err);
+    });
 });
 
 // multer is middleware used to parse the file that is uploaded through the POST request
@@ -42,38 +95,77 @@ var upload = multer({
 
 // Route to create a new dataset in MongoDB and save a renamed csv file to the filesystem
 // POST /api/datasets/
+// BOBBY NOTE: Need to allow this to process .json files as well
 router.post('/', upload.single('file'), function(req, res, next) {
+    var metaData = req.body;
+    var returnDataObject;
+    metaData.fileType = req.file.mimetype;
+    if (metaData.fileType !== "text/csv") res.status(422).send("This is not valid file type. Upload either .csv or .json");
     var originalFilePath;
     var newFilePath;
-    DataSet.create(req.body)
-        .then(dataset => {
-            originalFilePath = req.file.path;
-            newFilePath = getFilePath(dataset.user, dataset._id);
-            fsp.rename(originalFilePath, newFilePath);
-            return dataset;
+    DataSet.create(metaData)
+    .then(dataset => {
+        // Save the metadata on the return object
+        returnDataObject = dataset.toJSON();
+
+        // Rename the file saved to the filesystem so it follows proper naming convention
+        originalFilePath = req.file.path;
+        newFilePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        fsp.rename(originalFilePath, newFilePath)
+        .then(response => {
+            // Retrieve the file so it can be sent back with the metadata
+            fsp.readFile(newFilePath, { encoding: 'utf8' })
+            .then(rawFile => {
+                // Convert csv file to a json object if needed
+                // BOBBY NOTE: Need to test this out when the file is json to start
+                var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : rawFile;
+
+                // Add the json as a property of the return object, so it an be sent with the metadata
+                returnDataObject["jsonData"] = dataArray;
+
+                res.status(201).send(returnDataObject);
+            });
         })
-        .then(dataset => res.status(201).send(dataset))
-        .then(null, next);
+    })
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to create this dataset";
+        next(err);
+    });
+});
+
+// BOBBY NOTE: Need to figure out how to go about updating the files in the filesystem
+
+// Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
+// PUT /api/datasets/:datasetId
+router.put("/:datasetId", function(req, res, next) {
+    DataSet.findById(req.params.datasetId)
+    .then(dataset => {
+        // Throw an error if a different user tries to update dataset
+        if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
+        var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        fsp.readFile(filePath, { encoding: 'utf8' })
+        .then(file => res.status(200).send("Ability to update file is TBU"))
+    }).then(null, function(err) {
+        err.message = "Something went wrong when trying to update this dataset";
+        next(err);
+    });
 });
 
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
-// PUT /api/datasets/:datasetId/:originalUserId
-// BOBBY NOTE: Need to figure out how to go about updating the files in the filesystem
-router.put('/:datasetId/:originalUserId', function(req, res, next) {
-    var filePath = getFilePath(req.params.originalUserId, req.params.datasetId);
-    fsp.readFile(filePath, { encoding: 'utf8' })
-    .then(file => res.status(200).send("Ability to update file is TBU"))
-    .then(null, next);
-});
-
-// Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
-// DELETE /api/datasets/:datasetId/:originalUserId
-// BOBBY NOTE: Need to figure out how to go about updating the files in the filesystem
-router.delete('/:datasetId/:originalUserId', function(req, res, next) {
-    var filePath = getFilePath(req.params.originalUserId, req.params.datasetId);
-    DataSet.remove({ _id: req.params.datasetId })
-    .then(response => {
-        fsp.unlink(filePath)
-        .then(response => res.status(200).send("Data set successfully removed"));
-    }).then(null, next);
+// DELETE /api/datasets/:datasetId
+// BOBBY NOTE: Do we need a separate route to update the metadate and the file in the filesystem?
+router.delete("/:datasetId", function(req, res, next) {
+    DataSet.findById(req.params.datasetId)
+    .then(dataset => {
+        // Throw an error if a different user tries to delete dataset
+        if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
+        var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        fsp.unlink(filePath);
+        return DataSet.remove({ _id: dataset._id })
+    })
+    .then(response => res.status(200).send("Data set successfully removed"))
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to delete this dataset";
+        next(err);
+    });
 });
