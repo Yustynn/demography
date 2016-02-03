@@ -3,13 +3,12 @@
         <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
         <h3 class="modal-title">Create New Dashboard</h3>
     </div>
-    <form id="dashboard-form" name="dashboardForm" ng-submit="">
+    <form id="dashboard-form" name="dashboardForm" ng-submit="createDashboard(newDashboard)">
         <div class="modal-body">
 
-            <!-- Use oi.select to provide a dropdown of available datasets -->
             <div class="form-group row">
                 <label for="dashboardDataset" class="form-control-label">Dataset source</label>
-                <input type="text" ng-model="newDashboard.dataset">
+                <oi-select oi-options="dataset.title for dataset in userDatasets track by dataset._id" ng-model="newDashboard.dataset" id="dashboard-dataset" placeholder="Choose a source dataset"></oi-select>
             </div>
 
             <div class="form-group row">
