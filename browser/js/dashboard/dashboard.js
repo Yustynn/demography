@@ -44,6 +44,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.dashboard.nextWidgetId = 0;
     }
 
+    $scope.editMode = false;
 
     //set name for display
     if(currentDashboard.user.firstName && currentDashboard.user.lastName) {
@@ -119,6 +120,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 
         }, 800);
     };
-
+    GraphService.loadData(currentDataset.jsonData)
     renderGraphs();
 });
