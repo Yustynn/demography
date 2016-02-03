@@ -20,9 +20,20 @@ var getFilePath = function(userId, datasetId, fileType) {
 var convertCsvToJson = function(rawFile) {
     var fileStr = rawFile.toString();
     var rawDataArray = fileStr.split("\n").map(function(line, index) {
-        return line.split(",");
+        return line.split(",").map(function(cell){
+            return cell.replace(/^\s+|\s+$/g,'');   //trim whitespace
+        });
     });
     var headerArray = rawDataArray.shift();
+    console.log(rawDataArray[rawDataArray.length-1])
+
+    //recursively remove empty rows:
+    var cleanCounter = 0;
+    while(rawDataArray[rawDataArray.length-1][0] === ""){
+        rawDataArray.pop();
+        cleanCounter++
+    }
+    if (cleanCounter > 0) console.log("removed", cleanCounter, "invalid rows from the CSV");
 
     return rawDataArray.map(function(line) {
         var dataFieldObject = {};

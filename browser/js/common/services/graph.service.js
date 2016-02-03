@@ -45,13 +45,14 @@ app.service('GraphService', function(DashboardFactory) {
                 d[xAxis] = Number(d[xAxis]);
                 xAxisIsNumber = true; //Checks if xaxis is ordinal or linear
             };
+            console.log('d[xAxis: ',d[xAxis])
             return d[xAxis];
         });
 
         if (groupType === "sum") {
             var grp = dim.group().reduceSum(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
-
+                console.log()
                 return Number(d[yAxis]);
             });
         } else if (groupType === "count") {
@@ -61,7 +62,7 @@ app.service('GraphService', function(DashboardFactory) {
                 return d[yAxis];
             });
         };
-        
+
         // var grp = dim.group().reduceSum(function(d) {
         //     return d.HR;
         // })
@@ -106,7 +107,7 @@ app.service('GraphService', function(DashboardFactory) {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "dataTable") {
-            chartObj = makeTableChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber)
+            chartObj = makeTableChartObject(chartOptions)
             var size = dim.group().size();
             if(chartObj.gap*size >= chartHeight){
                 chartObj.gap = chartHeight*.5/size;
@@ -179,8 +180,7 @@ app.service('GraphService', function(DashboardFactory) {
         var keys = Object.keys(chartOptions);
 
         keys.forEach(function(key) {
-            debugger;
-            //console.log(key, ":", chartOptions[key])
+            // console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
         dc.renderAll();
@@ -316,49 +316,20 @@ app.service('GraphService', function(DashboardFactory) {
     }
 
     //Data Table Chart Option creator-has superfluous parameters for testing
-    function makeTableChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
-
+    function makeTableChartObject(chartOptions, numRows) {
 
         var tableChartOptions = {
-            // margins: {
-            //     top: 5,
-            //     left: 10,
-            //     right: 10,
-            //     bottom: 20
-            // },
-        //     centerBar: false, //'boolean'
-        //     // x: d3.scale.linear().domain([0,50]).range(['white','black']),//defaults to d3.scale.ordinal, if linear, do some math to figure out domain
-        //     x: d3.scale.ordinal(),
-        //     xUnits: dc.units.ordinal,
-        //     title: function(d) { //{ /*Default to both, give option for either*/ }
-        //         return [d.key, d.value].join(' : ');
-        //     },
-        //     yAxisLabel: y, // 'value'
-        //     xAxisLabel: x, //'value'
-        //     elasticY: true, //'value'
-        //     //if linear then domain needs to be specified? Outside of options, in function
-        //     gap: 20,
-        //     renderHorizontalGridLines: true
-        };
 
-        ////This sets the x axis to be linear if the axis is a number
-        // if (xAxisIsNumber) {
-        //     var min = userDimension.bottom(1)[0][x];
-        //     var max = userDimension.top(1)[0][x];
-        //     tableChartOptions.x = d3.scale.linear().domain([min, max]);
-        //     tableChartOptions.xUnits = dc.units.integers;
-        // }
-        // if(chartOptions.x==="linear"){
-        //     tableChartOptions.x= d3.scale.linear().domain([0,50]).range(["white","black"]);
-        //     tableChartOptions.xUnits = null;
-        //     chartOptions = {};
-        //     console.log("ChartOptions",tableChartOptions)
-        //}
+            columns: function(d) {
+                debugger;
+                return Object.keys(d);
+            },
+            size: numRows ? numRows : 20
+        }
 
         Object.keys(chartOptions).forEach(function(key) {
             tableChartOptions[key] = chartOptions[key];
         });
-
 
         return tableChartOptions;
     }
