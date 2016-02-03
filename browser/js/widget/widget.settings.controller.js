@@ -2,11 +2,26 @@
 app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset) {
     $scope.widget = widget;
 
+    $scope.chartType = graphTypeToCreate;
     //TODO: dropdown for labels from dataset once we have data loaded
+    $scope.axisDropdowns = {
+        availableOptions : Object.keys(dataset.jsonData[0])
+        .map(function(key){
+            return {key: key};
+        })
+    };
+
+    //$scope.groupOptions = [{val:'sum'}, {val:'count'}];
+
+    var selection = {
+        group: 'sum'
+    }
+    //2-way binding!
     $scope.form = {
         title: widget.title,    //update title
         labelX: widget.labelX,  //update data on X
-        labelY: widget.labelY   //update data on Y
+        labelY: widget.labelY,   //update data on Y
+        group: selection.group
     };
 
     $scope.dismiss = function() {
@@ -25,7 +40,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX, widget.labelY,'sum');
+           var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,selection.group);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);

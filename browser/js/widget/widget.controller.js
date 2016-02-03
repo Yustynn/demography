@@ -19,15 +19,19 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, Dataset
                     return graphTypeToCreate || null;
                 },
                 dataset: function() {
-                    debugger;
-                    DatasetFactory.fetchById(datasetId)
+                    return DatasetFactory.fetchById(datasetId)
                     .then(function(dataset){
-                        return dataset
+                        return dataset;
                     });
                 }
             }
         });
     };
+
+    //used to ng-hide new-widget-selector
+    $scope.noGraph = function (widget){
+        return widget.chartObject && widget.chartObject!={};
+    }
 
     $scope.$on('gridster-item-transition-end', function (item) {
         console.log("RESIZED in custom widget ctrl");

@@ -13,16 +13,14 @@ app.config(function ($stateProvider) {
             currentDashboard:function(DashboardFactory, $stateParams ) {
                 return DashboardFactory.fetchOne($stateParams.dashboardId)
                 .then(function(dash){
-                    //merge and return stuff??
                     return dash;
                 });
             },
             currentDataset: function(DatasetFactory, $stateParams ) {
-                debugger;
                 return DatasetFactory.fetchById($stateParams.datasetId)
                 .then(function(dataset){
                     return dataset;
-                })
+                });
             }
         }
     });
@@ -32,7 +30,6 @@ app.config(function ($stateProvider) {
 app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
-    debugger;
     $scope.dataset = currentDataset;
     if($scope.dashboard.widgets) {
         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
@@ -88,12 +85,12 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             title: "New Graph",
             type: 'graph',
             sizeX: 4,
-            sizeY: 4
+            sizeY: 4,
+            chartObject: {}
         };
         $scope.dashboard.widgets.push(newWidget);
         $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
         newWidget.dashboard = $scope.dashboard._id;
-        debugger;
         WidgetFactory.create(newWidget)
         .then(function(createdWidget){
             for(var i = 0; i < $scope.dashboard.widgets.length; i++) {

@@ -3,9 +3,8 @@
     <form name="_form" class="form-horizontal" ng-submit="submit(_form)">
         <div class="modal-header">
             <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-            <h3>Widget Settings</h3>
+            <h3>NEW {{chartType | uppercase}}</h3>
         </div>
-
         <div class="modal-body">
             <div class="form-group" ng-class="{error: _form.title.$error && _form.submitted}">
                 <label class="control-label col-lg-3 col-md-3">Title</label>
@@ -16,46 +15,30 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="form-group" ng-class="{error: _form.labelX.$error && _form.submitted}">
-                        <label class="control-label col-lg-6 col-md-6">Label X-Axis</label>
-                        <div class="col-lg-6 col-md-6">
-                            <input name="labelX" ng-model="form.labelX" class="form-control" />
-
-
-                        </div>
+                        <label for="selectX" class="control-label col-lg-6 col-md-6">Label X-Axis</label>
+                        <select name="selectX" id="selectX" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelX"></select>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="form-group">
-                        <label class="control-label col-lg-6 col-md-6">Label Y-Axis</label>
-                        <div class="col-lg-6 col-md-6">
-                            <input name="labelY" ng-model="form.labelY" class="form-control" />
-                        </div>
+                        <label for="selectY" class="control-label col-lg-6 col-md-6">Label Y-Axis</label>
+                        <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelY"></select>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-lg-6 col-md-6" for="groupBy"> Group Data By: </label><br>
+                <select name="groupBy" ng-model="form.group">
+                    <option value="sum" >Sum</option>
+                    <option value="count">Count</option>
+                </select>
             </div>
         </div>
         <div class="modal-footer">
             <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
-            <a ng-click="dismiss()" class="btn btn-default" ><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+            <a ng-click="dismiss()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
             <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
         </div>
     </form>
-    {{dataset}}
-<!--     <div class="graph-template">
-    <form class="form-inline" ng-submit="addGraph(graph.id)">
-      <div class="form-group">
-        <label for="graphSelector"> Select Graph Type: </label>
-        <select  class="form-control" name="graphSelector" id="graphSelector" ng-model="chartTypes.selectedType">
-          <option ng-repeat="graph in chartTypes.graphs" value="{{graph.id}}">{{graph.name}}</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-danger">Make Graph</button>
-    </form>
-
-    {{data}} -->
-
+    <!-- {{dataset.jsonData[0]}} -->
 </div>
-</div>
-
-
-
