@@ -8,20 +8,10 @@
         </div>
         <div class="col-xs-9">
             <ul class="nav nav-tabs">
-                <!-- <li ui-sref-active="active" class="active"><a ui-sref="profile.dashboard">Dashboards</a></li>
-                <li ui-sref-active="active" class="active"><a ui-sref="profile.datasets">Datasets</a></li> -->
-                <li role="presentation" ng-click="toggleView(); getAllDashboards(user);" ng-class="{active: dashboardsVisible}"><a>Dashboards</a></li>
-                <li role="presentation" ng-click="toggleView(); getAllDatasets(user);" ng-class="{active: !dashboardsVisible}"><a>Data-Sets</a></li>
+                <li ui-sref-active="active"><a ui-sref="userDashboards">Dashboards</a></li>
+                <li ui-sref-active="active"><a ui-sref="userDatasets">Datasets</a></li>
             </ul>
-            <div ng-if="dashboardsVisible" ng-repeat="dashboard in dashboards">
-                <a ui-sref="dashboard({ dashboardId: dashboard._id, userId: user._id, datasetId: dashboard.dataset })"><h3>{{dashboard.title}}</h3></a>
-                <button ng-click="removeDashboard(dashboard)">Remove dashboard</button>
-            </div>
-            <div ng-if="!dashboardsVisible" ng-repeat="dataset in datasets">
-                <a ui-sref="dataset({datasetId: dataset._id})"><h3>{{dataset.title}}</h3></a>
-                <a ng-click="createDashboard(dataset._id)"><h3>make dashboard for {{dataset.title}}</h3></a>
-                <button ng-click="removeDataset(dataset)">Remove dataset</button>
-            </div>
+            <ui-view></ui-view>
         </div>
     </div>
 </div>

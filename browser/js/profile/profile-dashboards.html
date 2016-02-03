@@ -1,0 +1,4 @@
+<div ng-repeat="dashboard in userDashboards">
+    <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset, dashboardId: dashboard._id })"><h3>{{dashboard.title}}</h3></a>
+    <button ng-click="removeDashboard(dashboard)">Remove dashboard</button>
+</div>
