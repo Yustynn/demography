@@ -1,7 +1,8 @@
-app.config(function($stateProvider) {
-
+app.config(function($stateProvider,$urlRouterProvider) {
+    $urlRouterProvider.when('/:userId/profile', '/profile/dashboards');
     $stateProvider.state('profile', {
         url: '/:userId/profile',
+        abstract: true,
         templateUrl: 'js/profile/profile.html',
         controller: 'ProfileCtrl',
         resolve: {
