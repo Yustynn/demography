@@ -18,8 +18,7 @@ app.config(function ($stateProvider) {
                 });
             },
             currentDataset: function(DatasetFactory, $stateParams ) {
-
-                return DatasetFactory.fetchById($stateParams.datasetId)
+                return DatasetFactory.fetchOne($stateParams.datasetId)
                 .then(function(dataset){
                     return dataset;
                 })
