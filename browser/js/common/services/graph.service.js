@@ -65,7 +65,6 @@ app.service('GraphService', function(DashboardFactory) {
         // var grp = dim.group().reduceSum(function(d) {
         //     return d.HR;
         // })
-
         //var chart = dc[chartType](chartContainer);
         var chart = dc[chartType]('#widget-container-' + id + '> .box-content > .widget-content-container');
 
@@ -288,10 +287,10 @@ app.service('GraphService', function(DashboardFactory) {
             transitionDuration: 500,
             mouseZoomable: false, //need to better understand
             margins: {
-                top: 5, 
+                top: 5,
                 left: 20,
-                right: 10, 
-                bottom: 10 
+                right: 10,
+                bottom: 10
             },
             elasticY: true,
             x: d3.scale.ordinal(),
