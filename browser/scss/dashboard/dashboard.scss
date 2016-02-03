@@ -44,6 +44,15 @@ form {
     border: 1px solid #ccc;
 }
 
+.footer {
+    margin-top: 10px;
+}
+
+h1 small {
+    margin-left: 35px;
+    font-weight: normal;
+}
+
 /*http://bootsnipp.com/snippets/featured/glyphicon-animate-rotation-and-flip*/
 .gly-rotate-90 {
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
