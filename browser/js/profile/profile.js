@@ -1,6 +1,6 @@
 app.config(function($stateProvider) {
     $stateProvider.state('profile', {
-        url: '/:userId/profile',
+        url: '/profile',
         abstract: true,
         templateUrl: 'js/profile/profile.html',
         controller: 'ProfileCtrl',
@@ -39,26 +39,27 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
 
-    // Function to add the uploaded file to the scope
-    // This is separate from "uploadDataset" so the file can be sent with the metadata on form submission
-    $scope.chooseFile = function(file) {
-        $scope.file = file;
-    }
-
-    // Function to send the file and metadata to the factory and then back-end
-    $scope.uploadDataset = function(metaData) {
-        metaData.user = loggedInUser._id;
-        DatasetFactory.create($scope.file, metaData)
-        .then(function(response) {
-            $scope.userDatasets.push(response.data);
-        })
-        .then(null, console.error);
-    }
+    // Function to open up the modal for uploading a dataset
+    $scope.openDatasetSettings = function (user, userDatasets) {
+        $uibModal.open({
+            scope: $scope,
+            templateUrl: 'js/profile/profile-datasets.settings.html',
+            controller: 'ProfileDatasetsSettingsCtrl',
+            resolve: {
+                user: function() {
+                    return user;
+                },
+                userDatasets: function() {
+                    return userDatasets;
+                }
+            }
+        });
+    };
 
     $scope.removeDataset = function(dataset) {
         DatasetFactory.delete(dataset)
