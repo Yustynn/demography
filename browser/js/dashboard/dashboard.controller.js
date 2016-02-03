@@ -11,7 +11,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.dashboard.widgets = [];
         $scope.dashboard.nextWidgetId = 0;
     }
-
+    console.log("currentDataset: ",currentDataset)
     $scope.editMode = false;
 
     //change this:
