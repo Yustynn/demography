@@ -36,7 +36,6 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
         $uibModalInstance.close(widget);
-
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'

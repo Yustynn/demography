@@ -72,6 +72,7 @@ router.get("/:datasetId", function(req, res, next) {
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
 
+
         // Retrieve the file so it can be sent back with the metadata
         var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
         fsp.readFile(filePath, { encoding: 'utf8' })
@@ -79,10 +80,8 @@ router.get("/:datasetId", function(req, res, next) {
             // Convert csv file to a json object if needed
             // BOBBY NOTE: Need to test this out when the file is json to start
             var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
-
             // Add the json as a property of the return object, so it an be sent with the metadata
             returnDataObject["jsonData"] = dataArray;
-
             res.status(200).json(returnDataObject);
         });
     })

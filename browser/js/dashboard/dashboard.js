@@ -27,10 +27,13 @@ app.config(function ($stateProvider) {
 });
 
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory, $stateParams){
-    $scope.user = loggedInUser;
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory, $stateParams, $rootScope){
+    //$scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
-    $scope.dataset = currentDataset;
+    $scope.dataset = currentDataset;  //dont want to expose this
+
+    var editMode = true;
+
     if($scope.dashboard.widgets) {
         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
@@ -43,8 +46,12 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 
     $scope.editMode = false;
 
-    //change this:
-    $scope.data = GraphService.data;
+    //set name for display
+    if(currentDashboard.user.firstName && currentDashboard.user.lastName) {
+        $scope.dashboard.user.name = currentDashboard.user.firstName + ' ' + currentDashboard.user.lastName;
+    }
+    else $scope.dashboard.user.name = currentDashboard.user.email;
+
 
     //tons of options: https://github.com/ManifestWebDesign/angular-gridster
     $scope.gridsterOptions = {
@@ -52,10 +59,10 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         columns: 12,        // min widget size
         draggable: {
             handle: '.box-header',    // optional if you only want a specific element to be the drag handle
-            enabled: false
+            enabled: true
         },
         resizable:{
-            enabled: false,
+            enabled: true,
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
                 GraphService.resize(c.id);
                 //Probably want to pass in the widget size vs finding size inside of the function
@@ -71,18 +78,30 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
-    $scope.toggleEditMode = function() {
-        $scope.editMode = !$scope.editMode;
-        $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
-        $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
-        if(!$scope.editMode) {
-            //whenever a user locks a dashboard, take a screenshot
+
+    // $scope.toggleEditMode = function() {
+    //     $scope.editMode = !$scope.editMode;
+    //     $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
+    //     $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
+    //     if(!$scope.editMode) {
+    //         //whenever a user locks a dashboard, take a screenshot
+    //         DashboardFactory.takeScreenshot($stateParams)
+    //     }
+    // };
+
+    // $scope.getEditMode = function() {
+    //     return editMode;
+    // }
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if(fromState.name === "dashboard") {
             DashboardFactory.takeScreenshot($stateParams)
         }
-    };
+    })
+
 
     $scope.addWidget = function() {
-        $scope.editMode = false;
+        editMode = true;
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
@@ -103,7 +122,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
                 }
             }
         });
-    }
+    };
 
     var renderGraphs = function(){
         setTimeout(function(){
@@ -113,6 +132,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 
         }, 800);
     };
-
+    GraphService.loadData(currentDataset.jsonData)
     renderGraphs();
 });
