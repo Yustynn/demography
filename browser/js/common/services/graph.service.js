@@ -101,7 +101,11 @@ app.service('GraphService', function(DashboardFactory) {
                 chartObj.gap = chartHeight*.5/size;
             }
         } else if (chartType === "lineChart") {
-            chartObj = makeLineChartObject(chartOptions, dim, grp, xAxisIsNumber)
+            chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber)
+            var size = dim.group().size();
+            if(chartObj.gap*size >= chartHeight){
+                chartObj.gap = chartHeight*.5/size;
+            }
         };
 
         chartObj.width = chartWidth;
@@ -279,7 +283,7 @@ app.service('GraphService', function(DashboardFactory) {
         return rowChartOptions;
     }
 
-    function makeLineChartObject(chartOptions, userDimension, userGroup, xAxisIsNumber) {
+    function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
         var lineChartOptions = {
             transitionDuration: 500,
             mouseZoomable: false, //need to better understand
