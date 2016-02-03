@@ -1,6 +1,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('dashboard', {
-        url: '/user/:userId/datasets/:datasetId/dashboards/:dashboardId',
+        url: '/users/:userId/datasets/:datasetId/dashboards/:dashboardId',
         templateUrl: 'js/dashboard/dashboard.edit.html',
         controller: 'DashboardCtrl',
         resolve: {
@@ -27,7 +27,7 @@ app.config(function ($stateProvider) {
 });
 
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory, $stateParams){
     $scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;
@@ -75,6 +75,10 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.editMode = !$scope.editMode;
         $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
+        if(!$scope.editMode) {
+            //whenever a user locks a dashboard, take a screenshot
+            DashboardFactory.takeScreenshot($stateParams)
+        }
     };
 
     $scope.addWidget = function() {

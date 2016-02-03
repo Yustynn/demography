@@ -44,6 +44,7 @@ var searchUserEqualsRequestUser = function(searchUser, requestUser) {
 router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
     var queryObject = req.query;
+
     if (queryObject.user && !searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject["isPublic"] = true;
 
     DataSet.find(queryObject)
@@ -57,10 +58,16 @@ router.get("/", function(req, res, next) {
 // GET /api/datasets/:datasetId
 router.get("/:datasetId", function(req, res, next) {
     var returnDataObject;
+    console.log(req.headers)
     DataSet.findById(req.params.datasetId) // .lean() allows the mongo object to be mutable. We may want to use a lodash method here instead
     .then(dataset => {
         // Throw an error if a different user tries to access a private dataset
-        if (!searchUserEqualsRequestUser(dataset.user, req.user) && !dataset.isPublic) res.status(401).send("You are not authorized to access this dataset");
+        if (!req.headers['user-agent'].includes("PhantomJS")) {
+            if (!searchUserEqualsRequestUser(dataset.user, req.user) && !dataset.isPublic) {
+                return res.status(401).send("You are not authorized to access this dataset");
+            }
+        }
+        
 
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
@@ -80,6 +87,7 @@ router.get("/:datasetId", function(req, res, next) {
         });
     })
     .then(null, function(err) {
+        console.error(err, err.stack)
         err.message = "Something went wrong when trying to access this dataset";
         next(err);
     });

@@ -9,6 +9,11 @@ module.exports = function (app) {
     // No session at all.
     app.use(cookieParser());
 
+    app.use(function (req, res, next) {
+    	console.log(req.cookies);
+    	next();
+    });
+
     // Parse our POST and PUT bodies.
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
