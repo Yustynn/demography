@@ -19,7 +19,7 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, Dataset
                     return graphTypeToCreate || null;
                 },
                 dataset: function() {
-                    return DatasetFactory.fetchById(datasetId)
+                    return DatasetFactory.fetchOne(datasetId)
                     .then(function(dataset){
                         return dataset;
                     });
