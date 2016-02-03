@@ -105,6 +105,12 @@ app.service('GraphService', function(DashboardFactory) {
             if(chartObj.gap*size >= chartHeight){
                 chartObj.gap = chartHeight*.5/size;
             }
+        } else if (chartType === "dataTable") {
+            chartObj = makeTableChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber)
+            var size = dim.group().size();
+            if(chartObj.gap*size >= chartHeight){
+                chartObj.gap = chartHeight*.5/size;
+            }
         };
 
         chartObj.width = chartWidth;
@@ -182,6 +188,7 @@ app.service('GraphService', function(DashboardFactory) {
         var keys = Object.keys(chartOptions);
 
         keys.forEach(function(key) {
+            debugger;
             //console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
@@ -282,6 +289,7 @@ app.service('GraphService', function(DashboardFactory) {
         return rowChartOptions;
     }
 
+    //Line Chart
     function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
         var lineChartOptions = {
             transitionDuration: 500,
@@ -314,5 +322,53 @@ app.service('GraphService', function(DashboardFactory) {
         })
 
         return lineChartOptions
+    }
+
+    //Data Table Chart Option creator-has superfluous parameters for testing
+    function makeTableChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
+
+
+        var tableChartOptions = {
+            // margins: {
+            //     top: 5,
+            //     left: 10,
+            //     right: 10,
+            //     bottom: 20
+            // },
+        //     centerBar: false, //'boolean'
+        //     // x: d3.scale.linear().domain([0,50]).range(['white','black']),//defaults to d3.scale.ordinal, if linear, do some math to figure out domain
+        //     x: d3.scale.ordinal(),
+        //     xUnits: dc.units.ordinal,
+        //     title: function(d) { //{ /*Default to both, give option for either*/ }
+        //         return [d.key, d.value].join(' : ');
+        //     },
+        //     yAxisLabel: y, // 'value'
+        //     xAxisLabel: x, //'value'
+        //     elasticY: true, //'value'
+        //     //if linear then domain needs to be specified? Outside of options, in function
+        //     gap: 20,
+        //     renderHorizontalGridLines: true
+        };
+
+        ////This sets the x axis to be linear if the axis is a number
+        // if (xAxisIsNumber) {
+        //     var min = userDimension.bottom(1)[0][x];
+        //     var max = userDimension.top(1)[0][x];
+        //     tableChartOptions.x = d3.scale.linear().domain([min, max]);
+        //     tableChartOptions.xUnits = dc.units.integers;
+        // }
+        // if(chartOptions.x==="linear"){
+        //     tableChartOptions.x= d3.scale.linear().domain([0,50]).range(["white","black"]);
+        //     tableChartOptions.xUnits = null;
+        //     chartOptions = {};
+        //     console.log("ChartOptions",tableChartOptions)
+        //}
+
+        Object.keys(chartOptions).forEach(function(key) {
+            tableChartOptions[key] = chartOptions[key];
+        });
+
+
+        return tableChartOptions;
     }
 })
