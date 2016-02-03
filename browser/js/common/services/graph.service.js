@@ -149,7 +149,7 @@ app.service('GraphService', function(DashboardFactory) {
             if (chartObj.chartType === "pieChart") {
                 chart
                     .radius(chartRadius * .8)
-            } else if (chartObj.chartType === "barChart") {
+            } else if (chartObj.chartType === "barChart" || chartObj.chartType === "lineChart") {
                 chart
                     .width(chartWidth * .8)
                     .height(chartHeight * .8)
