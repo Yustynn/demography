@@ -10,7 +10,6 @@ module.exports = function (app) {
     app.use(cookieParser());
 
     app.use(function (req, res, next) {
-    	console.log(req.cookies);
     	next();
     });
 
