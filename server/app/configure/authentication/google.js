@@ -19,7 +19,6 @@ module.exports = function (app) {
 
         UserModel.findOne({ 'google.id': profile.id }).exec()
             .then(function (user) {
-
                 if (user) {
                     return user;
                 } else {
@@ -29,7 +28,8 @@ module.exports = function (app) {
                         },
                         firstName: profile.name.givenName,
                         lastName: profile.name.familyName,
-                        email: profile.emails[0].value
+                        email: profile.emails[0].value,
+                        picture: profile._json.picture
                     });
                 }
 

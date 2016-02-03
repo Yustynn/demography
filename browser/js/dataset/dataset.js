@@ -6,10 +6,10 @@ app.config(function($stateProvider) {
         controller: 'DatasetCtrl',
         resolve: {
             theDataset: function($stateParams, DatasetFactory) {
-                return DatasetFactory.fetchById($stateParams.datasetId)
+                return DatasetFactory.fetchOne($stateParams.datasetId)
                     .then(function(dataset) {
-                        return dataset
-                    })
+                        return dataset;
+                    });
             }
         }
     });
@@ -18,6 +18,6 @@ app.config(function($stateProvider) {
 
 app.controller('DatasetCtrl', function($scope, theDataset) {
 
-    $scope.dataset = theDataset
+    $scope.dataset = theDataset;
 
 });
