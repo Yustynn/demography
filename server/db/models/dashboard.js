@@ -20,6 +20,9 @@ var schema = new mongoose.Schema({
     },
     isPublic: {
     	type: Boolean, default: false
+    },
+    tags: {
+        type: [String]
     }
 });
 
