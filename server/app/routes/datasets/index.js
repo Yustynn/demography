@@ -18,13 +18,11 @@ var getFilePath = function(userId, datasetId, fileType) {
 
 // Helper function to convert csv to json
 var convertCsvToJson = function(rawFile) {
-    console.log("FROM LINE 21: ",rawFile.indexOf('\n'))
     var fileStr = rawFile.toString();
     var rawDataArray = fileStr.split("\n").map(function(line, index) {
         return line.split(",");
     });
     var headerArray = rawDataArray.shift();
-    console.log("FROM LINE 27: ",headerArray)
 
     return rawDataArray.map(function(line) {
         var dataFieldObject = {};
@@ -66,7 +64,7 @@ router.get("/:datasetId", function(req, res, next) {
 
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
-            
+
 
         // Retrieve the file so it can be sent back with the metadata
         var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
