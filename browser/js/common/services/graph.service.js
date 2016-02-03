@@ -23,7 +23,7 @@ app.service('GraphService', function(DashboardFactory) {
     this.populateCharts = function(widgetArr){
         widgetArr.forEach(function(widgetObj){
             var chartObj = widgetObj.chartObject;
-            self.create(chartObj.id,chartObj.chartType,chartObj.xAxis,chartObj.yAxis,chartObj.groupType,chartObj.chartOptions)
+            if(chartObj) self.create(chartObj.id,chartObj.chartType,chartObj.xAxis,chartObj.yAxis,chartObj.groupType,chartObj.chartOptions)
         })
     }
     this.create = function(id, chartType, xAxis, yAxis, groupType,chartOptions) {
@@ -100,7 +100,14 @@ app.service('GraphService', function(DashboardFactory) {
             if(chartObj.gap*size >= chartHeight){
                 chartObj.gap = chartHeight*.5/size;
             }
+        } else if (chartType === "lineChart") {
+            chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber)
+            var size = dim.group().size();
+            if(chartObj.gap*size >= chartHeight){
+                chartObj.gap = chartHeight*.5/size;
+            }
         };
+
         chartObj.width = chartWidth;
         chartObj.height = chartHeight;
         chartObj.dimension = dim;
@@ -274,5 +281,39 @@ app.service('GraphService', function(DashboardFactory) {
         })
 
         return rowChartOptions;
+    }
+
+    function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
+        var lineChartOptions = {
+            transitionDuration: 500,
+            mouseZoomable: false, //need to better understand
+            margins: {
+                top: 5, 
+                left: 20,
+                right: 10, 
+                bottom: 10 
+            },
+            elasticY: true,
+            x: d3.scale.ordinal(),
+            xUnits: dc.units.ordinal,
+            brushOn: false,
+            title: function(d) { //{ /*Default to both, give option for either*/ }
+                return [d.key, d.value].join(' : ')
+            }
+        }
+
+        //This sets the x axis to be linear if the axis is a number
+        if (xAxisIsNumber) {
+            var min = userDimension.bottom(1)[0][x];
+            var max = userDimension.top(1)[0][x];
+            lineChartOptions.x = d3.scale.linear().domain([min, max]);
+            lineChartOptions.xUnits = dc.units.integers;
+        }
+
+        Object.keys(chartOptions).forEach(function(key) {
+            lineChartOptions[key] = chartOptions[key];
+        })
+
+        return lineChartOptions
     }
 })

@@ -12,7 +12,8 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.chartTypes = {
         graphs:[
             {id:'barChart', name:'Bar Chart'},
-            {id:'pieChart', name:'Pie Chart'}
+            {id:'pieChart', name:'Pie Chart'},
+            {id:'lineChart', name:'Line Chart'}
         ]
     };
 
