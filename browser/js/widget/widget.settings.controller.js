@@ -28,7 +28,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
            var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX, widget.labelY,'sum');
            widget.chartObject = chartObj;
         }
-        else WidgetFactory.update(widget);
+        WidgetFactory.update(widget);
     };
 
 });
