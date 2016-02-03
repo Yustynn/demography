@@ -45,6 +45,12 @@ app.factory('DashboardFactory', function ($http) {
             return $http.delete('/api/dashboards/' + dashboard._id)
             .then(response => response.data)
             .then(null, console.error);
+        },
+
+        takeScreenshot: function(stateParams) {
+            return $http.post('/api/screenshots', stateParams)
+                .then(response => response.data)
+                .then(null, console.error)
         }
     };
 });
