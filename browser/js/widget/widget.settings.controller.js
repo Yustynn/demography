@@ -1,27 +1,12 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, WidgetFactory, GraphService) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset) {
     $scope.widget = widget;
 
+    //TODO: dropdown for labels from dataset once we have data loaded
     $scope.form = {
-        title: widget.title,
-        labelX: widget.labelX,
-        labelY: widget.labelY
-    };
-
-
-    $scope.chartTypes = {
-        graphs:[
-            {id:'barChart', name:'Bar Chart'},
-            {id:'pieChart', name:'Pie Chart'}
-        ]
-    };
-
-    $scope.addGraph = function() {
-        if($scope.chartTypes.selectedType) {
-           var chartObj = GraphService.create(widget.id,$scope.chartTypes.selectedType, 'League','HR','sum');
-           widget.chartObject = chartObj;
-           WidgetFactory.update(widget);
-        }
+        title: widget.title,    //update title
+        labelX: widget.labelX,  //update data on X
+        labelY: widget.labelY   //update data on Y
     };
 
     $scope.dismiss = function() {
@@ -36,7 +21,14 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
         $uibModalInstance.close(widget);
-        WidgetFactory.update(widget);
+
+        //this widget is used to both create and update graphs. hence this logic:
+        if(graphTypeToCreate) {
+            //'TEAM', 'AB'
+           var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX, widget.labelY,'sum');
+           widget.chartObject = chartObj;
+        }
+        else WidgetFactory.update(widget);
     };
 
 });

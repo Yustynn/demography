@@ -1,12 +1,12 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory) {
+app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, DatasetFactory) {
 
     $scope.remove = function (widget) {
         if(widget._id) WidgetFactory.delete(widget._id);
         $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
     };
 
-    $scope.openSettings = function (widget) {
+    $scope.openSettings = function (widget, datasetId, graphTypeToCreate) {
         $uibModal.open({
             scope: $scope,
             templateUrl: 'js/widget/widget.settings.html',
@@ -14,6 +14,16 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory) {
             resolve: {
                 widget: function() {
                     return widget;
+                },
+                graphTypeToCreate: function() {
+                    return graphTypeToCreate || null;
+                },
+                dataset: function() {
+                    debugger;
+                    DatasetFactory.fetchById(datasetId)
+                    .then(function(dataset){
+                        return dataset
+                    });
                 }
             }
         });

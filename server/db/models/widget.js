@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var widgetTypes = ['widget', 'text', 'graph', 'spreadsheet', 'other'];
+var widgetTypes = ['text', 'graph', 'other'];
 
 var schema = new mongoose.Schema({
     dashboard: {

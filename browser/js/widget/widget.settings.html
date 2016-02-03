@@ -35,13 +35,13 @@
             </div>
         </div>
         <div class="modal-footer">
-            <a ng-click="remove()" class="btn btn-danger pull-left" tabindex="-1"><i class="glyphicon glyphicon-trash"></i>Delete</a>
-            <a ng-click="dismiss()" class="btn btn-default" tabindex="-1"><i class="glyphicon glyphicon-remove"></i>Cancel</a>
-            <button type="submit" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-ok"></i>Save</button>
+            <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+            <a ng-click="dismiss()" class="btn btn-default" ><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+            <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
         </div>
     </form>
-
-    <div class="graph-template">
+    {{dataset}}
+<!--     <div class="graph-template">
     <form class="form-inline" ng-submit="addGraph(graph.id)">
       <div class="form-group">
         <label for="graphSelector"> Select Graph Type: </label>
@@ -52,7 +52,7 @@
       <button type="submit" class="btn btn-danger">Make Graph</button>
     </form>
 
-    {{data}}
+    {{data}} -->
 
 </div>
 </div>
