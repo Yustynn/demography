@@ -1,0 +1,5 @@
+<div ng-repeat="dataset in userDatasets">
+    <a ui-sref="dataset({datasetId: dataset._id})"><h3>{{dataset.title}}</h3></a>
+    <a ng-click="createDashboard(dataset._id)"><h3>make dashboard for {{dataset.title}}</h3></a>
+    <button ng-click="removeDataset(dataset)">Remove dataset</button>
+</div>
