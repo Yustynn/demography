@@ -8,10 +8,8 @@ module.exports = router;
 // /api/screenshots
 router.post("/", function(req, res, next) {
 	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
-	var compiled = _.template('hello <%= user %>!');
-	var trueValue = compiled({'user': 'TOMTOMTOMT' })
-    var pageres = new Pageres({cookies: [cookieString]}, {filename: trueValue})
-        .src('http://localhost:1337/users/' + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'], {crop: true}, {filename: trueValue})
+    var pageres = new Pageres({cookies: [cookieString], filename: '<%= url.split("!")[7] %>!', selector: '#main > div > div.ng-scope.gridster.gridster-desktop.gridster-loaded'})
+        .src('http://localhost:1337/users/' + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'], {crop: true})
         .dest(path.join(__dirname, "../../../db/screenshots"))
         .run()
         .then(() => {
