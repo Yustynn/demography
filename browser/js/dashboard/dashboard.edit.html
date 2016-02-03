@@ -5,7 +5,7 @@
     <a class="pull-right btn btn-default" ng-click="toggleEditMode()">
     <span ng-show="editMode"><i class="glyphicon glyphicon-eye-open"></i> View</span><span ng-hide="editMode"><i class="glyphicon glyphicon-cog"></i> Edit</span></a>
 
-    <h1>{{dashboard.title}}</h1>
+    <h1>{{dashboard.title | uppercase}}</h1>
 </div>
 
 <div gridster="gridsterOptions">
