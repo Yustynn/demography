@@ -1,12 +1,12 @@
 /*  GraphService
-*
-*   use this file for most of the graph logic, such as
-*   create and update of all chart types.
-*
-*   'public' functions: this.someFunc = function(){}
-*   'private' functions: function someFunc(){}
-*
-*/
+ *
+ *   use this file for most of the graph logic, such as
+ *   create and update of all chart types.
+ *
+ *   'public' functions: this.someFunc = function(){}
+ *   'private' functions: function someFunc(){}
+ *
+ */
 
 app.service('GraphService', function(DashboardFactory) {
     var self = this;
@@ -20,15 +20,15 @@ app.service('GraphService', function(DashboardFactory) {
         return myData;
     }
 
-    this.populateCharts = function(widgetArr){
-        widgetArr.forEach(function(widgetObj){
+    this.populateCharts = function(widgetArr) {
+        widgetArr.forEach(function(widgetObj) {
             var chartObj = widgetObj.chartObject;
-            if(chartObj) self.create(chartObj.id,chartObj.chartType,chartObj.xAxis,chartObj.yAxis,chartObj.groupType,chartObj.chartOptions)
+            if (chartObj) self.create(chartObj.id, chartObj.chartType, chartObj.xAxis, chartObj.yAxis, chartObj.groupType, chartObj.chartOptions)
         })
     }
-    this.create = function(id, chartType, xAxis, yAxis, groupType,chartOptions) {
+    this.create = function(id, chartType, xAxis, yAxis, groupType, chartOptions) {
         var chartOptions = {}; //initialize for now to be empty, users will eventually submit this
-    //Gets called after data load, accepts array of chartObjects
+        //Gets called after data load, accepts array of chartObjects
         var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];
         var chartWidth = chartContainer.offsetWidth;
         var chartHeight = chartContainer.offsetHeight;
@@ -61,7 +61,7 @@ app.service('GraphService', function(DashboardFactory) {
                 return d[yAxis];
             });
         };
-
+        
         // var grp = dim.group().reduceSum(function(d) {
         //     return d.HR;
         // })
@@ -96,14 +96,14 @@ app.service('GraphService', function(DashboardFactory) {
         } else if (chartType === "rowChart") {
             chartObj = makeRowChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber);
             var size = dim.group().size();
-            if(chartObj.gap*size >= chartHeight){
-                chartObj.gap = chartHeight*.5/size;
+            if (chartObj.gap * size >= chartHeight) {
+                chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "lineChart") {
             chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber)
             var size = dim.group().size();
-            if(chartObj.gap*size >= chartHeight){
-                chartObj.gap = chartHeight*.5/size;
+            if (chartObj.gap * size >= chartHeight) {
+                chartObj.gap = chartHeight * .5 / size;
             }
         };
 
@@ -161,19 +161,10 @@ app.service('GraphService', function(DashboardFactory) {
     }
 
     //load data
-    function loadData() {
-        d3.csv('../data/baseballData.csv', function(data) {
-
-            myData = data
-            ndx = crossfilter(myData);
-            //console.log("NDX:", data)
-            //$scope.optionArray = Object.keys(data[0])
-            //$scope.$apply()
-        });
-    };
-
-    //for now init data here
-    loadData();
+    this.loadData = function(dataSet) {
+        myData = dataSet;
+        ndx = crossfilter(dataSet);
+    }
 
     //Function that takes chartId and renders it with all options
     function createChart(id, chartOptions) {
