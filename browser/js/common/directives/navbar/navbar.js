@@ -8,7 +8,7 @@ app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state) {
 
             scope.items = [{
                 label: ' Profile',
-                state: 'profile',
+                state: 'userDashboards',
                 class: 'glyphicon glyphicon-user',
                 auth: true
             }, {

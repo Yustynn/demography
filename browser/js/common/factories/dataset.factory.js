@@ -1,18 +1,53 @@
-app.factory('DatasetFactory', function($http) {
+app.factory('DatasetFactory', function($http, Upload) {
+    return {
 
-    var DatasetFactory = {};
+        //save new dashboard upon creation
+        create: function(datasetFile, datasetMetaData) {
+            return Upload.upload({
+                url: '/api/datasets/',
+                method: 'POST',
+                data: {
+                    file: datasetFile,
+                    user: datasetMetaData.user,
+                    title: datasetMetaData.title,
+                    shortDescription: datasetMetaData.shortDescription
+                }
+            }).success(function(data, status, headers, config) {
+                console.log('Dataset created: ', data);
+            }).error(function(data, status, headers, config) {
+                console.log('error status: ', status);
+            });
+        },
 
-    DatasetFactory.fetchById = function(datasetId) {
-        return $http.get("/api/datasets/" + datasetId)
-            .then(response => response.data)
-            .then(null, console.error);
-    }
+        fetchAll: function() {
+            return $http.get('/api/datasets')
+                .then(response => response.data)
+                .then(null, console.error);
+        },
 
-    DatasetFactory.removeDataset = function(dataset) {
-        return $http.delete("/api/datasets/" + dataset._id)
-            .then(response => response.data)
-            .then(null, console.error);
-    }
+        fetchAllByUser: function(userId) {
+            return $http.get('/api/datasets?user=' + userId)
+                .then(response => response.data)
+                .then(null, console.error);
+        },
 
-    return DatasetFactory;
+        fetchOne: function(id) {
+            return $http.get('api/datasets/' + id)
+                .then(response => response.data)
+                .then(null, console.error);
+        },
+
+        // BOBBY NOTE: The update dataset is still TBU
+        update: function(dataset) {
+            return $http.put('/api/datasets/' + dataset._id, dataset)
+                .then(response => response.data)
+                .then(null, console.error);
+        },
+
+        delete: function(dataset) {
+            return $http.delete('/api/datasets/' + dataset._id)
+                .then(response => response.data)
+                .then(null, console.error);
+        }
+    };
 });

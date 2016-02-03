@@ -31,6 +31,10 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
+    },
+    picture: {
+        type: String,
+        default: "https://lh3.googleusercontent.com/-1p0-ELNl0mk/AAAAAAAAAAI/AAAAAAAAAAA/xeGC2Eu7i0o/photo.jpg"
     }
 });
 

@@ -1,7 +1,36 @@
+app.config(function ($stateProvider) {
+    $stateProvider.state('dashboard', {
+        url: '/:userId/datasets/:datasetId/dashboards/:dashboardId',
+        templateUrl: 'js/dashboard/dashboard.edit.html',
+        controller: 'DashboardCtrl',
+        resolve: {
+            loggedInUser: function(AuthService ) {
+                return AuthService.getLoggedInUser()
+                .then(function(user) {
+                    return user;
+                });
+            },
+            currentDashboard:function(DashboardFactory, $stateParams ) {
+                return DashboardFactory.fetchOne($stateParams.dashboardId)
+                .then(function(dash){
+                    return dash;
+                });
+            },
+            currentDataset: function(DatasetFactory, $stateParams ) {
+                return DatasetFactory.fetchOne($stateParams.datasetId)//This was fetchById but that function no longer exists
+                .then(function(dataset){
+                    return dataset;
+                });
+            }
+        }
+    });
+});
+
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
     $scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
+    $scope.dataset = currentDataset;
     if($scope.dashboard.widgets) {
         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
@@ -35,8 +64,8 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         },
         maxSizeX: 6, // maximum column width of an item
         minSizeX: 2, // minimum column width of an item
-        minSizeY: 2, // minimum column width of an item
-        minRows: 2, // the minimum height of the grid, in rows
+        minSizeY: 1, // minimum column height of an item
+        minRows: 1, // the minimum height of the grid, in rows
 
         mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
@@ -48,16 +77,16 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
     };
 
-    $scope.addWidgetPlaceholder = function(widgetType) {
-
+    $scope.addWidget = function() {
         $scope.editMode = false;
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
-            title: "New " + widgetType,
-            type: widgetType,
-            sizeX: widgetType === 'widget' ? 2 : 4,
-            sizeY: widgetType === 'widget' ? 2 : widgetType === 'text' ? 1 : 4
+            title: "New Graph",
+            type: 'graph',
+            sizeX: 4,
+            sizeY: 4,
+            chartObject: {}
         };
         $scope.dashboard.widgets.push(newWidget);
         $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
@@ -72,9 +101,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     }
 
-    // $rootScope.$on('$viewContentLoaded', function (event) {
-    //         console.log('lock & loaded')
-    // })
     var renderGraphs = function(){
         setTimeout(function(){
             GraphService.populateCharts($scope.dashboard.widgets.filter(function(widget){
