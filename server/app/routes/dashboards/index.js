@@ -25,6 +25,8 @@ router.get("/", function (req, res, next) {
 // /api/dashboards/id
 router.get("/:id", function(req, res, next) {
 	Dashboard.findById(req.params.id)
+    .populate('user', 'firstName lastName email')
+    .populate('dataset', 'title lastUpdated fileType')
 		.then(function(dashboard){
             if (dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()){
                 dashboard.getWidgets()
