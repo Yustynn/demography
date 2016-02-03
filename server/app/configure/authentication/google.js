@@ -23,6 +23,7 @@ module.exports = function (app) {
                 if (user) {
                     return user;
                 } else {
+                    console.log('profile: ',profile)
                     return UserModel.create({
                         google: {
                             id: profile.id
