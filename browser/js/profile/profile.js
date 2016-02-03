@@ -61,6 +61,23 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
         });
     };
 
+    // Function to open up the modal for creating a dashboard
+    $scope.openDashboardSettings = function (user, userDatasets) {
+        $uibModal.open({
+            scope: $scope,
+            templateUrl: 'js/profile/profile-dashboards.settings.html',
+            controller: 'ProfileDashboardsSettingsCtrl',
+            resolve: {
+                user: function() {
+                    return user;
+                },
+                userDatasets: function() {
+                    return userDatasets;
+                }
+            }
+        });
+    };
+
     $scope.removeDataset = function(dataset) {
         DatasetFactory.delete(dataset)
         .then(function(response) {

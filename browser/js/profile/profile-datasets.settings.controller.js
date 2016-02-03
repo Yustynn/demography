@@ -24,22 +24,4 @@ app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootS
         .then(null, console.error);
     }
 
-    // $scope.remove = function() {
-    //     $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
-    //     $uibModalInstance.close();
-    // };
-
-    // $scope.submit = function() {
-    //     angular.extend(widget, $scope.form); //update widget with settings from form
-    //     $uibModalInstance.close(widget);
-
-    //     //this widget is used to both create and update graphs. hence this logic:
-    //     if(graphTypeToCreate) {
-    //         //'TEAM', 'AB'
-    //        var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,selection.group);
-    //        widget.chartObject = chartObj;
-    //     }
-    //     WidgetFactory.update(widget);
-    // };
-
 });

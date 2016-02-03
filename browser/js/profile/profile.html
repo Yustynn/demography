@@ -5,6 +5,7 @@
             <h3>{{user.firstName + " " + user.lastName;}}</h3>
             <h5>Joined on {{ user.joinDate | date }}</h5>
             <hr>
+            <button ng-click="openDashboardSettings(user, userDatasets)">+ Dashboard</button>
             <button ng-click="openDatasetSettings(user, userDatasets)">+ Dataset</button>
         </div>
         <div class="col-xs-9">

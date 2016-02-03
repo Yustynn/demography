@@ -1,66 +1,38 @@
-<div id="load-file-container">
-    <h4>Upload a new dataset</h4>
+<div id="create-dataset-container">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Upload New Dataset</h3>
+    </div>
     <form id="dataset-form" name="datasetForm" ng-submit="file && uploadDataset(metaData)">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-            <h3>New Dataset</h3>
-        </div>
         <div class="modal-body">
-            <label for="datasetTitle">Dataset title</label>
-            <input type="text" ng-model="metaData.title" name="dataset-title" class="form-control" id="dataset-title" placeholder="Enter dataset title">
-            <label for="datasetTitle">Short description</label>
-            <input type="text" ng-model="metaData.shortDescription" name="dataset-shortDescription" class="form-control" id="dataset-shortDescription" placeholder="Enter short description">
-            <input type="file" ngf-select="chooseFile($file)" ngf-multiple="false" accept=".csv, .json" id="input-btn">
+
+            <div class="form-group row">
+                <label for="datasetTitle" class="form-control-label">Dataset title</label>
+                <input type="text" ng-model="metaData.title" name="dataset-title" class="form-control" id="dataset-title" placeholder="Enter dataset title">
+            </div>
+
+            <div class="form-group row">
+                <label for="datasetShortDescription" class="form-control-label">Short description</label>
+                <input type="text" ng-model="metaData.shortDescription" name="dataset-shortDescription" class="form-control" id="dataset-shortDescription" placeholder="Enter short description">
+            </div>
+
+            <div class="form-group row">
+                <label for="datasetIsPublic" class="form-control-label">Make public</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="metaData.isPublic" > Make this a public dataset
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <input type="file" ngf-select="chooseFile($file)" ngf-multiple="false" accept=".csv, .json" id="input-btn">
+            </div>
+
         </div>
         <div class="modal-footer">
-            <a ng-click="dismiss()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
-            <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
+            <button class="btn btn-default" ng-click="dismiss()"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+            <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-ok"></i> Save</button>
         </div>
     </form>
 </div>
-
-<!-- <div>
-    <form name="_form" class="form-horizontal" ng-submit="submit(_form)">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-            <h3>NEW {{chartType | uppercase}}</h3>
-        </div>
-        <div class="modal-body">
-            <div class="form-group" ng-class="{error: _form.title.$error && _form.submitted}">
-                <label class="control-label col-lg-3 col-md-3">Title</label>
-                <div class="col-lg-9 col-md-9">
-                    <input name="title" type="text" ng-model="form.title" class="form-control" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-md-6">
-                    <div class="form-group" ng-class="{error: _form.labelX.$error && _form.submitted}">
-                        <label for="selectX" class="control-label col-lg-6 col-md-6">Label X-Axis</label>
-                        <select name="selectX" id="selectX" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelX"></select>
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="form-group">
-                        <label for="selectY" class="control-label col-lg-6 col-md-6">Label Y-Axis</label>
-                        <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelY"></select>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <label class="control-label col-lg-6 col-md-6" for="groupBy"> Group Data By: </label>
-                <br>
-                <select name="groupBy" ng-model="form.group">
-                    <option value="sum">Sum</option>
-                    <option value="count">Count</option>
-                </select>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
-            <a ng-click="dismiss()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
-            <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
-        </div>
-    </form>
-</div>
-
- -->
