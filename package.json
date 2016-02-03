@@ -18,6 +18,7 @@
     "angular-ui-bootstrap": "^0.14.3",
     "angular-ui-router": "^0.2.15",
     "angular-validation-match": "^1.7.1",
+    "angular-xeditable": "0.0.1",
     "babel": "^5.0.12",
     "bluebird": "^2.9.34",
     "body-parser": "^1.12.0",
