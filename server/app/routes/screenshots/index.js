@@ -13,7 +13,7 @@ router.post("/", function(req, res, next) {
         .dest(path.join(__dirname, "../../../db/screenshots"))
         .run()
         .then(() => {
-        	console.log('screenshot successful!')
+        	console.log('Screenshot successful!')
         	res.status(200).send()
         })
         .then(null, function (err) {
