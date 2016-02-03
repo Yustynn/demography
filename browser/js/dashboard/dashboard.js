@@ -1,6 +1,6 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('dashboard', {
-        url: '/:userId/datasets/:datasetId/dashboards/:dashboardId',
+        url: '/users/:userId/datasets/:datasetId/dashboards/:dashboardId',
         templateUrl: 'js/dashboard/dashboard.edit.html',
         controller: 'DashboardCtrl',
         resolve: {
@@ -27,7 +27,7 @@ app.config(function ($stateProvider) {
 });
 
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory){
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory, $stateParams, $rootScope){
     //$scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;  //dont want to expose this
@@ -78,15 +78,27 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
+
     // $scope.toggleEditMode = function() {
-    //     editMode = !editMode;
-    //     $scope.gridsterOptions.resizable.enabled = editMode;
-    //     $scope.gridsterOptions.draggable.enabled = editMode;
+    //     $scope.editMode = !$scope.editMode;
+    //     $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
+    //     $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
+    //     if(!$scope.editMode) {
+    //         //whenever a user locks a dashboard, take a screenshot
+    //         DashboardFactory.takeScreenshot($stateParams)
+    //     }
     // };
 
     // $scope.getEditMode = function() {
     //     return editMode;
     // }
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+        if(fromState.name === "dashboard") {
+            DashboardFactory.takeScreenshot($stateParams)
+        }
+    })
+
 
     $scope.addWidget = function() {
         editMode = true;
