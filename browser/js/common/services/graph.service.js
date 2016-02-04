@@ -45,6 +45,7 @@ app.service('GraphService', function() {
                 d[xAxis] = Number(d[xAxis]);
                 xAxisIsNumber = true; //Checks if xaxis is ordinal or linear
             };
+            //debugger
             //console.log('d[xAxis: ',d[xAxis])
             return d[xAxis];
         });
@@ -80,7 +81,6 @@ app.service('GraphService', function() {
             chartOptions: chartOptions
         };
 
-
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
@@ -107,47 +107,61 @@ app.service('GraphService', function() {
             }
         } else if (chartType === "dataTable") {
 
-            chartObj = makeTableChartObject(chartOptions)
+            chart
+                .width(400)
+                .height(400)
+                .dimension(dim)
+                .group(function(d) {
+                    return d.education
+                })
+                .size(1000)
+                .columns(['education','age','sex','race'])
+                .sortBy(function(d) {
+                    return d.sex;
+                })
+                .order(d3.ascending)
+                .on('renderlet', function(table) {
+                    table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('info', true);
+                });
+
+            dc.renderAll();
+
+
+            // chartObj = makeTableChartObject(chartOptions)
         } else if (chartType === "dataCount") {
             chartObj = makeDataCountChartObject(chartOptions)
+
+
+
         };
 
-        chartObj.width = chartWidth;
-        chartObj.height = chartHeight;
-        if (chartType === 'dataCount' || chartType ==="dataTable") {
-            chartObj.group = ndx.groupAll();
-            chartObj.dimension = ndx;
-            if (chartType === 'dataCount')
-            {
-                chartObj.html = {
-                    some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-                         ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
-                    all: 'All <strong>%total-count</strong> records selected.'
-                }
-            }
-            else{
-                debugger;
-                chartObj.columns = [
-                    function(d) {
-                        debugger;
-                        return d[0]; },
-                    function(d) { return d[1]; },
-                    function(d) { return d[2]; },
-                    function(d) { return d[3]; },
-                    function(d) { return d[4]; }
-               ];
-               debugger;
-            }
-        }
-        else {
-            chartObj.dimension = dim;
-            chartObj.group = grp;
-        }
+
+
+        // chartObj.width = 200;
+        // chartObj.height = 200;
+        // console.log('height', chartHeight);
+        // if (chartType === 'dataCount' || chartType === "dataTable") {
+        //     chartObj.group = function(d) {
+        //         return "TABLE"
+        //     };
+        //     chartObj.dimension = ndx.dimension(function(d) {
+        //         return d.education;
+        //     }).group();
+        //     if (chartType === 'dataCount') {
+        //         chartObj.html = {
+        //             some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
+        //                 ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
+        //             all: 'All <strong>%total-count</strong> records selected.'
+        //         }
+        //     }
+        // } else {
+        //     chartObj.dimension = dim;
+        //     chartObj.group = grp;
+        // }
         //passing in graphCount(i.e. the id) to keep functions expected input the same for both graph
         //creation and graph editing
-        debugger;
-        createChart(id, chartObj)
-        return charts['chart' + id];
+        // createChart(id, chartObj)
+        // return charts['chart' + id];
     };
 
     this.resize = function(id) {
@@ -208,6 +222,7 @@ app.service('GraphService', function() {
             //console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
+        debugger;
         dc.renderAll();
     };
     //Pie Chart Option creator
@@ -343,22 +358,33 @@ app.service('GraphService', function() {
     //Data Table Chart Option creator-has superfluous parameters for testing
     function makeTableChartObject(chartOptions, numRows) {
         var tableChartOptions = {
-
-            // columns: function(d) {
-            //     var arr = [];
-            //     for(var key in d){
-            //         console.log(key);
-            //         arr.push(key)
-            //     }
-            //     return arr;
-            // }(),
-            size: numRows ? numRows : 20
+            //ATTEMPT 1:
+            //  chartObj.columns = [
+            //      function(d) {
+            //          debugger;
+            //          return d[0]; },
+            //      function(d) { return d[1]; },
+            //      function(d) { return d[2]; },
+            //      function(d) { return d[3]; },
+            //      function(d) { return d[4]; }
+            // ];
+            //ATTEMPT 2:
+            columns: [function(d) {
+                console.log(d)
+                return d.key;
+            }, function(d) {
+                return d.key;
+            }],
+            //ATTEMPT 3: HARDCODING WORKS
+            //columns: ['Age', 'workclass', 'fnlwgt', 'Education', 'martial-status'],
+            order: d3.descending,
+            size: 10
         };
 
         Object.keys(chartOptions).forEach(function(key) {
             tableChartOptions[key] = chartOptions[key];
         });
-
+        debugger;
         return tableChartOptions;
     };
 
