@@ -16,12 +16,6 @@ app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state) {
                 state: 'stream',
                 class: 'glyphicon glyphicon-search',
                 auth: true
-            }, {
-                label: 'Documentation',
-                state: 'docs'
-            }, {
-                label: 'About',
-                state: 'about'
             }];
 
             scope.user = null;
