@@ -119,7 +119,7 @@ app.service('GraphService', function() {
                 chartObj.html = {
                 some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
                     ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
-                all: 'All records selected. Please click on the graph to apply filters.'
+                all: 'All <strong>%total-count</strong> records selected.'
             };
         }
         else {
