@@ -8,9 +8,9 @@
  *
  */
 
-app.service('GraphService', function(DashboardFactory) {
+app.service('GraphService', function() {
     var self = this;
-    var ndx, myData;
+    var ndx, myData, grp;
     //Object to store all instances of chart to resize/edit specific chart
     var charts = {};
 
@@ -27,7 +27,7 @@ app.service('GraphService', function(DashboardFactory) {
         })
     }
     this.create = function(id, chartType, xAxis, yAxis, groupType, chartOptions) {
-        var chartOptions = {}; //initialize for now to be empty, users will eventually submit this
+        chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];
         var chartWidth = chartContainer.offsetWidth;
@@ -45,24 +45,23 @@ app.service('GraphService', function(DashboardFactory) {
                 d[xAxis] = Number(d[xAxis]);
                 xAxisIsNumber = true; //Checks if xaxis is ordinal or linear
             };
-            console.log('d[xAxis: ',d[xAxis])
+            //console.log('d[xAxis: ',d[xAxis])
             return d[xAxis];
         });
 
         if (groupType === "sum") {
-            var grp = dim.group().reduceSum(function(d) {
+            grp = dim.group().reduceSum(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
                 console.log()
                 return Number(d[yAxis]);
             });
         } else if (groupType === "count") {
-            var grp = dim.group().reduceCount(function(d) {
+            grp = dim.group().reduceCount(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
 
                 return d[yAxis];
             });
-        };
-
+        }
         // var grp = dim.group().reduceSum(function(d) {
         //     return d.HR;
         // })
@@ -108,16 +107,25 @@ app.service('GraphService', function(DashboardFactory) {
             }
         } else if (chartType === "dataTable") {
             chartObj = makeTableChartObject(chartOptions)
-            var size = dim.group().size();
-            if(chartObj.gap*size >= chartHeight){
-                chartObj.gap = chartHeight*.5/size;
-            }
+        } else if (chartType === "dataCount") {
+            chartObj = makeDataCountChartObject(chartOptions)
         };
 
         chartObj.width = chartWidth;
         chartObj.height = chartHeight;
-        chartObj.dimension = dim;
-        chartObj.group = grp;
+        if (chartType === 'dataCount') {
+                chartObj.group = ndx.groupAll();
+                chartObj.dimension = ndx;
+                chartObj.html = {
+                some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
+                    ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
+                all: 'All records selected. Please click on the graph to apply filters.'
+            };
+        }
+        else {
+            chartObj.dimension = dim;
+            chartObj.group = grp;
+        }
 
         //passing in graphCount(i.e. the id) to keep functions expected input the same for both graph
         //creation and graph editing
@@ -173,14 +181,15 @@ app.service('GraphService', function(DashboardFactory) {
         ndx = crossfilter(dataSet);
     }
 
+
     //Function that takes chartId and renders it with all options
     function createChart(id, chartOptions) {
         //Will be id instead of being hardcoded when switched to graph.service
         var chart = charts['chart' + id].chart;
         var keys = Object.keys(chartOptions);
-
+        //debugger;
         keys.forEach(function(key) {
-            // console.log(key, ":", chartOptions[key])
+            console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
         dc.renderAll();
@@ -254,10 +263,10 @@ app.service('GraphService', function(DashboardFactory) {
 
 
         return barChartOptions;
-    }
+    };
 
     //Row Chart Option creator-has superfluous parameters for testing
-    function makeRowChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
+    function makeRowChartObject(chartOptions, x, y, userDimension, userGroup) {
 
         var rowChartOptions = {
             title: function(d) { //defaults to key : value
@@ -278,7 +287,7 @@ app.service('GraphService', function(DashboardFactory) {
         })
 
         return rowChartOptions;
-    }
+    };
 
     //Line Chart
     function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
@@ -313,7 +322,7 @@ app.service('GraphService', function(DashboardFactory) {
         })
 
         return lineChartOptions
-    }
+    };
 
     //Data Table Chart Option creator-has superfluous parameters for testing
     function makeTableChartObject(chartOptions, numRows) {
@@ -332,5 +341,15 @@ app.service('GraphService', function(DashboardFactory) {
         });
 
         return tableChartOptions;
+    };
+
+    function makeDataCountChartObject(chartOptions) {
+        var dataCountOptions = {};
+
+        Object.keys(chartOptions).forEach(function(key) {
+            dataCountOptions[key] = chartOptions[key];
+        });
+
+        return dataCountOptions;
     }
 })

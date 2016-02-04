@@ -24,6 +24,7 @@
                         <a title="new pie chart" role="button" ng-click="openSettings(widget, dashboard.dataset._id,'pieChart')"><i class="material-icons">donut_small</i></a>
                         <a title="new line chart" role="button" ng-click="openSettings(widget, dashboard.dataset._id,'lineChart')"><i class="material-icons">timeline</i></a>
                         <a title="new table chart" role="button" ng-click="openSettings(widget, dashboard.dataset._id,'dataTable')"><i class="material-icons">grid_on</i></a>
+                        <a title="new text panel" role="button" ng-click="openSettings(widget, dashboard.dataset._id,'dataCount')" disabled><i class="material-icons">looks_one</i></a>
                         <a title="new text panel" role="button" ng-click="openSettings(widget, dashboard.dataset._id,'text')" disabled><i class="material-icons">font_download</i></a>
                     </div>
                     <div class="widget-content-container"></div>
@@ -33,6 +34,13 @@
     </ul>
 </div>
 <footer class="footer">
-    <p class="dashboard-footer pull-right text-muted">Dataset: <span><a href="">{{dashboard.dataset.title}}</a></span> last updated on {{dashboard.dataset.lastUpdated | date : 'mediumDate'}}, provided by {{dashboard.user.name}}</p>
+    <div class="row">
+        <div class="col-md-4">
+            <p id="statistics-container"></p>
+        </div>
+        <div class="col-md-8">
+            <p class="dashboard-footer pull-right text-muted">Dataset: <span><a href="">{{dashboard.dataset.title}}</a></span> from {{dashboard.dataset.lastUpdated | date : 'mediumDate'}}, provided by {{dashboard.user.name}}</p>
+        </div>
+    </div>
 </footer>
 </div>

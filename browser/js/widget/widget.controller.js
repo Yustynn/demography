@@ -34,8 +34,6 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, Dataset
     }
 
     $scope.$on('gridster-item-transition-end', function (item) {
-        console.log("RESIZED in custom widget ctrl");
-        console.log(item);
         var updatedWidget = {
             col: item.targetScope.widget.col,
             row: item.targetScope.widget.row,
