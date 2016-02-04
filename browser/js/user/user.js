@@ -4,9 +4,9 @@ app.config(function($stateProvider){
 		abstract: true,
 		templateUrl: 'js/user/user.html',
 		resolve : {
-			userInfo: function($stateParams){
+			userInfo: function($stateParams,UserFactory){
 				var userId = $stateParams.userId;
-				return "WILL BE USER INFO"
+				return UserFactory.fetchOne(userId)
 			},
 			userDashboards: function(DashboardFactory, $stateParams){
 				var userId = $stateParams.userId;
