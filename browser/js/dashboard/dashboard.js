@@ -93,20 +93,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     //     return editMode;
     // }
 
-    // var calledInTheLastSecond = false
-    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    //     if(fromState.name === "dashboard") {
-    //         if(!calledInTheLastSecond) {
-    //             console.log("Called")
-    //             DashboardFactory.takeScreenshot($stateParams)
-    //             calledInTheLastSecond = true
-    //             setTimeout(function() {
-    //                 calledInTheLastSecond = false
-    //             }, 1000)
-    //         }
-    //     }
-    // })
-
     // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
     //     if(fromState.name === "dashboard") {
             
