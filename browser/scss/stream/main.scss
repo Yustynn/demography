@@ -1,7 +1,50 @@
 .stream {
-	text-align: center;
+	margin: 0 auto;
 }
 
-.dashboard {
-	background-color: white;
+.dashboard-div {
+	background-color: #f7f7f7;
+	@include clearfix;
+}
+
+.user-photo {
+	float: left;
+	width: 60px;
+	margin: 10px;
+}
+
+.stream p {
+	display: inline;
+	text-align: left;
+}
+
+img.dashboard-screenshot {
+	display: block;
+	margin: 0 auto;
+}
+
+.user-name {
+	/*display: inline-block;*/
+	padding-top: 1%;
+}
+
+.dashboard-header {
+	@include clearfix;
+	height: 90px;
+}
+
+.dashboard-profile {
+	@include clearfix;
+	position: relative;
+	top: -60px;
+}
+
+.dashboard-title {
+	text-align: center;
+	padding-top: 15px;
+}
+
+.last-updated {
+	/*display: inline-block;*/
+	/*padding-top: 1.5%;*/
 }
