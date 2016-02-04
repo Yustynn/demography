@@ -14,7 +14,7 @@ app.directive('navbar', function($rootScope, AuthService, AUTH_EVENTS, $state) {
             }, {
                 label: ' Stream',
                 state: 'stream',
-                class: 'glyphicon glyphicon-search',
+                class: 'glyphicon glyphicon-signal',
                 auth: true
             }];
 

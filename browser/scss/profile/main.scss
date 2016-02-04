@@ -2,10 +2,22 @@
     width: 100%;
 }
 
+#createDatasetAlert {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
 #create-buttons {
     button {
-        min-width: 125px;
-        height: 60px;
+        min-width: 115px;
+        height: 80px;
+        border-radius: 5px;
+        margin-bottom: 10px;
     }
 }
 
