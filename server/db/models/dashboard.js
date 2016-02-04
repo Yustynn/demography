@@ -10,6 +10,9 @@ var schema = new mongoose.Schema({
     title: {
         type: String, required: true
     },
+    shortDescription: {
+        type: String
+    },
     dataset: {
         type: mongoose.Schema.Types.ObjectId, ref: 'DataSet',
         required: true

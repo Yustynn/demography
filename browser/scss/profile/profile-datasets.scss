@@ -1,0 +1,20 @@
+#dataset-summary-container {
+    .dataset-summary {
+        float: left;
+        .dataset-title {
+
+        }
+        .dataset-description {
+            font-size: 14px;
+            color: rgb(102, 102, 102);
+        }
+        .dataset-dateUpdated {
+            font-size: 13px;
+            color: rgb(136, 136, 136);
+        }
+    }
+    button {
+        border-radius: 5px;
+        margin-top: 21px;
+    }
+}
