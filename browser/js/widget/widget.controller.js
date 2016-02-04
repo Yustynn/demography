@@ -1,10 +1,23 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, DatasetFactory) {
+app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, DatasetFactory, GraphService) {
 
     $scope.remove = function (widget) {
         if(widget._id) WidgetFactory.delete(widget._id);
         $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
     };
+
+    $scope.createDatacountWidget = function(widget, datasetId) {
+
+        //set title
+        widget.title = "Statistics";
+        widget.sizeX = 4;
+        widget.sizeY = 1;
+        //set width and height
+
+        var chartObj = GraphService.create(widget.id,'dataCount');
+        widget.chartObject = chartObj;
+        WidgetFactory.update(widget);
+    }
 
     $scope.openSettings = function (widget, datasetId, graphTypeToCreate) {
         $uibModal.open({
@@ -34,8 +47,6 @@ app.controller('WidgetCtrl', function ($scope, $uibModal, WidgetFactory, Dataset
     }
 
     $scope.$on('gridster-item-transition-end', function (item) {
-        console.log("RESIZED in custom widget ctrl");
-        console.log(item);
         var updatedWidget = {
             col: item.targetScope.widget.col,
             row: item.targetScope.widget.row,

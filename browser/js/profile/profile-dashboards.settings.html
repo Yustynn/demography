@@ -1,0 +1,39 @@
+<div id="create-dashboard-container">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
+        <h3 class="modal-title">Create New Dashboard</h3>
+    </div>
+    <form id="dashboard-form" name="dashboardForm" ng-submit="createDashboard(newDashboard)">
+        <div class="modal-body">
+
+            <div class="form-group row">
+                <label for="dashboardDataset" class="form-control-label">Dataset source:</label>
+                <oi-select oi-options="dataset.title for dataset in userDatasets track by dataset._id" ng-model="newDashboard.dataset" id="dashboard-dataset" placeholder="Choose a source dataset"></oi-select>
+            </div>
+
+            <div class="form-group row">
+                <label for="dashboardTitle" class="form-control-label">Dashboard title:</label>
+                <input type="text" ng-model="newDashboard.title" name="dashboard-title" class="form-control" id="dashboard-title" placeholder="Enter dashboard title">
+            </div>
+
+            <div class="form-group row">
+                <label for="dashboardShortDescription" class="form-control-label">Short description:</label>
+                <input type="text" ng-model="newDashboard.shortDescription" name="dashboard-shortDescription" class="form-control" id="dashboard-shortDescription" placeholder="Enter short description">
+            </div>
+
+            <div class="form-group row">
+                <label for="dashboardIsPublic" class="form-control-label">Make public:</label>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="newDashboard.isPublic" > Make this a public dashboard
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-click="dismiss()"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+            <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-ok"></i> Save</button>
+        </div>
+    </form>
+</div>

@@ -20,9 +20,20 @@ var getFilePath = function(userId, datasetId, fileType) {
 var convertCsvToJson = function(rawFile) {
     var fileStr = rawFile.toString();
     var rawDataArray = fileStr.split("\n").map(function(line, index) {
-        return line.split(",");
+        return line.split(",").map(function(cell){
+            return cell.replace(/^\s+|\s+$/g,'');   //trim whitespace
+        });
     });
     var headerArray = rawDataArray.shift();
+    console.log(rawDataArray[rawDataArray.length-1])
+
+    //recursively remove empty rows:
+    var cleanCounter = 0;
+    while(rawDataArray[rawDataArray.length-1][0] === ""){
+        rawDataArray.pop();
+        cleanCounter++
+    }
+    if (cleanCounter > 0) console.log("removed", cleanCounter, "invalid rows from the CSV");
 
     return rawDataArray.map(function(line) {
         var dataFieldObject = {};
@@ -67,7 +78,7 @@ router.get("/:datasetId", function(req, res, next) {
                 return res.status(401).send("You are not authorized to access this dataset");
             }
         }
-        
+
 
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
@@ -167,10 +178,16 @@ router.delete("/:datasetId", function(req, res, next) {
         // Throw an error if a different user tries to delete dataset
         if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
         var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
-        fsp.unlink(filePath);
-        return DataSet.remove({ _id: dataset._id })
+        DataSet.remove({ _id: dataset._id })
+        .then(function(response) {
+            fsp.unlink(filePath);
+        }, function(err) {
+            return next(err);
+        });
+
+        return dataset; // BOBBY NOTE: Sending back the dataset so we can remove it from the scope array
     })
-    .then(response => res.status(200).send("Data set successfully removed"))
+    .then(dataset => res.status(200).send(dataset))
     .then(null, function(err) {
         err.message = "Something went wrong when trying to delete this dataset";
         next(err);

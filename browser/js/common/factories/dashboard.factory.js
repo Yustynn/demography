@@ -4,41 +4,36 @@ app.factory('DashboardFactory', function ($http) {
         //save new dashboard upon creation
         create: function(dashboard) {
            return $http.post('/api/dashboards',dashboard)
-            .then(function(response){
-                return response.data;
-            });
+           .then(response => response.data)
+           .then(null, console.error);
         },
 
         fetchAll: function() {
             //route makes sure to only return public dashboards
             //and those created by current user
             return $http.get('/api/dashboards')
-            .then(function(response){
-                return response.data;
-            });
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         fetchAllByUser: function(userId) {
             return $http.get('/api/dashboards?user=' + userId)
-            .then(function(response){
-                return response.data;
-            });
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         fetchOne: function(id) {
             //route makes sure to only return public dashboards
             //and those created by current user
             return $http.get('api/dashboards/' + id)
-            .then(function(response){
-                return response.data;
-            });
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         update: function(dashboard) {
             return $http.put('/api/dashboards/' + dashboard._id, dashboard)
-            .then(function(response) {
-                return response.data;
-            });
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         delete: function(dashboard) {
@@ -49,8 +44,8 @@ app.factory('DashboardFactory', function ($http) {
 
         takeScreenshot: function(stateParams) {
             return $http.post('/api/screenshots', stateParams)
-                .then(response => response.data)
-                .then(null, console.error)
+            .then(response => response.data)
+            .then(null, console.error);
         }
     };
 });

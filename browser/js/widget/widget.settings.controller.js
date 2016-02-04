@@ -14,7 +14,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     //$scope.groupOptions = [{val:'sum'}, {val:'count'}];
 
     var selection = {
-        group: 'sum'
+        group:'count'
     }
     //2-way binding!
     $scope.form = {
@@ -39,7 +39,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,selection.group);
+           var chartObj = GraphService.create(widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);

@@ -35,6 +35,10 @@ var schema = new mongoose.Schema({
     picture: {
         type: String,
         default: "https://lh3.googleusercontent.com/-1p0-ELNl0mk/AAAAAAAAAAI/AAAAAAAAAAA/xeGC2Eu7i0o/photo.jpg"
+    },
+    joinDate: {
+        type: Date,
+        default: Date.now
     }
 });
 
@@ -47,6 +51,10 @@ schema.methods.getFullName = function () {
 schema.methods.sanitize = function() {
     return _.omit(this.toJSON(), ['password', 'salt']);
 };
+
+schema.methods.sanitizeForUser = function(){
+    return _.omit(this.toJSON(),['google','email'])
+}
 
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
 // are all used for local authentication security.
