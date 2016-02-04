@@ -19,7 +19,9 @@ router.get("/", function(req, res, next) {
 router.get("/:userId", function(req, res, next) {
     User.findById(req.params.userId)
     .then(user => {
-    	user = user.sanitizeForUser();
+    	if(req.user._id !== req.params.userId){
+    		user = user.sanitizeForUser();
+    	}
     	res.status(200).send(user)
     })
     .then(null, next);
