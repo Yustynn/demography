@@ -109,7 +109,6 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
     };
 
     $scope.createDashboard = function(dataset) {
-        console.log("dataset: ", dataset);
         return DashboardFactory.create({ user: $scope.user._id, dataset: dataset._id, title: dataset.title, shortDescription: dataset.shortDescription, isPublic: dataset.isPublic })
         .then(function(newDashboard){
             $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
