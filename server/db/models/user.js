@@ -52,6 +52,10 @@ schema.methods.sanitize = function() {
     return _.omit(this.toJSON(), ['password', 'salt']);
 };
 
+schema.methods.sanitizeForUser = function(){
+    return _.omit(this.toJSON(),['google','email'])
+}
+
 // generateSalt, encryptPassword and the pre 'save' and 'correctPassword' operations
 // are all used for local authentication security.
 var generateSalt = function() {

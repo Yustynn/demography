@@ -18,7 +18,10 @@ router.get("/", function(req, res, next) {
 // GET /api/users/:userId
 router.get("/:userId", function(req, res, next) {
     User.findById(req.params.userId)
-    .then(user => res.status(200).send(user))
+    .then(user => {
+    	user = user.sanitizeForUser();
+    	res.status(200).send(user)
+    })
     .then(null, next);
 });
 
