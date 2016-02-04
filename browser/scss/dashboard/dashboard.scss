@@ -1,64 +1,67 @@
-.controls {
-    margin-bottom: 20px;
-}
-.page-header {
-    margin-top: 20px;
-}
-ul {
-    list-style: none;
-}
-.box {
-    height: 100%;
-    border: 1px solid #ccc;
-    background-color: #fff;
-}
-.box-header {
-    background-color: #333;
-    text-transform: capitalize;
-    padding-left: 10px;
-    border-bottom: 1px solid #ccc;
-    cursor: move;
-    position: relative;
-}
-.box-header h4 {
-    margin-top: 8px;
-    display: inline-block;
-    color: white;
-}
-.box-content {
-    padding: 10px;
-}
-.box-header-btns {
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    position: absolute;
-}
-a {
-    color: #ccc;
-}
-form {
-    margin-bottom: 0;
-}
-.gridster {
-    border: 1px solid #ccc;
-}
+.dashboard-container {
+    .controls {
+        margin-bottom: 20px;
+    }
+    .page-header {
+        margin-top: 20px;
+    }
+    ul {
+        list-style: none;
+    }
+    .box {
+        height: 100%;
+        border: 1px solid #ccc;
+        background-color: #fff;
+    }
+    .box-header {
+        background-color: #333;
+        text-transform: capitalize;
+        padding-left: 10px;
+        border-bottom: 1px solid #ccc;
+        cursor: move;
+        position: relative;
+    }
+    .box-header h4 {
+        margin-top: 8px;
+        display: inline-block;
+        color: white;
+    }
+    .box-content {
+        padding: 10px;
+    }
+    .box-header-btns {
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        position: absolute;
+    }
+    a {
+        color: #ccc;
+    }
+    form {
+        margin-bottom: 0;
+    }
+    .gridster {
+        border: 1px solid #ccc;
+    }
 
-.footer {
-    margin-top: 10px;
-}
+    .footer {
+        margin-top: 10px;
+    }
 
-h1 small {
-    margin-left: 35px;
-    font-weight: normal;
-}
+    h1 small {
+        margin-left: 35px;
+        font-weight: normal;
+    }
 
-/*http://bootsnipp.com/snippets/featured/glyphicon-animate-rotation-and-flip*/
-.gly-rotate-90 {
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
-  -webkit-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  -o-transform: rotate(90deg);
-  transform: rotate(90deg);
+    /*http://bootsnipp.com/snippets/featured/glyphicon-animate-rotation-and-flip*/
+    .gly-rotate-90 {
+      filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+    }
+
 }
