@@ -24,7 +24,3 @@ router.post("/", function(req, res, next) {
 			next(err);
         })
 })
-
-//filename: '<%= url.split("!")[7] %>!',
-
-// selector: '#main > div > div.ng-scope.gridster.gridster-desktop.gridster-loaded'
