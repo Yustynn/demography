@@ -45,9 +45,8 @@ app.factory('DatasetFactory', function($http, Upload) {
         },
 
         delete: function(dataset) {
-            console.log("dataset from factory: ", dataset);
             return $http.delete('/api/datasets/' + dataset._id)
-            .then(response => response)
+            .then(response => response.data)
             .then(null, console.error);
         }
     };
