@@ -79,6 +79,8 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
     };
 
     $scope.removeDataset = function(dataset) {
+        console.log("$scope.userDatasets at delete: ", $scope.userDatasets);
+        console.log("dataset to delete: ", dataset);
         DatasetFactory.delete(dataset)
         .then(function(response) {
             var idx = $scope.userDatasets.indexOf(response.data);

@@ -19,6 +19,7 @@ app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootS
         DatasetFactory.create($scope.file, metaData)
         .then(function(response) {
             $scope.userDatasets.push(response.data);
+            console.log("$scope.userDatasets: at add", $scope.userDatasets);
             $uibModalInstance.close();
         })
         .then(null, console.error);
