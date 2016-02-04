@@ -28,7 +28,9 @@ router.get("/:id", function(req, res, next) {
     .populate('user', 'firstName lastName email')
     .populate('dataset', 'title lastUpdated fileType')
 		.then(function(dashboard){
-            if (dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()){
+            console.log("DASHBOARD USER", dashboard.user)
+            console.log("REQ", req.user)
+            if (req.headers['user-agent'].includes("PhantomJS")) {
                 dashboard.getWidgets()
                 .then(function(widgets){
                     var myDash = dashboard.toJSON();
@@ -36,7 +38,17 @@ router.get("/:id", function(req, res, next) {
                     res.status(201).send(myDash);
                 });
             }
-            else res.status(401).send("You are not authorized to view this dashboard");
+            else {
+                if (dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()){
+                    dashboard.getWidgets()
+                    .then(function(widgets){
+                        var myDash = dashboard.toJSON();
+                        myDash['widgets'] = widgets;
+                        res.status(201).send(myDash);
+                    });
+                }
+                else res.status(401).send("You are not authorized to view this dashboard");
+            }
         })
 		.then(null, next);
 });
