@@ -49,7 +49,15 @@ app.service('GraphService', function() {
             //console.log('d[xAxis: ',d[xAxis])
             return d[xAxis];
         });
+        var colArr = Object.keys(myData[0]);
 
+        // Object.keys(myData[0]).forEach(function(key){
+        //     colArr.push(function (d){
+        //         return d[key];
+        //     });
+        // })
+
+        console.log(colArr);
         if (groupType === "sum") {
             grp = dim.group().reduceSum(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
@@ -112,17 +120,19 @@ app.service('GraphService', function() {
                 .height(400)
                 .dimension(dim)
                 .group(function(d) {
-                    return d.education
+                    return d[xAxis] //create a new header for grouped values
                 })
                 .size(1000)
-                .columns(['education','age','sex','race'])
+                .columns(colArr)
                 .sortBy(function(d) {
-                    return d.sex;
+                    return d[yAxis];
                 })
-                .order(d3.ascending)
-                .on('renderlet', function(table) {
-                    table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('info', true);
-                });
+                .order(d3.descending)   //can be ascending and descending
+
+                //ADD CUSTOM CLASS TO LABEL ROWS
+                // .on('renderlet', function(table) {
+                //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('info', true);
+                // });
 
             dc.renderAll();
 
