@@ -8,6 +8,7 @@
             <div ng-repeat="dashboard in allDashboards | filter: searchText" class="dashboard">
                 <!-- snapshot of dashboard? -->
                 <h4>{{dashboard.title}}</h4>
+                <img ng-src="/{{dashboard._id}}!.png">
                 <p>{{dashboard.tags}}</p>
                 <!-- short description of dashboard? -->
             </div>
