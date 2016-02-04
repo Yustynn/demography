@@ -45,13 +45,14 @@ app.service('GraphService', function(DashboardFactory) {
                 d[xAxis] = Number(d[xAxis]);
                 xAxisIsNumber = true; //Checks if xaxis is ordinal or linear
             };
+            console.log('d[xAxis: ',d[xAxis])
             return d[xAxis];
         });
 
         if (groupType === "sum") {
             var grp = dim.group().reduceSum(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
-
+                console.log()
                 return Number(d[yAxis]);
             });
         } else if (groupType === "count") {
@@ -61,7 +62,7 @@ app.service('GraphService', function(DashboardFactory) {
                 return d[yAxis];
             });
         };
-        
+
         // var grp = dim.group().reduceSum(function(d) {
         //     return d.HR;
         // })
@@ -104,6 +105,12 @@ app.service('GraphService', function(DashboardFactory) {
             var size = dim.group().size();
             if (chartObj.gap * size >= chartHeight) {
                 chartObj.gap = chartHeight * .5 / size;
+            }
+        } else if (chartType === "dataTable") {
+            chartObj = makeTableChartObject(chartOptions)
+            var size = dim.group().size();
+            if(chartObj.gap*size >= chartHeight){
+                chartObj.gap = chartHeight*.5/size;
             }
         };
 
@@ -173,7 +180,7 @@ app.service('GraphService', function(DashboardFactory) {
         var keys = Object.keys(chartOptions);
 
         keys.forEach(function(key) {
-            //console.log(key, ":", chartOptions[key])
+            // console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
         dc.renderAll();
@@ -273,6 +280,7 @@ app.service('GraphService', function(DashboardFactory) {
         return rowChartOptions;
     }
 
+    //Line Chart
     function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
         var lineChartOptions = {
             transitionDuration: 500,
@@ -305,5 +313,24 @@ app.service('GraphService', function(DashboardFactory) {
         })
 
         return lineChartOptions
+    }
+
+    //Data Table Chart Option creator-has superfluous parameters for testing
+    function makeTableChartObject(chartOptions, numRows) {
+
+        var tableChartOptions = {
+
+            columns: function(d) {
+                debugger;
+                return Object.keys(d);
+            },
+            size: numRows ? numRows : 20
+        }
+
+        Object.keys(chartOptions).forEach(function(key) {
+            tableChartOptions[key] = chartOptions[key];
+        });
+
+        return tableChartOptions;
     }
 })
