@@ -28,8 +28,6 @@ router.get("/:id", function(req, res, next) {
     .populate('user', 'firstName lastName email')
     .populate('dataset', 'title lastUpdated fileType')
 		.then(function(dashboard){
-            console.log("DASHBOARD USER", dashboard.user)
-            console.log("REQ", req.user)
             if (req.headers['user-agent'].includes("PhantomJS")) {
                 dashboard.getWidgets()
                 .then(function(widgets){

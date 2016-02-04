@@ -107,10 +107,14 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     //     }
     // })
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-        if(fromState.name === "dashboard") {
-            DashboardFactory.takeScreenshot($stateParams)
-        }
+    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    //     if(fromState.name === "dashboard") {
+            
+    //     }
+    // })
+
+    $scope.$on('$destroy', function () {
+        DashboardFactory.takeScreenshot($stateParams)
     })
 
 
