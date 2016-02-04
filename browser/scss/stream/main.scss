@@ -5,6 +5,10 @@
 .dashboard-div {
 	background-color: #f7f7f7;
 	@include clearfix;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+
 }
 
 .user-photo {
@@ -20,7 +24,11 @@
 
 img.dashboard-screenshot {
 	display: block;
-	margin: 0 auto;
+	margin-left: auto;
+	margin-right: auto;
+	width: 90%;
+	position: relative;
+	left: -4%;
 }
 
 .user-name {
@@ -44,7 +52,6 @@ img.dashboard-screenshot {
 	padding-top: 15px;
 }
 
-.last-updated {
-	/*display: inline-block;*/
-	/*padding-top: 1.5%;*/
+.dashboard-tags {
+	float: left;
 }
