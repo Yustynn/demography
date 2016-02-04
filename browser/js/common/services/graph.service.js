@@ -21,17 +21,18 @@ app.service('GraphService', function() {
     }
 
     this.populateCharts = function(widgetArr) {
+        return;
         widgetArr.forEach(function(widgetObj) {
             var chartObj = widgetObj.chartObject;
             if (chartObj) self.create(chartObj.id, chartObj.chartType, chartObj.xAxis, chartObj.yAxis, chartObj.groupType, chartObj.chartOptions)
         })
     }
-    this.create = function(id, chartType, xAxis, yAxis, groupType, chartOptions) {
+    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions) {
         chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
-        var chartContainer = $('#widget-container-' + id + '> .box-content > .widget-content-container')[0];
-        var chartWidth = chartContainer.offsetWidth;
-        var chartHeight = chartContainer.offsetHeight;
+        var chartContainer = element;
+        var chartWidth = 300;
+        var chartHeight = 300;
         var chartRadius = chartWidth < chartHeight ? chartWidth / 2 : chartHeight / 2;
         //console.log(chartWidth, chartHeight, chartRadius);
         ///var all = ndx.groupAll()
@@ -66,7 +67,7 @@ app.service('GraphService', function() {
         //     return d.HR;
         // })
         //var chart = dc[chartType](chartContainer);
-        var chart = dc[chartType]('#widget-container-' + id + '> .box-content > .widget-content-container');
+        var chart = dc[chartType](element);
 
         //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
         //Is there a way to find out what kind of chart it is by checking the instance itself?
