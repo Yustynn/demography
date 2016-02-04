@@ -16,9 +16,9 @@ app.service('GraphService', function() {
 
     this.data = myData;
 
-    this.getData = function() {
-        return myData;
-    }
+    // this.getData = function() {
+    //     return myData;
+    // }
 
     this.populateCharts = function(widgetArr) {
         widgetArr.forEach(function(widgetObj) {
@@ -106,6 +106,7 @@ app.service('GraphService', function() {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "dataTable") {
+
             chartObj = makeTableChartObject(chartOptions)
         } else if (chartType === "dataCount") {
             chartObj = makeDataCountChartObject(chartOptions)
@@ -113,22 +114,38 @@ app.service('GraphService', function() {
 
         chartObj.width = chartWidth;
         chartObj.height = chartHeight;
-        if (chartType === 'dataCount') {
-                chartObj.group = ndx.groupAll();
-                chartObj.dimension = ndx;
+        if (chartType === 'dataCount' || chartType ==="dataTable") {
+            chartObj.group = ndx.groupAll();
+            chartObj.dimension = ndx;
+            if (chartType === 'dataCount')
+            {
                 chartObj.html = {
-                some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-                    ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
-                all: 'All <strong>%total-count</strong> records selected.'
-            };
+                    some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
+                         ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
+                    all: 'All <strong>%total-count</strong> records selected.'
+                }
+            }
+            else{
+                debugger;
+                chartObj.columns = [
+                    function(d) {
+                        debugger;
+                        return d[0]; },
+                    function(d) { return d[1]; },
+                    function(d) { return d[2]; },
+                    function(d) { return d[3]; },
+                    function(d) { return d[4]; }
+               ];
+               debugger;
+            }
         }
         else {
             chartObj.dimension = dim;
             chartObj.group = grp;
         }
-
         //passing in graphCount(i.e. the id) to keep functions expected input the same for both graph
         //creation and graph editing
+        debugger;
         createChart(id, chartObj)
         return charts['chart' + id];
     };
@@ -184,12 +201,11 @@ app.service('GraphService', function() {
 
     //Function that takes chartId and renders it with all options
     function createChart(id, chartOptions) {
-        //Will be id instead of being hardcoded when switched to graph.service
         var chart = charts['chart' + id].chart;
         var keys = Object.keys(chartOptions);
         //debugger;
         keys.forEach(function(key) {
-            console.log(key, ":", chartOptions[key])
+            //console.log(key, ":", chartOptions[key])
             chart[key](chartOptions[key])
         });
         dc.renderAll();
@@ -326,15 +342,18 @@ app.service('GraphService', function() {
 
     //Data Table Chart Option creator-has superfluous parameters for testing
     function makeTableChartObject(chartOptions, numRows) {
-
         var tableChartOptions = {
 
-            columns: function(d) {
-                debugger;
-                return Object.keys(d);
-            },
+            // columns: function(d) {
+            //     var arr = [];
+            //     for(var key in d){
+            //         console.log(key);
+            //         arr.push(key)
+            //     }
+            //     return arr;
+            // }(),
             size: numRows ? numRows : 20
-        }
+        };
 
         Object.keys(chartOptions).forEach(function(key) {
             tableChartOptions[key] = chartOptions[key];
