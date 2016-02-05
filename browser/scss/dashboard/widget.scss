@@ -18,3 +18,18 @@
 	text-align: center;
 	overflow: hidden;
 }
+
+.dc-table-label {
+    background: #5BC0DE;    /*bootstrap info*/
+    font-size: 1.3em;
+/*    font-weight: bold;*/
+    text-transform: uppercase;
+    text-align: left;
+    padding-left: 15px;
+}
+.dc-table-head {
+    font-size: 1.1em;
+/*    font-weight: bold;*/
+    text-transform: uppercase;
+    text-align: center;
+}
