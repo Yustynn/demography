@@ -22,7 +22,7 @@ app.service('GraphService', function() {
         })
     }
 
-    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup) {
+    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup, tableOrder) {
         chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = element;
@@ -82,7 +82,7 @@ app.service('GraphService', function() {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "dataTable") {
-            chartObj = makeTableChartObject(chartOptions, id, xAxis, yAxis)
+            chartObj = makeTableChartObject(chartOptions, id, xAxis, yAxis, 1000, tableOrder)
 
             //modify chartContainer:
             var tableContainer = d3.select(chartContainer)
@@ -103,7 +103,7 @@ app.service('GraphService', function() {
         if(!chartObj.height) chartObj.width = chartHeight;
         if(!chartObj.dimension) chartObj.dimension = dim;
         if(!chartObj.group) chartObj.group = grp;
-        
+
         var chart = dc[chartType](chartContainer,chartGroup);
         //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
         //Is there a way to find out what kind of chart it is by checking the instance itself?
@@ -323,7 +323,7 @@ app.service('GraphService', function() {
     };
 
     //Data Table Chart Option creator-has superfluous parameters for testing
-    function makeTableChartObject(chartOptions,id, x,y,numRows) {
+    function makeTableChartObject(chartOptions,id, x,y,numRows, orderBy) {
         var tableChartOptions = {
 
             //https://github.com/dc-js/dc.js/blob/master/web/docs/api-1.6.0.md#renderletrenderletfunction
@@ -343,7 +343,7 @@ app.service('GraphService', function() {
             group: function(d) {
                 return d[x] //create a new header for grouped values
             },
-            order: d3.descending, //can be ascending and descending
+            order: d3[orderBy], //can be ascending and descending
             size: numRows ? numRows : 1000    //how many rows to display
         };
 

@@ -2,6 +2,7 @@
 app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
+    console.log($scope.chartType)
     //TODO: dropdown for labels from dataset once we have data loaded
     $scope.axisDropdowns = {
         availableOptions : Object.keys(dataset.jsonData[0])
@@ -9,8 +10,6 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             return {key: key};
         })
     };
-
-    //$scope.groupOptions = [{val:'sum'}, {val:'count'}];
 
     var selection = {
         group:'count'
@@ -25,7 +24,8 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         labelX: widget.labelX,  //update data on X
         labelY: widget.labelY,   //update data on Y
         group: selection.group,
-        graphGroup: 'Group1'
+        graphGroup: 'Group1',
+        orderBy: 'ascending'
     };
 
     $scope.addGraphGroup = function() {
@@ -46,15 +46,15 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
 
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
+        //debugger;
         $uibModalInstance.close(widget);
         console.log(widget)
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group,{},graphSize,widget.graphGroup);
+           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,{},graphSize,widget.graphGroup, widget.orderBy);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);
     };
-
 });

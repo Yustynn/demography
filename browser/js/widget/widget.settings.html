@@ -18,29 +18,40 @@
             <div class="row">
                 <div class="col-sm-5">
                     <div class="form-group">
-                        <label for="selectX">Label X-Axis</label>
+                        <label for="selectX"><span ng-show="chartType==='dataTable'">Group By</span><span ng-hide="chartType==='dataTable'">Label X-Axis</span></label>
                         <select name="selectX" id="selectX" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelX"></select>
                     </div>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-7">
                     <div class="form-group">
-                        <label for="selectY">Label Y-Axis</label>
+                        <label for="selectX"><span ng-show="{{chartType==='dataTable'}}">Order By</span><span ng-hide="{{chartType==='dataTable'}}">Label X-Axis</span></label>
                         <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelY"></select>
+                    </div>
+                    <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">
+                         <label for="orderData">Order</label>
+                        <select name="orderData" ng-model="form.orderBy">
+                            <option value="ascending">Ascending</option>
+                            <option value="descending">Descending</option>
+                        </select>
+                    </span>
                     </div>
                 </div>
             </div class="row">
             <!--row-->
             <div class="row">
                 <div class="col-sm-5">
-                    <div class="form-group">
-                        <label for="groupBy">Group Data By:</label>
+                    <div class="form-group"><span ng-hide="{{chartType==='dataTable'}}">
+                         <label for="groupBy">Group Data By</label>
                         <select name="groupBy" ng-model="form.group">
                             <option value="count">Count</option>
                             <option value="sum">Sum</option>
                         </select>
+                    </span>
                     </div>
                 </div>
-                <div class="col-sm-5">
+            </div>
+            <div class="row">
+                <div class="col-sm-7">
                     <div class="form-group">
                         <label for="selectY">Graph Group</label>
                         <select ng-model="form.graphGroup" name="graphGroup" id="graphGroup" ng-options="option for option in graphGroups.options"></select>
@@ -49,7 +60,7 @@
                         </span>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="modal-footer">
