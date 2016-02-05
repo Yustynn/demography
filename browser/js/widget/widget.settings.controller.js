@@ -15,12 +15,24 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     var selection = {
         group:'count'
     }
+
+    $scope.graphGroups = {
+        options: ['Group1'],
+        selected: 'Group1'   //default
+    }
+
     //2-way binding!
     $scope.form = {
         title: widget.title,    //update title
         labelX: widget.labelX,  //update data on X
         labelY: widget.labelY,   //update data on Y
-        group: selection.group
+        group: selection.group,
+        graphGroup: $scope.graphGroups.selected
+    };
+
+    $scope.addGraphGroup = function() {
+        $scope.graphGroups.options.push('Group'+ ($scope.graphGroups.options.length+1));
+        $scope.graphGroups.selected = $scope.graphGroups.options[$scope.graphGroups.options.length];
     };
 
     $scope.dismiss = function() {

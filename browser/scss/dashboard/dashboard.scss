@@ -14,17 +14,17 @@
         background-color: #fff;
     }
     .box-header {
-        background-color: #333;
+        /*background-color: #333;*/
         text-transform: capitalize;
         padding-left: 10px;
-        border-bottom: 1px solid #ccc;
+        border-bottom: 1px dotted #eee;
         cursor: move;
         position: relative;
     }
     .box-header h4 {
         margin-top: 8px;
         display: inline-block;
-        color: white;
+        /*color: white;*/
     }
     .box-content {
         padding: 10px;
@@ -38,9 +38,9 @@
     a {
         color: #ccc;
     }
-    form {
+/*    form {
         margin-bottom: 0;
-    }
+    }*/
     .gridster {
         border: 1px solid #ccc;
     }
