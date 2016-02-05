@@ -22,7 +22,7 @@ router.get("/", function (req, res, next) {
 	Dashboard.find(req.query).populate("user dataset")
 	.then(allDashboards => {
 		//send the dashboard if it is public OR if it belongs to the user requesting it
-        res.status(200).send(allDashboards.filter(d => d.isPublic || d.user.toString() === req.user._id.toString()))
+        res.status(200).send(allDashboards.filter(dashboard => dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()))
     })
 	.then(null, next)
 });
@@ -57,6 +57,7 @@ router.get("/:id", function(req, res, next) {
 });
 
 router.post("/", ensureAuthenticated, function(req, res, next) {
+    console.log("req.body from router", req.body)
     Dashboard.create(req.body)
     .then(createdDashboard => res.status(201).send(createdDashboard))
 });
