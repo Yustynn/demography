@@ -55,6 +55,16 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);
+        if ($scope.$parent.dashboard.widgets.length === 1) addStatisticsWidget()
     };
 
+    function addStatisticsWidget() {
+        //automatically add stats widget if none exists
+        if ($scope.$parent.dashboard.widgets[0].chartObject.chartType !== 'dataCount') {
+            WidgetFactory.addWidgetToDashboard($scope.$parent.dashboard)
+            .then(function(updatedDashboard) {
+                $scope.$parent.dashboard = updatedDashboard;
+            })
+        }
+    }
 });

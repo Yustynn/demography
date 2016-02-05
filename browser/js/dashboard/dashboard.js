@@ -115,26 +115,30 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 
     $scope.addWidget = function() {
         editMode = true;
-        var newWidget = {
-            //default widget settings
-            id: $scope.dashboard.nextWidgetId,
-            title: "New Graph",
-            type: 'graph',
-            sizeX: 4,
-            sizeY: 4,
-            chartObject: {}
-        };
-        $scope.dashboard.widgets.push(newWidget);
-        $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
-        newWidget.dashboard = $scope.dashboard._id;
-        WidgetFactory.create(newWidget)
-        .then(function(createdWidget){
-            for(var i = 0; i < $scope.dashboard.widgets.length; i++) {
-                if ($scope.dashboard.widgets[i].id === newWidget.id) {
-                    $scope.dashboard.widgets[i] = createdWidget;
-                }
-            }
-        });
+        WidgetFactory.addWidgetToDashboard($scope.dashboard)
+        .then(function(updatedDashboard) {
+            $scope.dashboard = updatedDashboard;
+        })
+        // var newWidget = {
+        //     //default widget settings
+        //     id: $scope.dashboard.nextWidgetId,
+        //     title: "New Graph",
+        //     type: 'graph',
+        //     sizeX: 4,
+        //     sizeY: 4,
+        //     chartObject: {}
+        // };
+        // $scope.dashboard.widgets.push(newWidget);
+        // $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
+        // newWidget.dashboard = $scope.dashboard._id;
+        // WidgetFactory.create(newWidget)
+        // .then(function(createdWidget){
+        //     for(var i = 0; i < $scope.dashboard.widgets.length; i++) {
+        //         if ($scope.dashboard.widgets[i].id === newWidget.id) {
+        //             $scope.dashboard.widgets[i] = createdWidget;
+        //         }
+        //     }
+        // });
     };
 
     var renderGraphs = function(){
