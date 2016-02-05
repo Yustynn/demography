@@ -17,7 +17,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             }            
             var c = scope.widget.chartObject;
             if (c && c.chart) {
-                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize);
+                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup);
             }
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
@@ -70,6 +70,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             }
 
             scope.$on('gridster-item-transition-end', function (item) {
+                console.log("HIT From Widget")
                 var updatedWidget = {
                     col: item.targetScope.widget.col,
                     row: item.targetScope.widget.row,

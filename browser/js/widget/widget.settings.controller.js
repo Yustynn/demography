@@ -15,12 +15,24 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     var selection = {
         group:'count'
     }
+
+    $scope.graphGroups = {
+        options: WidgetFactory.getGraphGroups()
+    }
     //2-way binding!
     $scope.form = {
         title: widget.title,    //update title
         labelX: widget.labelX,  //update data on X
         labelY: widget.labelY,   //update data on Y
-        group: selection.group
+        group: selection.group,
+        graphGroup: 'Group1'
+    };
+
+    $scope.addGraphGroup = function() {
+        var newGroup = 'Group'+ ($scope.graphGroups.options.length+1);
+        WidgetFactory.addGraphGroup(newGroup);
+        $scope.form.graphGroup= newGroup;
+        $scope.graphGroups.options = WidgetFactory.getGraphGroups();
     };
 
     $scope.dismiss = function() {
@@ -35,11 +47,11 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
         $uibModalInstance.close(widget);
+        console.log(widget)
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           console.log('graphSize: ',graphSize)
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group,{},graphSize);
+           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group,{},graphSize,widget.graphGroup);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);
