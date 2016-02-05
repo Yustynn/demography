@@ -70,6 +70,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             }
 
             scope.$on('gridster-item-transition-end', function (item) {
+                console.log("HIT From Widget")
                 var updatedWidget = {
                     col: item.targetScope.widget.col,
                     row: item.targetScope.widget.row,
