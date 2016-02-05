@@ -30,7 +30,7 @@ app.service('GraphService', function() {
         var chartWidth = chartSize.width;
         var chartHeight = chartSize.height;
         var chartRadius = chartWidth < chartHeight ? chartWidth / 2 : chartHeight / 2;
-        console.log("ARGS: ",arguments)
+        //console.log("ARGS: ",arguments)
         var chartObj; //Used for storing all chart options
         var xAxisIsNumber; //Checks if the xAxis is number, and if it needs to be linear or ordinal
 
@@ -61,7 +61,6 @@ app.service('GraphService', function() {
         //     return d.HR;
         // })
         //var chart = dc[chartType](chartContainer);
-        console.log(element)
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
@@ -122,7 +121,6 @@ app.service('GraphService', function() {
             chartOptions: chartOptions
         };
 
-        console.log('chartObj: ',chartObj)
         createChart(id, chartObj)
 
         return charts['chart' + id];
@@ -178,12 +176,11 @@ app.service('GraphService', function() {
     //Function that takes chartId and renders it with all options
     function createChart(id, chartOptions) {
         var chart = charts['chart' + id].chart;
-        console.log("CHART",chart)
         var keys = Object.keys(chartOptions);
         //debugger;
         keys.forEach(function(key) {
-            console.log("KEY:",key)
-            console.log("val:",chartOptions[key])
+            // console.log("KEY:",key)
+            // console.log("val:",chartOptions[key])
 
             chart[key](chartOptions[key])
 

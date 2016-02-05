@@ -65,8 +65,17 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         resizable:{
             enabled: true,
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
-                GraphService.resize(c.id);
+
                 //Probably want to pass in the widget size vs finding size inside of the function
+                GraphService.resize(c.id);
+                var updatedWidget = {
+                    col: c.col,
+                    row: c.row,
+                    sizeX: c.sizeX,
+                    sizeY: c.sizeY,
+                    _id: c._id
+                };
+                WidgetFactory.update(updatedWidget);
             },
             handles: ['s', 'w', 'se', 'sw']
         },
@@ -78,7 +87,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
-
 
     // $scope.toggleEditMode = function() {
     //     $scope.editMode = !$scope.editMode;
