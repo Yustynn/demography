@@ -19,22 +19,17 @@
             margin-top: 20px;
             color: #FFFFFF;
         }
-        span {
-            margin-right: auto;
-            margin-left: auto;
-        }
         .btn {
             background-color: black;
         }
         .input-group {
-            margin-top: 40px;
+            text-align: center;
+            margin-top: 10px;
         }
         button {
+            margin: 30px;
             font-size: 18px;
-            &:active,
-            &:focus {
-                background: blue;
-            }
+            border-color: white;
         }
     }
     #marketplace {
