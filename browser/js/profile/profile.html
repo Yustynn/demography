@@ -7,17 +7,18 @@
             <hr>
             <div class="row" id="create-buttons">
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-secondary" ng-click="openDashboardSettings(user, userDatasets)"><span class="glyphicon glyphicon-plus"></span> Dashboard</button>
+                    <button type="button" class="btn btn-default" ng-click="openDatasetSettings(user, userDatasets)">Upload<br>Dataset<br><i class="fa fa-database"></i></button>
                 </div>
                 <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" ng-click="openDatasetSettings(user, userDatasets)"><span class="glyphicon glyphicon-plus"></span> Dataset</button>
+                    <button type="button" class="btn btn-default" ng-click="openDashboardSettings(user, userDatasets)">Create<br>Dashboard<br><span class="glyphicon glyphicon glyphicon-signal"></span></button>
                 </div>
             </div>
+            <uib-alert type="danger" ng-show="userDatasets.length === 0 && tellUserToCreateDataset" id="createDatasetAlert">You must upload a dataset before you can create a dashboard</uib-alert>
         </div>
         <div class="col-xs-9">
             <ul class="nav nav-tabs">
                 <li ui-sref-active="active"><a ui-sref="userDashboards">Dashboards</a></li>
-                <li ui-sref-active="active"><a ui-sref="userDatasets">Datasets</a></li>
+                <li ui-sref-active="active"></i><a ui-sref="userDatasets">Datasets</a></li>
             </ul>
             <ui-view></ui-view>
         </div>
