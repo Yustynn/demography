@@ -1,62 +1,68 @@
+#search-and-filter {
+    .form-group {
+        margin-bottom: 0px;
+        .fa {
+            font-size: 22px;
+            margin-right: 5px;
+            float: left;
+            clear: both;
+            display: inline-block;
+            margin-top: 7px;
+            margin-right: 10px;
+        }
+        input {
+            float: left;
+            display: inline-block;
+            max-width: 350px;
+        }
+    }
+}
+
 .stream {
-	margin: 0 auto;
-}
-
-.dashboard-div {
-	background-color: #f7f7f7;
-	@include clearfix;
-	width: 90%;
-	margin-left: auto;
-	margin-right: auto;
-
-}
-
-.user-photo {
-	float: left;
-	width: 60px;
-	margin: 10px;
-}
-
-.stream p {
-	display: inline;
-	text-align: left;
-}
-
-img.dashboard-screenshot {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 90%;
-	position: relative;
-	left: -4%;
-}
-
-.user-name {
-	/*display: inline-block;*/
-	padding-top: 1%;
-}
-
-.dashboard-header {
-	@include clearfix;
-	height: 90px;
-}
-
-.dashboard-profile {
-	@include clearfix;
-	position: relative;
-	top: -60px;
-}
-
-.dashboard-title {
-	text-align: center;
-	padding-top: 15px;
-}
-
-.dashboard-tags {
-	margin: 10px;
-	float: left;
-}
-
-.dashboard-description {
-	margin: 10px;
+    margin: 0 auto;
+    .dashboard-div {
+        background-color: #f7f7f7;
+        @include clearfix;
+        width: 90%;
+    }
+    .user-photo {
+        float: left;
+        width: 60px;
+        margin: 10px;
+    }
+    .stream p {
+        display: inline;
+        text-align: left;
+    }
+    img.dashboard-screenshot {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+        position: relative;
+        left: -4%;
+    }
+    .user-name {
+        padding-top: 1%;
+    }
+    .dashboard-header {
+        @include clearfix;
+        height: 90px;
+    }
+    .dashboard-profile {
+        @include clearfix;
+        position: relative;
+        top: -60px;
+    }
+    .dashboard-title {
+        text-align: center;
+        padding-top: 15px;
+    }
+    .dashboard-tags {
+        margin: 10px;
+        float: left;
+    }
+    .dashboard-description {
+        margin: 10px;
+    }
 }

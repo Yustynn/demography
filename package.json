@@ -1,7 +1,7 @@
 {
   "name": "Demography",
   "version": "1.0.0",
-  "description": "A generated project at Fullstack Academy",
+  "description": "A web application to create and share data visualizations",
   "main": "server/start.js",
   "scripts": {
     "start": "nodemon --watch server -e js,html server/start.js",

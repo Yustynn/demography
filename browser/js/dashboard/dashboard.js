@@ -70,7 +70,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             },
             handles: ['s', 'w', 'se', 'sw']
         },
-        maxSizeX: 6, // maximum column width of an item
+        maxSizeX: 12, // maximum column width of an item
         minSizeX: 2, // minimum column width of an item
         minSizeY: 1, // minimum column height of an item
         minRows: 1, // the minimum height of the grid, in rows
@@ -96,7 +96,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 
     // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
     //     if(fromState.name === "dashboard") {
-            
+
     //     }
     // })
 
