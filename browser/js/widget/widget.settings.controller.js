@@ -28,6 +28,10 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         orderBy: 'ascending'
     };
 
+    var _chartOptions = {
+        orderBy: $scope.form.orderBy
+    };
+
     $scope.addGraphGroup = function() {
         var newGroup = 'Group'+ ($scope.graphGroups.options.length+1);
         WidgetFactory.addGraphGroup(newGroup);
@@ -52,7 +56,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,{},graphSize,widget.graphGroup, widget.orderBy);
+           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);

@@ -67,6 +67,14 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
                 GraphService.resize(c.id);
                 //Probably want to pass in the widget size vs finding size inside of the function
+                var updatedWidget = {
+                    col: c.col,
+                    row: c.row,
+                    sizeX: c.sizeX,
+                    sizeY: c.sizeY,
+                    _id: c._id
+                };
+                WidgetFactory.update(updatedWidget);    //no ().then necessary here
             },
             handles: ['s', 'w', 'se', 'sw']
         },
@@ -135,7 +143,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
                 return widget.type === 'graph';
             }));
 
-        }, 800);
+        }, 400);
     };
     GraphService.loadData(currentDataset.jsonData)
     renderGraphs();
