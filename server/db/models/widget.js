@@ -50,7 +50,7 @@ var schema = new mongoose.Schema({
 
 schema.pre('save', function (next) {
 
-    this.lastUpdated = Date.now()
+    this.lastUpdated = Date.now();
     next();
 
 });

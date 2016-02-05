@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-//var User = require('./../models/user.js);
 var Widget = mongoose.models.Widget;
 
 var schema = new mongoose.Schema({

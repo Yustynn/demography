@@ -22,17 +22,17 @@ router.put("/:id", ensureAuthenticated, function(req, res, next) {
     Widget.findByIdAndUpdate(req.params.id, req.body)
     .then(function(widget) {
         res.status(200).send(widget);
-    }).then(null, next)
+    }).then(null, next);
 });
 
 router.delete('/:id', ensureAuthenticated, function (req, res, next){
     Widget.remove({_id: req.params.id})
-    .then()
+    .then(null, next);
 });
 
 // /api/widgets/:dashboardId
 router.get("/:dashboardId", ensureAuthenticated, function (req, res, next) {
     Widget.find({dashboard: dashboardId})
     .then(allWidgets => res.status(200).send(allWidgets))
-    .then(null, next)
+    .then(null, next);
 });
