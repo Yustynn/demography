@@ -4,7 +4,6 @@ app.factory('WidgetFactory', function ($http){
     var graphGroups = ['Group1']
 
     return {
-
         //save new widget upon creation
         create: function(widget) {
             return $http.post('/api/widgets', widget)

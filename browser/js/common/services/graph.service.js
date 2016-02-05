@@ -23,8 +23,6 @@ app.service('GraphService', function() {
     }
 
     this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup) {
-        graphCount++;//Temporary for debugging chartGroups
-    // this.create = function(id, chartType, xAxis, yAxis, groupType, chartOptions) {
         chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = element;
@@ -105,15 +103,7 @@ app.service('GraphService', function() {
         if(!chartObj.height) chartObj.width = chartHeight;
         if(!chartObj.dimension) chartObj.dimension = dim;
         if(!chartObj.group) chartObj.group = grp;
-
-        // //Temporary for 
-        // var chartGroup;
-        // if(!!(graphCount%2)){
-        //     chartGroup= "chartGroupA"
-        // }else{
-        //     chartGroup = "chartGroupB"
-        // }
-        console.log(chartGroup)
+        
         var chart = dc[chartType](chartContainer,chartGroup);
         //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
         //Is there a way to find out what kind of chart it is by checking the instance itself?
