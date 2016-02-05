@@ -1,34 +1,40 @@
 #home {
+    margin-top: -40px;
     h1 {
         margin-top: 40px;
         text-align: center;
     }
     #main-search {
-        height: 100vh;
+        height: 87vh;
         background: url(/data/home-image.png) no-repeat center center;
+        opacity: 0.85;
         background-size: cover;
         #main-search-page-header {
             font-size: 52px;
-            margin-top: 150px;
-            color: black;
+            margin-top: 320px;
+            color: #FFFFFF;
         }
         #main-search-page-subHeader {
             font-size: 42px;
             margin-top: 20px;
-            color: black;
+            color: #FFFFFF;
+        }
+        span {
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .btn {
+            background-color: black;
         }
         .input-group {
-            margin-top: 125px;
+            margin-top: 40px;
         }
         button {
-            font-size: 24px;
+            font-size: 18px;
             &:active,
             &:focus {
                 background: blue;
             }
-        }
-        .right {
-            float: right
         }
     }
     #marketplace {
