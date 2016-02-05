@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="/" />
+    <title>demography - dashboard generator</title>
+    <link rel="stylesheet" href="/angular-gridster/dist/angular-gridster.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/dc/dc.min.css" />
+    <link rel="stylesheet" type="text/css" href="/angular-ui-grid/ui-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="/angular-gridster/dist/angular-gridster.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/yeti/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap-social/bootstrap-social.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" type="text/css" href="/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" type="text/css" href="/oi.select/dist/select.min.css"></link>
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script src="/lodash/index.js"></script>
+    <script src="/angular/angular.js"></script>
+    <script src="/angular-animate/angular-animate.js"></script>
+    <script src="/angular-validation-match/dist/angular-validation-match.js"></script>
+    <script src="/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/angular-ui-bootstrap/ui-bootstrap.js"></script>
+    <script src="/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/angular-gridster/dist/angular-gridster.min.js"></script>
+    <script src="/d3/d3.min.js" charset="utf-8"></script>
+    <script src="/ng-file-upload/dist/ng-file-upload.js"></script>
+    <script src="/socket.io-client/socket.io.js"></script>
+    <script src="/d3/d3.js"></script>
+    <script src="/crossfilter/crossfilter.js"></script>
+    <script src="/dc/dc.js"></script>
+    <script src="/jquery/dist/jquery.min.js"></script>
+    <script src="/angular-ui-grid/ui-grid.min.js"></script>
+    <script src="/oi.select/dist/select-tpls.min.js"></script>
+    <script src="/main.js"></script>
+</head>
+
+<body ng-app="Demography">
+    <navbar></navbar>
+    <div class="md-spacer"></div>
+    <div id="main" class="clearfix" ui-view></div>
+    <div id="chart-ring-year"></div>
+    <div id="chart-line-hitsperday"></div>
+    <div id="testId2"></div>
+</body>
+
+</html>

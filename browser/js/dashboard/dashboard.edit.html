@@ -1,0 +1,24 @@
+<div class="container dashboard-container">
+<div class="page-header">
+    <a class="pull-right btn btn-info" ng-click="addWidget('graph')"><i class="glyphicon glyphicon-plus"></i> Add Graph</a>
+
+    <h1>{{dashboard.title | uppercase}}<small>source: <span><a ng-href="/dataset/{{dashboard.dataset._id}}">{{dashboard.dataset.title}}</a></span></small></h1>
+
+</div>
+
+<div gridster="gridsterOptions">
+    <div>
+        <widget-view ng-repeat="widget in dashboard.widgets" widget="widget" dataset="dataset" dashboard="dashboard"></widget-view>
+    </div>
+</div>
+<footer class="footer">
+    <div class="row">
+        <div class="col-md-4">
+            <p id="statistics-container"></p>
+        </div>
+        <div class="col-md-8">
+            <p class="dashboard-footer pull-right text-muted">Dataset: <span><a href="">{{dashboard.dataset.title}}</a></span> from {{dashboard.dataset.lastUpdated | date : 'mediumDate'}}, provided by {{dashboard.user.name}}</p>
+        </div>
+    </div>
+</footer>
+</div>
