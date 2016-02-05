@@ -101,11 +101,14 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
             var userDashboardsToDelete = $scope.userDashboards.filter(function(userDashboard) {
                 return userDashboard.dataset._id === deletedDataset._id;
             });
-            $scope.userDashboards.forEach(function(dashboard, index) {
-                var indexToCheck = userDashboardsToDelete.indexOf(dashboard);
-                console.log("indexToCheck: ", indexToCheck);
-                if (indexToCheck > -1) $scope.userDashboards.splice(indexToCheck, 1);
-            });
+            for (var i = 0; i < $scope.userDashboards.length; i++) {
+                var currentDashboardToCheck = $scope.userDashboards[i];
+
+                if (userDashboardsToDelete.indexOf(currentDashboardToCheck) > -1) {
+                    $scope.userDashboards.splice(i, 1);
+                    i--;
+                }
+            }
         })
         .then(null, console.error);
     };
