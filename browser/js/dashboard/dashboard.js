@@ -87,27 +87,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
-
-    // $scope.toggleEditMode = function() {
-    //     $scope.editMode = !$scope.editMode;
-    //     $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
-    //     $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
-    //     if(!$scope.editMode) {
-    //         //whenever a user locks a dashboard, take a screenshot
-    //         DashboardFactory.takeScreenshot($stateParams)
-    //     }
-    // };
-
-    // $scope.getEditMode = function() {
-    //     return editMode;
-    // }
-
-    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    //     if(fromState.name === "dashboard") {
-
-    //     }
-    // })
-
     $scope.$on('$destroy', function () {
         DashboardFactory.takeScreenshot($stateParams)
     })

@@ -23,7 +23,7 @@ app.service('GraphService', function() {
     }
 
     this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup) {
-        chartOptions = {}; //initialize for now to be empty, users will eventually submit this
+        chartOptions = chartOptions ? chartOptions : {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = element;
         var chartWidth = chartSize.width;
@@ -180,12 +180,12 @@ app.service('GraphService', function() {
         var keys = Object.keys(chartOptions);
         //debugger;
         keys.forEach(function(key) {
-            chart[key](chartOptions[key])
-
             if(key==="on"){
                 chart[key].apply(null,chartOptions[key])
             }else{
-                chart[key](chartOptions[key])
+                if (chart[key]) {
+                    chart[key](chartOptions[key])
+                }
             }
         });
 
@@ -339,16 +339,18 @@ app.service('GraphService', function() {
                 return d[y];
             },
             columns: Object.keys(myData[0]),
+
             group: function(d) {
                 return d[x] //create a new header for grouped values
             },
-            order: chartOptions.orderBy ? d3[chartOptions.orderBy] : d3.ascending, //can be ascending and descending
-            size: chartOptions.numRows ? chartOptions.numRows : 1000    //how many rows to display
+            order: d3.ascending, //can be ascending and descending
+            size: chartOptions.size ? chartOptions.size : 1000    //how many rows to display
         };
 
         Object.keys(chartOptions).forEach(function(key) {
             tableChartOptions[key] = chartOptions[key];
         });
+        console.log(tableChartOptions);
         return tableChartOptions;
     };
 

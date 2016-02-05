@@ -19,13 +19,13 @@
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="selectX"><span ng-show="chartType==='dataTable'">Group By</span><span ng-hide="chartType==='dataTable'">Label X-Axis</span></label>
-                        <select name="selectX" id="selectX" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelX"></select>
+                        <select name="selectX" id="selectX" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
                     </div>
                 </div>
                 <div class="col-sm-7">
                     <div class="form-group">
                         <label for="selectX"><span ng-show="{{chartType==='dataTable'}}">Order By</span><span ng-hide="{{chartType==='dataTable'}}">Label X-Axis</span></label>
-                        <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.availableOptions track by option.key" ng-model="form.labelY"></select>
+                        <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
                     </div>
                     <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">
                          <label for="orderData">Order</label>
@@ -47,6 +47,11 @@
                             <option value="sum">Sum</option>
                         </select>
                     </span>
+                    </div>
+                    <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">
+                    <label for="select-columns">Columns</label>
+                        <select multiple name="select-columns" id="select-columns" ng-model="form.columns" ng-options="column.key for column in axisDropdowns.objectKeys">
+                        </select>
                     </div>
                 </div>
             </div>
