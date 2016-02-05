@@ -21,33 +21,33 @@ app.factory('DatasetFactory', function($http, Upload) {
 
         fetchAll: function() {
             return $http.get('/api/datasets')
-                .then(response => response.data)
-                .then(null, console.error);
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         fetchAllByUser: function(userId) {
             return $http.get('/api/datasets?user=' + userId)
-                .then(response => response.data)
-                .then(null, console.error);
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         fetchOne: function(id) {
             return $http.get('api/datasets/' + id)
-                .then(response => response.data)
-                .then(null, console.error);
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         // BOBBY NOTE: The update dataset is still TBU
         update: function(dataset) {
             return $http.put('/api/datasets/' + dataset._id, dataset)
-                .then(response => response.data)
-                .then(null, console.error);
+            .then(response => response.data)
+            .then(null, console.error);
         },
 
         delete: function(dataset) {
             return $http.delete('/api/datasets/' + dataset._id)
-                .then(response => response.data)
-                .then(null, console.error);
+            .then(response => response.data)
+            .then(null, console.error);
         }
     };
 });

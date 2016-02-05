@@ -6,3 +6,5 @@ public
 .DS_Store
 coverage
 server/db/upload-files
+server/db/screenshots
+tomDummyData.csv

@@ -1,85 +1,14 @@
 @import '../variables';
 .navbar {
     position: fixed;
+    width: 100%;
     top: 0;
     left: 0;
-    z-index: 2000;
-    width: 100%;
-    display: block;
-    border-bottom: 1px solid black;
-    box-shadow: 1px 1px 14px -3px black;
-    padding-bottom: 10px;
-    height: 70px;
-    .container {
-        width: 100%;
-        max-width: 1340px;
-    }
-    .navbar-header {
-        h2 {
-            margin-right: 60px;
-            margin-top: 14px;
-            a {
-                font-size: 30px;
-                &:hover {
-                    text-decoration: none;
-                }
-                &:focus {
-                    text-decoration: none;
-                }
-            }
-        }
-    }
-    a {
-        margin-top: 7px;
-        font-size: 16px;
-    }
-    .nav > li {
-        display: inline-block;
-        margin-top: 25px;
-    }
-    .nav > li > a {
-        cursor: pointer;
-        display: inline;
-        transition: color 0.2s;
-        &.active {
-        }
-        &:hover {
-            background: none;
-        }
-        &:focus {
-            background: none;
-            text-decoration: none;
-        }
-    }
-    .signup-button {
-        float: right;
-        border: 1px solid black;
-        margin-top: 16px;
-        outline: none !important;
-        margin-right: 5px;
-    }
-    .login-button {
-        float: right;
-        border: 1px solid black;
-        margin-top: 16px;
-        outline: none !important;
-    }
-    .welcome {
-        float: right;
-        margin-top: 21px;
-        span {
-            font-size: 16px;
-            margin-right: 5px;
-        }
-        a {
-            cursor: pointer;
-            &:hover {
-                transition: color .3s;
-                text-decoration: none;
-            }
-        }
+    z-index: 1000;
+    .navbar-brand {
+        margin-right: 30px;
     }
     .glyphicon {
-        display: inline;
+        color: white;
     }
 }

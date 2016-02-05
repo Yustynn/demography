@@ -1,6 +1,6 @@
 app.config(function($stateProvider) {
     $stateProvider.state('profile', {
-        url: '/:userId/profile',
+        url: '/profile',
         abstract: true,
         templateUrl: 'js/profile/profile.html',
         controller: 'ProfileCtrl',
@@ -39,41 +39,64 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
 
-    // Function to add the uploaded file to the scope
-    // This is separate from "uploadDataset" so the file can be sent with the metadata on form submission
-    $scope.chooseFile = function(file) {
-        $scope.file = file;
-    }
+    // Initialize notice to user as false
+    $scope.tellUserToCreateDataset = false;
 
-    // Function to send the file and metadata to the factory and then back-end
-    $scope.uploadDataset = function(metaData) {
-        metaData.user = loggedInUser._id;
-        DatasetFactory.create($scope.file, metaData)
-        .then(function(response) {
-            $scope.userDatasets.push(response.data);
-        })
-        .then(null, console.error);
-    }
+    // Function to open up the modal for uploading a dataset
+    $scope.openDatasetSettings = function (user, userDatasets) {
+        $scope.tellUserToCreateDataset = false;
+
+        $uibModal.open({
+            scope: $scope,
+            templateUrl: 'js/profile/profile-datasets.settings.html',
+            controller: 'ProfileDatasetsSettingsCtrl',
+            resolve: {
+                user: function() {
+                    return user;
+                },
+                userDatasets: function() {
+                    return userDatasets;
+                }
+            }
+        });
+    };
+
+    // Function to open up the modal for creating a dashboard
+    $scope.openDashboardSettings = function (user, userDatasets) {
+        // If the user tries to create a dashboard without a dataset, prompt them to upload one
+        if ($scope.userDatasets.length === 0) $scope.tellUserToCreateDataset = true;
+        else {
+            $uibModal.open({
+                scope: $scope,
+                templateUrl: 'js/profile/profile-dashboards.settings.html',
+                controller: 'ProfileDashboardsSettingsCtrl',
+                resolve: {
+                    user: function() {
+                        return user;
+                    },
+                    userDatasets: function() {
+                        return userDatasets;
+                    }
+                }
+            });
+        }
+    };
 
     $scope.removeDataset = function(dataset) {
         DatasetFactory.delete(dataset)
-        .then(function(response) {
-            var idx = $scope.userDatasets.indexOf(response.data);
+        .then(function(deletedDataset) {
+            var userDatasetToDelete = $scope.userDatasets.filter(function(userDataset) {
+                return userDataset._id === deletedDataset._id;
+            })[0];
+            var idx = $scope.userDatasets.indexOf(userDatasetToDelete);
             $scope.userDatasets.splice(idx, 1);
         })
         .then(null, console.error);
-    }
-
-    $scope.createDashboard = function(datasetId) {
-        return DashboardFactory.create({user: $scope.user._id, dataset: datasetId, title: 'some Title', isPublic: true})
-        .then(function(newDashboard){
-            $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
-        });
     };
 
     $scope.removeDashboard = function(dashboard) {
@@ -83,5 +106,13 @@ app.controller('ProfileCtrl', function($scope, $state, loggedInUser, userDashboa
             $scope.userDashboards.splice(idx, 1);
         })
         .then(null, console.error);
-    }
+    };
+
+    $scope.createDashboard = function(dataset) {
+        return DashboardFactory.create({ user: $scope.user._id, dataset: dataset._id, title: dataset.title, shortDescription: dataset.shortDescription, isPublic: dataset.isPublic })
+        .then(function(newDashboard){
+            $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
+        });
+    };
+
 });

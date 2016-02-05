@@ -25,7 +25,6 @@ var convertCsvToJson = function(rawFile) {
         });
     });
     var headerArray = rawDataArray.shift();
-    console.log(rawDataArray[rawDataArray.length-1])
 
     //recursively remove empty rows:
     var cleanCounter = 0;
@@ -69,7 +68,6 @@ router.get("/", function(req, res, next) {
 // GET /api/datasets/:datasetId
 router.get("/:datasetId", function(req, res, next) {
     var returnDataObject;
-    console.log(req.headers)
     DataSet.findById(req.params.datasetId) // .lean() allows the mongo object to be mutable. We may want to use a lodash method here instead
     .then(dataset => {
         // Throw an error if a different user tries to access a private dataset
@@ -78,7 +76,7 @@ router.get("/:datasetId", function(req, res, next) {
                 return res.status(401).send("You are not authorized to access this dataset");
             }
         }
-        
+
 
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
@@ -97,7 +95,6 @@ router.get("/:datasetId", function(req, res, next) {
         });
     })
     .then(null, function(err) {
-        console.error(err, err.stack)
         err.message = "Something went wrong when trying to access this dataset";
         next(err);
     });
@@ -118,7 +115,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
     var metaData = req.body;
     var returnDataObject;
     metaData.fileType = req.file.mimetype;
-    if (metaData.fileType !== "text/csv" && metaData.fileType !== "application/json") res.status(422).json("This is not valid file type. Upload either .csv or .json");
+    if (metaData.fileType !== "text/csv" && metaData.fileType !== "application/json") res.status(422).send("This is not valid file type. Upload either .csv or .json");
     var originalFilePath;
     var newFilePath;
     DataSet.create(metaData)
@@ -178,10 +175,16 @@ router.delete("/:datasetId", function(req, res, next) {
         // Throw an error if a different user tries to delete dataset
         if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
         var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
-        fsp.unlink(filePath);
-        return DataSet.remove({ _id: dataset._id })
+        DataSet.remove({ _id: dataset._id })
+        .then(function(response) {
+            fsp.unlink(filePath);
+        }, function(err) {
+            return next(err);
+        });
+
+        return dataset; // BOBBY NOTE: Sending back the dataset so we can remove it from the scope array
     })
-    .then(response => res.status(200).send("Data set successfully removed"))
+    .then(dataset => res.status(200).send(dataset))
     .then(null, function(err) {
         err.message = "Something went wrong when trying to delete this dataset";
         next(err);

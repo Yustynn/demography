@@ -1,5 +1,17 @@
-<div ng-repeat="dataset in userDatasets">
-    <a ui-sref="dataset({datasetId: dataset._id})"><h3>{{dataset.title}}</h3></a>
-    <a ng-click="createDashboard(dataset._id)"><h3>make dashboard for {{dataset.title}}</h3></a>
-    <button ng-click="removeDataset(dataset)">Remove dataset</button>
+<div ng-repeat="dataset in userDatasets" id="dataset-summary-container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="container dataset-summary">
+                <a ui-sref="dataset({datasetId: dataset._id})"><h3 class="dataset-title">{{ dataset.title }}</h3></a>
+                <p class="dataset-description">{{ dataset.shortDescription }}</p>
+                <p class="dataset-dateUpdated">Updated on {{ dataset.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- <i class="fa fa-code-fork"></i><p class="num-forks">0</p> -->
+            <button class="btn btn-primary" ng-click="createDashboard(dataset)"><span class="glyphicon glyphicon-signal"></span>Create dashboard</button>
+            <button class="btn btn-danger" ng-click="removeDataset(dataset)"><i class="fa fa-trash-o"></i>Remove dataset</button>
+        </div>
+    </div>
+    <hr>
 </div>

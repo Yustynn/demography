@@ -3,13 +3,22 @@
         <div class="col-xs-3">
             <img id="profile-img" src="{{user.picture}}">
             <h3>{{user.firstName + " " + user.lastName;}}</h3>
+            <h5>Joined on {{ user.joinDate | date }}</h5>
             <hr>
-            <load-file></load-file>
+            <div class="row" id="create-buttons">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-default" ng-click="openDatasetSettings(user, userDatasets)">Upload<br>Dataset<br><i class="fa fa-database"></i></button>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-default" ng-click="openDashboardSettings(user, userDatasets)">Create<br>Dashboard<br><span class="glyphicon glyphicon glyphicon-signal"></span></button>
+                </div>
+            </div>
+            <uib-alert type="danger" ng-show="userDatasets.length === 0 && tellUserToCreateDataset" id="createDatasetAlert">You must upload a dataset before you can create a dashboard</uib-alert>
         </div>
         <div class="col-xs-9">
             <ul class="nav nav-tabs">
                 <li ui-sref-active="active"><a ui-sref="userDashboards">Dashboards</a></li>
-                <li ui-sref-active="active"><a ui-sref="userDatasets">Datasets</a></li>
+                <li ui-sref-active="active"></i><a ui-sref="userDatasets">Datasets</a></li>
             </ul>
             <ui-view></ui-view>
         </div>
