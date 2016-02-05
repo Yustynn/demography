@@ -16,8 +16,8 @@ app.factory('DashboardFactory', function ($http) {
             .then(null, console.error);
         },
 
-        fetchAllByUser: function(userId) {
-            return $http.get('/api/dashboards?user=' + userId)
+        fetchAllByUser: function(user) {
+            return $http.get('/api/dashboards?user=' + user._id)
             .then(response => response.data)
             .then(null, console.error);
         },
