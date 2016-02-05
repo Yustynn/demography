@@ -43,12 +43,14 @@
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="selectY">Graph Group</label>
-                        <select name="graphGroup" id="graphGroup" ng-options="option for option in graphGroups.options track by option.key" ng-model="form.graphGroup"></select>
+                        <select ng-model="form.graphGroup" name="graphGroup" id="graphGroup" ng-options="option for option in graphGroups.options"></select>
+                        {{form}}
                         <span>
                             <a ng-click="addGraphGroup()" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>add group</a>
                         </span>
                     </div>
                 </div>
+                
             </div>
         </div>
         <div class="modal-footer">

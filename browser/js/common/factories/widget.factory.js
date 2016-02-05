@@ -1,5 +1,8 @@
 //use this to save widgets of all sorts. checkout the widget model to undrstand the properties
 app.factory('WidgetFactory', function ($http){
+    
+    var graphGroups = ['Group1']
+
     return {
 
         //save new widget upon creation
@@ -22,6 +25,13 @@ app.factory('WidgetFactory', function ($http){
             .then(function(response){
                 return response.data;
             });
+        },
+        addGraphGroup: function(groupName){
+            graphGroups.push(groupName);
+        },
+        getGraphGroups: function(){
+            console.log(graphGroups)
+            return graphGroups;
         }
     }
 });
