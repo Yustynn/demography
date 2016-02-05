@@ -11,14 +11,8 @@
 app.service('GraphService', function() {
     var self = this;
     var ndx, myData, grp;
-    //Object to store all instances of chart to resize/edit specific chart
-    var charts = {};
 
-    this.data = myData;
-
-    this.getData = function() {
-        return myData;
-    }
+    var charts = {}; //Object to store all instances of chart to resize/edit specific chart
 
     this.populateCharts = function(widgetArr) {
         return;
@@ -27,17 +21,17 @@ app.service('GraphService', function() {
             if (chartObj) self.create(chartObj.id, chartObj.chartType, chartObj.xAxis, chartObj.yAxis, chartObj.groupType, chartObj.chartOptions)
         })
     }
+
     this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize) {
+
+    // this.create = function(id, chartType, xAxis, yAxis, groupType, chartOptions) {
         chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = element;
         var chartWidth = chartSize.width;
         var chartHeight = chartSize.height;
         var chartRadius = chartWidth < chartHeight ? chartWidth / 2 : chartHeight / 2;
-        //console.log(chartWidth, chartHeight, chartRadius);
-        ///var all = ndx.groupAll()
-
-
+        console.log("ARGS: ",arguments)
         var chartObj; //Used for storing all chart options
         var xAxisIsNumber; //Checks if the xAxis is number, and if it needs to be linear or ordinal
 
@@ -46,10 +40,10 @@ app.service('GraphService', function() {
                 d[xAxis] = Number(d[xAxis]);
                 xAxisIsNumber = true; //Checks if xaxis is ordinal or linear
             };
-            //console.log('d[xAxis: ',d[xAxis])
             return d[xAxis];
         });
 
+        //TODO: Allow for more group types, including 'none'
         if (groupType === "sum") {
             grp = dim.group().reduceSum(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
@@ -63,31 +57,16 @@ app.service('GraphService', function() {
                 return d[yAxis];
             });
         }
+
         // var grp = dim.group().reduceSum(function(d) {
         //     return d.HR;
         // })
         //var chart = dc[chartType](chartContainer);
-
-        var chart = dc[chartType](element);
-
-        //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
-        //Is there a way to find out what kind of chart it is by checking the instance itself?
-        charts['chart' + id] = {
-            chart: chart,
-            chartType: chartType,
-            id: id,
-            xAxis: xAxis,
-            yAxis: yAxis,
-            groupType: groupType,
-            chartOptions: chartOptions
-        };
-
-
+        console.log(element)
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
             chartObj.radius = chartRadius;
-
         } else if (chartType === "barChart") {
             //margins prevents axes labels from being cutoff
             chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber);
@@ -108,29 +87,43 @@ app.service('GraphService', function() {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "dataTable") {
-            chartObj = makeTableChartObject(chartOptions)
+            chartObj = makeTableChartObject(chartOptions, id, xAxis, yAxis)
+
+            //modify chartContainer:
+            var tableContainer = d3.select(chartContainer)
+            .attr('style', 'overflow: auto')
+            .append('table')
+                .attr('class', 'table table-hover')
+                .attr('id', 'dataTable-'+id)
+                .attr('style', 'table-layout: fixed')
+            //chartContainer = tableContainer[0];
+            chartContainer = $('#dataTable-'+id)[0]
+
         } else if (chartType === "dataCount") {
-            chartObj = makeDataCountChartObject(chartOptions)
+            chartObj = makeDataCountChartObject(chartOptions, xAxis, yAxis)
+        }
+
+        //set default options here if they dont already exist:
+        if(!chartObj.width) chartObj.width = chartWidth;
+        if(!chartObj.height) chartObj.width = chartHeight;
+        if(!chartObj.dimension) chartObj.dimension = dim;
+        if(!chartObj.group) chartObj.group = grp;
+
+
+        var chart = dc[chartType](chartContainer);
+        //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
+        //Is there a way to find out what kind of chart it is by checking the instance itself?
+        charts['chart' + id] = {
+            chart: chart,
+            chartType: chartType,
+            id: id,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            groupType: groupType,
+            chartOptions: chartOptions
         };
 
-        chartObj.width = chartWidth;
-        chartObj.height = chartHeight;
-        if (chartType === 'dataCount') {
-                chartObj.group = ndx.groupAll();
-                chartObj.dimension = ndx;
-                chartObj.html = {
-                some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-                    ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
-                all: 'All <strong>%total-count</strong> records selected.'
-            };
-        }
-        else {
-            chartObj.dimension = dim;
-            chartObj.group = grp;
-        }
-
-        //passing in graphCount(i.e. the id) to keep functions expected input the same for both graph
-        //creation and graph editing
+        console.log('chartObj: ',chartObj)
         createChart(id, chartObj)
 
         return charts['chart' + id];
@@ -175,7 +168,6 @@ app.service('GraphService', function() {
 
             dc.renderAll();
         }, 500)
-
     }
 
     //load data
@@ -184,17 +176,25 @@ app.service('GraphService', function() {
         ndx = crossfilter(dataSet);
     }
 
-
     //Function that takes chartId and renders it with all options
     function createChart(id, chartOptions) {
-        //Will be id instead of being hardcoded when switched to graph.service
         var chart = charts['chart' + id].chart;
+        console.log("CHART",chart)
         var keys = Object.keys(chartOptions);
         //debugger;
         keys.forEach(function(key) {
-            // console.log(key, ":", chartOptions[key])
+            console.log("KEY:",key)
+            console.log("val:",chartOptions[key])
+
             chart[key](chartOptions[key])
+
+            if(key==="on"){
+                chart[key].apply(null,chartOptions[key])
+            }else{
+                chart[key](chartOptions[key])
+            }
         });
+
         dc.renderAll();
     };
     //Pie Chart Option creator
@@ -328,31 +328,50 @@ app.service('GraphService', function() {
     };
 
     //Data Table Chart Option creator-has superfluous parameters for testing
-    function makeTableChartObject(chartOptions, numRows) {
-
+    function makeTableChartObject(chartOptions,id, x,y,numRows) {
         var tableChartOptions = {
 
-            columns: function(d) {
-                debugger;
-                return Object.keys(d);
+            //https://github.com/dc-js/dc.js/blob/master/web/docs/api-1.6.0.md#renderletrenderletfunction
+            //ADD CUSTOM CLASS TO LABEL ROWS
+            // on: ('renderlet'), function(table) {
+            //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('table table-hover', true);
+            //     console.dir(table);
+            // },
+            //  on: ['renderlet', function(table) {
+            //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('table table-hover', true);
+            //     console.dir(table);
+            // }],
+            sortBy: function(d) {
+                return d[y];
             },
-            size: numRows ? numRows : 20
-        }
+            columns: Object.keys(myData[0]),
+            group: function(d) {
+                return d[x] //create a new header for grouped values
+            },
+            order: d3.descending, //can be ascending and descending
+            size: numRows ? numRows : 10    //how many rows to display - make this dynamic based on widget height
+        };
 
         Object.keys(chartOptions).forEach(function(key) {
             tableChartOptions[key] = chartOptions[key];
         });
-
         return tableChartOptions;
     };
 
     function makeDataCountChartObject(chartOptions) {
-        var dataCountOptions = {};
+        var dataCountOptions = {
+            group : ndx.groupAll(),
+            dimension: ndx,
+            html : {
+                some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
+                    ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
+                all: 'All <strong>%total-count</strong> records selected.'
+            }
+        };
 
         Object.keys(chartOptions).forEach(function(key) {
             dataCountOptions[key] = chartOptions[key];
         });
-
         return dataCountOptions;
     }
 })

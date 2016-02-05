@@ -1,15 +1,24 @@
+<!-- <search-bar></search-bar> -->
 <div class="container">
     <div class="row">
-        <div class="col-xs-3">
+        <div>
             <label>Looking for anything in particular?</label>
+            <br>
             <input ng-model="searchText" type="text" placeholder="Search through all of our dashboards" size="33"></input>
         </div>
-        <div class="stream col-xs-9">
-            <div ng-repeat="dashboard in allDashboards | filter: searchText" class="dashboard">
-                <!-- snapshot of dashboard? -->
-                <h4>{{dashboard.title}}</h4>
-                <p>{{dashboard.tags}}</p>
-                <!-- short description of dashboard? -->
+        <div class="stream">
+            <div ng-repeat="dashboard in allDashboards | filter: searchText" class="dashboard-div">
+                <div class="dashboard-header">
+                    <h2 class="dashboard-title">{{dashboard.title}}</h2>
+                    <div class="dashboard-profile">
+                        <img class="user-photo" ng-src="{{dashboard.user.picture}}">
+                        <h5 class="user-name"><strong>{{dashboard.user.firstName}} {{dashboard.user.lastName}}</strong></h5>
+                        <h6 class="last-updated">{{dashboard.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</h6>
+                    </div> 
+                </div>
+                <img class="dashboard-screenshot" ng-src="/{{dashboard._id}}.png">
+                <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5>
+                <h5 class="dashboard-description">{{dashboard.dataset.shortDescription}}</h5>
             </div>
         </div>
     </div>
