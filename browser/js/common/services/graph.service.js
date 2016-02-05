@@ -12,8 +12,7 @@ app.service('GraphService', function() {
     var self = this;
     var ndx, myData, grp;
 
-    //Object to store all instances of chart to resize/edit specific chart
-    var charts = {};
+    var charts = {}; //Object to store all instances of chart to resize/edit specific chart
 
     this.populateCharts = function(widgetArr) {
         widgetArr.forEach(function(widgetObj) {
@@ -56,19 +55,8 @@ app.service('GraphService', function() {
             });
         }
 
-        var chart = dc[chartType]('#widget-container-' + id + '> .box-content > .widget-content-container');
 
-        //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
-        //Is there a way to find out what kind of chart it is by checking the instance itself?
-        charts['chart' + id] = {
-            chart: chart,
-            chartType: chartType,
-            id: id,
-            xAxis: xAxis,
-            yAxis: yAxis,
-            groupType: groupType,
-            chartOptions: chartOptions
-        };
+
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
@@ -93,7 +81,17 @@ app.service('GraphService', function() {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "dataTable") {
-            chartObj = makeTableChartObject(chartOptions)
+            chartObj = makeTableChartObject(chartOptions, id, xAxis, yAxis)
+
+            //modify chartContainer:
+            var tableContainer = d3.select(chartContainer)
+            .attr('style', 'overflow: auto')
+            .append('table')
+                .attr('class', 'table table-hover')
+                .attr('id', 'dataTable-'+id)
+                .attr('style', 'table-layout: fixed')
+            //chartContainer = tableContainer[0];
+            chartContainer = $('#dataTable-'+id)[0]
 
         } else if (chartType === "dataCount") {
             chartObj = makeDataCountChartObject(chartOptions, xAxis, yAxis)
@@ -104,6 +102,21 @@ app.service('GraphService', function() {
         if(!chartObj.height) chartObj.width = chartHeight;
         if(!chartObj.dimension) chartObj.dimension = dim;
         if(!chartObj.group) chartObj.group = grp;
+
+
+        var chart = dc[chartType](chartContainer);
+        //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
+        //Is there a way to find out what kind of chart it is by checking the instance itself?
+        charts['chart' + id] = {
+            chart: chart,
+            chartType: chartType,
+            id: id,
+            xAxis: xAxis,
+            yAxis: yAxis,
+            groupType: groupType,
+            chartOptions: chartOptions
+        };
+
         createChart(id, chartObj)
         return charts['chart' + id];
     };
@@ -162,7 +175,11 @@ app.service('GraphService', function() {
         //debugger;
         keys.forEach(function(key) {
             //console.log(key, ":", chartOptions[key])
-            chart[key](chartOptions[key])
+            if(key==="on"){
+                chart[key].apply(null,chartOptions[key])
+            }else{
+                chart[key](chartOptions[key])
+            }
         });
 
         dc.renderAll();
@@ -298,17 +315,23 @@ app.service('GraphService', function() {
     };
 
     //Data Table Chart Option creator-has superfluous parameters for testing
-    function makeTableChartObject(chartOptions,x,y,numRows) {
+    function makeTableChartObject(chartOptions,id, x,y,numRows) {
         var tableChartOptions = {
 
+            //https://github.com/dc-js/dc.js/blob/master/web/docs/api-1.6.0.md#renderletrenderletfunction
             //ADD CUSTOM CLASS TO LABEL ROWS
-            //.on('renderlet', function(table) {
-            //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('info', true);
-            // });
+            // on: ('renderlet'), function(table) {
+            //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('table table-hover', true);
+            //     console.dir(table);
+            // },
+            //  on: ['renderlet', function(table) {
+            //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('table table-hover', true);
+            //     console.dir(table);
+            // }],
             sortBy: function(d) {
                 return d[y];
             },
-            columns: Object.keys(myData[0]),    //TODO: define colArr here, not above.
+            columns: Object.keys(myData[0]),
             group: function(d) {
                 return d[x] //create a new header for grouped values
             },
