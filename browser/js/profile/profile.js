@@ -106,17 +106,14 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
                 return userDashboard._id === deletedDashboard._id;
             })[0];
             var idx = $scope.userDashboards.indexOf(userDashboardToDelete);
-            console.log("THIS IS IDx",idx)
             $scope.userDashboards.splice(idx, 1);
         })
         .then(null, console.error);
     };
 
     $scope.createDashboard = function(dataset) {
-        console.log("Dataset from controller:", dataset)
         return DashboardFactory.create({ user: $scope.user._id, dataset: dataset._id, title: dataset.title, shortDescription: dataset.shortDescription, isPublic: dataset.isPublic })
         .then(function(newDashboard){
-            console.log("newDashboard from controller", newDashboard)
             $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
         });
     };
