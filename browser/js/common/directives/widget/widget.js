@@ -8,13 +8,17 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             dashboard: '='
         },
         link: function (scope, element, attrs) {
-
+            var grid = $('.gridster')[0];
+            var gridWidth = grid.offsetWidth;
+            //Temporary size stuff
+            var graphSize = {
+                width: gridWidth/scope.widget.sizeX,
+                height: gridWidth/scope.widget.sizeY
+            }            
             var c = scope.widget.chartObject;
-
-            if (scope.widget.chartObject) {
-                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions);
+            if (c && c.chart) {
+                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize);
             }
-
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
                 scope.dashboard.widgets.splice(scope.dashboard.widgets.indexOf(widget), 1);
@@ -33,6 +37,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 WidgetFactory.update(widget);
             }
 
+            scope.element = element;
+
             scope.openSettings = function (widget, datasetId, graphTypeToCreate) {
                 $uibModal.open({
                     scope: scope,
@@ -47,6 +53,12 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                         },
                         dataset: function() {
                             return DatasetFactory.fetchOne(datasetId);
+                        },
+                        element: function(){
+                            return $(element).find('.widget-content-container')[0]
+                        },
+                        graphSize: function(){
+                            return graphSize;
                         }
                     }
                 });
@@ -58,7 +70,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             }
 
             scope.$on('gridster-item-transition-end', function (item) {
-                debugger;
                 var updatedWidget = {
                     col: item.targetScope.widget.col,
                     row: item.targetScope.widget.row,
