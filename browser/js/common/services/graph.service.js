@@ -11,7 +11,7 @@
 app.service('GraphService', function() {
     var self = this;
     var ndx, myData, grp;
-
+    var graphCount =0; //temp for debugging chartGroups
     var charts = {}; //Object to store all instances of chart to resize/edit specific chart
 
     this.populateCharts = function(widgetArr) {
@@ -22,18 +22,15 @@ app.service('GraphService', function() {
         })
     }
 
-    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize) {
-
+    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup) {
         chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = element;
         var chartWidth = chartSize.width;
         var chartHeight = chartSize.height;
         var chartRadius = chartWidth < chartHeight ? chartWidth / 2 : chartHeight / 2;
-        console.log("ARGS: ",arguments)
         var chartObj; //Used for storing all chart options
         var xAxisIsNumber; //Checks if the xAxis is number, and if it needs to be linear or ordinal
-
         var dim = ndx.dimension(function(d) {
             if (parseInt(d[xAxis])) {
                 d[xAxis] = Number(d[xAxis]);
@@ -61,7 +58,6 @@ app.service('GraphService', function() {
         //     return d.HR;
         // })
         //var chart = dc[chartType](chartContainer);
-        console.log(element)
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
@@ -107,19 +103,19 @@ app.service('GraphService', function() {
         if(!chartObj.height) chartObj.width = chartHeight;
         if(!chartObj.dimension) chartObj.dimension = dim;
         if(!chartObj.group) chartObj.group = grp;
-
-
-        var chart = dc[chartType](chartContainer);
+        
+        var chart = dc[chartType](chartContainer,chartGroup);
         //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
         //Is there a way to find out what kind of chart it is by checking the instance itself?
         charts['chart' + id] = {
-            chart: chart,
-            chartType: chartType,
+            chart: chart,//Actual chart (i.e. dc.pieChart()) instance
+            chartType: chartType, //Type of chart (i.e.pie,bar,etc)
             id: id,
-            xAxis: xAxis,
-            yAxis: yAxis,
-            groupType: groupType,
-            chartOptions: chartOptions
+            xAxis: xAxis, //User inputed value used for Dimension(dim)
+            yAxis: yAxis, //User submitted value used for Group (grp)
+            groupType: groupType, //User submitted action to be taken on group (i.e. reduceSum, count, etc)
+            chartOptions: chartOptions, //User submitted chart options
+            chartGroup: chartGroup //Chart group it belongs to, charts belonging to the same group will be effected by changes in each others charts
         };
 
         console.log('chartObj: ',chartObj)
@@ -155,6 +151,7 @@ app.service('GraphService', function() {
             if (!chartObj) return; //Short circuits if resizing empty widget
 
             var chart = chartObj.chart;
+            var chartGroup = chartObj.chartGroup;
 
             if (chartObj.chartType === "pieChart") {
                 chart
@@ -165,7 +162,7 @@ app.service('GraphService', function() {
                     .height(chartHeight * .8)
             }
 
-            dc.renderAll();
+            dc.renderAll(chartGroup);
         }, 500)
     }
 
@@ -178,13 +175,12 @@ app.service('GraphService', function() {
     //Function that takes chartId and renders it with all options
     function createChart(id, chartOptions) {
         var chart = charts['chart' + id].chart;
+        var chartGroup = charts['chart' + id].chartGroup;
+
         console.log("CHART",chart)
         var keys = Object.keys(chartOptions);
         //debugger;
         keys.forEach(function(key) {
-            console.log("KEY:",key)
-            console.log("val:",chartOptions[key])
-
             chart[key](chartOptions[key])
 
             if(key==="on"){
@@ -197,7 +193,7 @@ app.service('GraphService', function() {
             chart.colors(d3.scale.category20b())
         }
 
-        dc.renderAll();
+        dc.renderAll(chartGroup);
     };
     //Pie Chart Option creator
     function makePieChartObject(chartOptions) {
