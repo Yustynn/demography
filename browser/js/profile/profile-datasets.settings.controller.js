@@ -1,4 +1,4 @@
-app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, user, userDatasets, DatasetFactory) {
+app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootScope, $state, $uibModalInstance, user, userDatasets, DatasetFactory) {
 
     $scope.user = user;
     $scope.userDatasets = userDatasets;
@@ -20,6 +20,7 @@ app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootS
         .then(function(response) {
             $scope.userDatasets.push(response.data);
             $uibModalInstance.close();
+            $state.go('userDatasets');
         })
         .then(null, console.error);
     }
