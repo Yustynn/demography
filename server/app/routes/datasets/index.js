@@ -6,6 +6,7 @@ var DataSet = mongoose.model('DataSet');
 var _ = require('lodash');
 var fsp = require('fs-promise');
 var path = require('path');
+var flatten = require('flat');
 
 // Path where uploaded files are saved
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
@@ -43,6 +44,17 @@ var convertCsvToJson = function(rawFile) {
     });
 }
 
+var convertToFlatJson = function(rawFile) {
+    // If the json is an array of objects, return a flattened array
+    if (Array.isArray(rawFile)) {
+        return rawFile.map(function(row) {
+            return flatten(row, { safe: true });
+        });
+    } // If the json is one object, return the flattened object
+    else if (typeof rawFile === "object") return flatten(rawFile, { safe: true });
+    else return; // Otherwise return undefined
+}
+
 // Helper function to determine if the user in the search is the same as the user making the request
 var searchUserEqualsRequestUser = function(searchUser, requestUser) {
     return searchUser.toString() === requestUser._id.toString();
@@ -77,18 +89,16 @@ router.get("/:datasetId", function(req, res, next) {
             }
         }
 
-
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
-
 
         // Retrieve the file so it can be sent back with the metadata
         var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(rawFile => {
             // Convert csv file to a json object if needed
-            // BOBBY NOTE: Need to test this out when the file is json to start
-            var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
+            var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : convertToFlatJson(JSON.parse(rawFile));
+
             // Add the json as a property of the return object, so it an be sent with the metadata
             returnDataObject.jsonData = dataArray;
             res.status(200).json(returnDataObject);
@@ -133,7 +143,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
             .then(rawFile => {
                 // Convert csv file to a json object if needed
                 // BOBBY NOTE: Need to test this out when the file is json to start
-                var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
+                var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : convertToFlatJson(JSON.parse(rawFile));
 
                 // Add the json as a property of the return object, so it an be sent with the metadata
                 returnDataObject.jsonData = dataArray;
