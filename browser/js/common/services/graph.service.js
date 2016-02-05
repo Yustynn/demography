@@ -193,6 +193,9 @@ app.service('GraphService', function() {
                 chart[key](chartOptions[key])
             }
         });
+        if(chart.colors){
+            chart.colors(d3.scale.category20b())
+        }
 
         dc.renderAll();
     };

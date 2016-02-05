@@ -30,9 +30,13 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 widget.title = "Statistics";
                 widget.sizeX = 4;
                 widget.sizeY = 1;
+                graphSize = {
+                    width: gridWidth/widget.sizeX,
+                    height: gridWidth/widget.sizeY
+                }
                 //set width and height
 
-                var chartObj = GraphService.create(widget.id,'dataCount');
+                var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
                 widget.chartObject = chartObj;
                 WidgetFactory.update(widget);
             }
