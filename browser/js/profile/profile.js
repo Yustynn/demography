@@ -90,11 +90,22 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
     $scope.removeDataset = function(dataset) {
         DatasetFactory.delete(dataset)
         .then(function(deletedDataset) {
+            // Remove the dataset from the $scope array
             var userDatasetToDelete = $scope.userDatasets.filter(function(userDataset) {
                 return userDataset._id === deletedDataset._id;
             })[0];
-            var idx = $scope.userDatasets.indexOf(userDatasetToDelete);
-            $scope.userDatasets.splice(idx, 1);
+            var userDatasetsIndex = $scope.userDatasets.indexOf(userDatasetToDelete);
+            $scope.userDatasets.splice(userDatasetsIndex, 1);
+
+            // Remove the dashboards that associate with the dataset from the $scope array
+            var userDashboardsToDelete = $scope.userDashboards.filter(function(userDashboard) {
+                return userDashboard.dataset._id === deletedDataset._id;
+            });
+            $scope.userDashboards.forEach(function(dashboard, index) {
+                var indexToCheck = userDashboardsToDelete.indexOf(dashboard);
+                console.log("indexToCheck: ", indexToCheck);
+                if (indexToCheck > -1) $scope.userDashboards.splice(indexToCheck, 1);
+            });
         })
         .then(null, console.error);
     };
