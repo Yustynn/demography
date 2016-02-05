@@ -75,13 +75,10 @@ router.delete("/:id", ensureAuthenticated, function(req, res, next) {
     Dashboard.findById(req.params.id)
     .then(dashboard => {
         if (!searchUserEqualsRequestUser(dashboard.user, req.user)) res.status(401).send("You are not authorized to access this dashboard");
-        Dashboard.remove({ _id: req.params.id })
-        .then(function(response) {
-            res.status(200).send(dashboard);
-        }, function(err) {
-            err.message = "Something went wrong when trying to delete this dashboard";
-            next(err);
-        });
+        return dashboard.remove();
+    })
+    .then(dashboard => {
+        res.status(200).send(dashboard);
     })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to delete this dashboard";

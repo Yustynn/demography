@@ -55,7 +55,7 @@ router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
     var queryObject = req.query;
 
-    if (queryObject.user && !searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject["isPublic"] = true;
+    if (queryObject.user && !searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = true;
 
     DataSet.find(queryObject)
     .then(datasets => res.status(200).json(datasets))
@@ -90,7 +90,7 @@ router.get("/:datasetId", function(req, res, next) {
             // BOBBY NOTE: Need to test this out when the file is json to start
             var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
             // Add the json as a property of the return object, so it an be sent with the metadata
-            returnDataObject["jsonData"] = dataArray;
+            returnDataObject.jsonData = dataArray;
             res.status(200).json(returnDataObject);
         });
     })
@@ -136,7 +136,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
                 var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : JSON.parse(rawFile);
 
                 // Add the json as a property of the return object, so it an be sent with the metadata
-                returnDataObject["jsonData"] = dataArray;
+                returnDataObject.jsonData = dataArray;
 
                 res.status(201).json(returnDataObject);
             });
@@ -170,21 +170,18 @@ router.put("/:datasetId", function(req, res, next) {
 // DELETE /api/datasets/:datasetId
 // BOBBY NOTE: Do we need a separate route to update the metadate and the file in the filesystem?
 router.delete("/:datasetId", function(req, res, next) {
+    var filePath;
     DataSet.findById(req.params.datasetId)
     .then(dataset => {
         // Throw an error if a different user tries to delete dataset
         if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
-        var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
-        DataSet.remove({ _id: dataset._id })
-        .then(function(response) {
-            fsp.unlink(filePath);
-        }, function(err) {
-            return next(err);
-        });
-
-        return dataset; // BOBBY NOTE: Sending back the dataset so we can remove it from the scope array
+        filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        return dataset.remove();
     })
-    .then(dataset => res.status(200).send(dataset))
+    .then(dataset => {
+        fsp.unlink(filePath);
+        res.status(200).send(dataset);
+    })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to delete this dataset";
         next(err);
