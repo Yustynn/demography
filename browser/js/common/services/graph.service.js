@@ -24,7 +24,6 @@ app.service('GraphService', function() {
 
     this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize) {
 
-    // this.create = function(id, chartType, xAxis, yAxis, groupType, chartOptions) {
         chartOptions = {}; //initialize for now to be empty, users will eventually submit this
         //Gets called after data load, accepts array of chartObjects
         var chartContainer = element;
@@ -93,9 +92,9 @@ app.service('GraphService', function() {
             var tableContainer = d3.select(chartContainer)
             .attr('style', 'overflow: auto')
             .append('table')
-                .attr('class', 'table table-hover')
+                .attr('class', 'table table-hover table-bordered table-condensed')  //http://getbootstrap.com/css/#tables-responsive
                 .attr('id', 'dataTable-'+id)
-                .attr('style', 'table-layout: fixed')
+                //.attr('style', 'table-layout: fixed')
             //chartContainer = tableContainer[0];
             chartContainer = $('#dataTable-'+id)[0]
 
@@ -349,7 +348,7 @@ app.service('GraphService', function() {
                 return d[x] //create a new header for grouped values
             },
             order: d3.descending, //can be ascending and descending
-            size: numRows ? numRows : 10    //how many rows to display - make this dynamic based on widget height
+            size: numRows ? numRows : 1000    //how many rows to display
         };
 
         Object.keys(chartOptions).forEach(function(key) {
