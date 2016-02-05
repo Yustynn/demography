@@ -24,6 +24,10 @@ body {
     margin-top: 30px;
 }
 
+.md-spacer {
+    margin-top: 45px;
+}
+
 .big-spacer {
     margin-top: 60px;
 }
@@ -35,5 +39,3 @@ body {
 @import 'signup/main';
 @import 'profile/main';
 @import 'stream/main';
-@import 'searchBar/main';
-

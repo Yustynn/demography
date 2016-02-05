@@ -1,10 +1,10 @@
-@import '../variables';
 .navbar {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
     z-index: 1000;
+    margin-bottom: 0px;
     .navbar-brand {
         margin-right: 30px;
     }
