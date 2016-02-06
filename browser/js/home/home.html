@@ -6,8 +6,8 @@
                 <h1 id="main-search-page-subHeader">Dash.js helps you interpret it</h1>
                 <div class="input-group">
                     <div class="input-group-btn">
-                        <button class="btn btn-primary btn-lg" type="button submit">Sign Up</button>
-                        <button class="btn btn-primary btn-lg" type="button submit">Explore</button>
+                        <button ui-sref="signup" class="btn btn-primary btn-lg" type="button submit">Sign Up</button>
+                        <button ui-sref="stream" class="btn btn-primary btn-lg" type="button submit">Explore</button>
                     </div>
                 </div>
             </div>
@@ -52,34 +52,3 @@
     </div>
 </section>
 </div>
-<!-- 
-<section id="home">
-    <rando-greeting></rando-greeting>
-    <button ng-click="loadData()">Load Data</button>
-    
-    <form ng-submit="createGraph(selection.chart,selection.x,selection.y,selection.group,{})">
-        Chart Type
-        <select  ng-model="selection.chart">
-            <option ng-repeat="option in ['pieChart','barChart','rowChart']">{{option}}</option>
-        </select>
-        X-axis
-        <select ng-model="selection.x">
-            <option ng-repeat="option in optionArray">{{option}}</option>
-        </select>
-        Y-axis
-        <select ng-model="selection.y">
-            <option ng-repeat="option in optionArray">{{option}}</option>
-        </select>
-        Group Type
-        <select ng-model="selection.group">
-            <option ng-repeat="option in ['sum','count']">{{option}}</option>
-        </select>
-        Submit
-        <input type="submit">
-    </form>
-    <button ng-click="resize()"></button>
-    <div class="col-xs-6 gridContainer">
-        <div ui-grid="{data: myData,columnDefs: myDefs}" class="myGrid"></div>
-    </div>
-</section>
- -->
