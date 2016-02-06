@@ -1,4 +1,5 @@
 'use strict';
+
 var router = require('express').Router();
 module.exports = router;
 var mongoose = require('mongoose');
@@ -7,58 +8,10 @@ var _ = require('lodash');
 var fsp = require('fs-promise');
 var path = require('path');
 var flatten = require('flat');
+var routeUtility = require('../route-utilities.js');
 
 // Path where uploaded files are saved
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
-
-// Helper function to construct a file path
-var getFilePath = function(userId, datasetId, fileType) {
-    if (fileType === "text/csv") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.csv';
-    else if (fileType === "application/json") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.json';
-}
-
-// Helper function to convert csv to json
-var convertCsvToJson = function(rawFile) {
-    var fileStr = rawFile.toString();
-    var rawDataArray = fileStr.split("\n").map(function(line, index) {
-        return line.split(",").map(function(cell){
-            return cell.replace(/^\s+|\s+$/g,'');   //trim whitespace
-        });
-    });
-    var headerArray = rawDataArray.shift();
-
-    //recursively remove empty rows:
-    var cleanCounter = 0;
-    while(rawDataArray[rawDataArray.length-1][0] === ""){
-        rawDataArray.pop();
-        cleanCounter++
-    }
-    if (cleanCounter > 0) console.log("removed", cleanCounter, "invalid rows from the CSV");
-
-    return rawDataArray.map(function(line) {
-        var dataFieldObject = {};
-        line.forEach(function(item, index) {
-            dataFieldObject[headerArray[index]] = item;
-        });
-        return dataFieldObject;
-    });
-}
-
-var convertToFlatJson = function(rawFile) {
-    // If the json is an array of objects, return a flattened array
-    if (Array.isArray(rawFile)) {
-        return rawFile.map(function(row) {
-            return flatten(row, { safe: true });
-        });
-    } // If the json is one object, return the flattened object
-    else if (typeof rawFile === "object") return flatten(rawFile, { safe: true });
-    else return; // Otherwise return undefined
-}
-
-// Helper function to determine if the user in the search is the same as the user making the request
-var searchUserEqualsRequestUser = function(searchUser, requestUser) {
-    return searchUser.toString() === requestUser._id.toString();
-}
 
 // Route to retrieve all datasets
     // This sends metadata only. The GET /:datasetId will need to be used to access the actual data
@@ -67,7 +20,7 @@ router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
     var queryObject = req.query;
 
-    if (queryObject.user && !searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = true;
+    if (queryObject.user && !routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = true;
 
     DataSet.find(queryObject)
     .then(datasets => res.status(200).json(datasets))
@@ -84,7 +37,7 @@ router.get("/:datasetId", function(req, res, next) {
     .then(dataset => {
         // Throw an error if a different user tries to access a private dataset
         if (!req.headers['user-agent'].includes("PhantomJS")) {
-            if (!searchUserEqualsRequestUser(dataset.user, req.user) && !dataset.isPublic) {
+            if (!routeUtility.searchUserEqualsRequestUser(dataset.user, req.user) && !dataset.isPublic) {
                 return res.status(401).send("You are not authorized to access this dataset");
             }
         }
@@ -93,11 +46,11 @@ router.get("/:datasetId", function(req, res, next) {
         returnDataObject = dataset.toJSON();
 
         // Retrieve the file so it can be sent back with the metadata
-        var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        var filePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(rawFile => {
             // Convert csv file to a json object if needed
-            var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : convertToFlatJson(JSON.parse(rawFile));
+            var dataArray = dataset.fileType === "text/csv" ? routeUtility.convertCsvToJson(rawFile) : routeUtility.convertToFlatJson(JSON.parse(rawFile));
 
             // Add the json as a property of the return object, so it an be sent with the metadata
             returnDataObject.jsonData = dataArray;
@@ -135,15 +88,14 @@ router.post('/', upload.single('file'), function(req, res, next) {
 
         // Rename the file saved to the filesystem so it follows proper naming convention
         originalFilePath = req.file.path;
-        newFilePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        newFilePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
         fsp.rename(originalFilePath, newFilePath)
         .then(response => {
             // Retrieve the file so it can be sent back with the metadata
             fsp.readFile(newFilePath, { encoding: 'utf8' })
             .then(rawFile => {
                 // Convert csv file to a json object if needed
-                // BOBBY NOTE: Need to test this out when the file is json to start
-                var dataArray = dataset.fileType === "text/csv" ? convertCsvToJson(rawFile) : convertToFlatJson(JSON.parse(rawFile));
+                var dataArray = dataset.fileType === "text/csv" ? routeUtility.convertCsvToJson(rawFile) : routeUtility.convertToFlatJson(JSON.parse(rawFile));
 
                 // Add the json as a property of the return object, so it an be sent with the metadata
                 returnDataObject.jsonData = dataArray;
@@ -166,8 +118,8 @@ router.put("/:datasetId", function(req, res, next) {
     DataSet.findById(req.params.datasetId)
     .then(dataset => {
         // Throw an error if a different user tries to update dataset
-        if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
-        var filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        if (!routeUtility.searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
+        var filePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(file => res.status(200).send("Ability to update file is TBU"))
     }).then(null, function(err) {
@@ -184,8 +136,8 @@ router.delete("/:datasetId", function(req, res, next) {
     DataSet.findById(req.params.datasetId)
     .then(dataset => {
         // Throw an error if a different user tries to delete dataset
-        if (!searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
-        filePath = getFilePath(dataset.user, dataset._id, dataset.fileType);
+        if (!routeUtility.searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
+        filePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
         return dataset.remove();
     })
     .then(dataset => {

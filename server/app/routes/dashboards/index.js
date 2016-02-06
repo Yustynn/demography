@@ -1,8 +1,11 @@
+'use strict'
+
 var mongoose = require('mongoose');
 var Dashboard = mongoose.model('Dashboard');
 var Widget = mongoose.model('Widget');
 var router = require('express').Router();
 module.exports = router;
+var routeUtility = require('../route-utilities.js');
 
 var ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
@@ -11,11 +14,6 @@ var ensureAuthenticated = function (req, res, next) {
         res.status(401).send("You are not authenticated");
     }
 };
-
-// Helper function to determine if the user in the search is the same as the user making the request
-var searchUserEqualsRequestUser = function(searchUser, requestUser) {
-    return searchUser.toString() === requestUser._id.toString();
-}
 
 // /api/dashboards/?filterCriteria=XYZ
 router.get("/", function (req, res, next) {
@@ -74,7 +72,7 @@ router.put("/:id", ensureAuthenticated, function(req, res, next) {
 router.delete("/:id", ensureAuthenticated, function(req, res, next) {
     Dashboard.findById(req.params.id)
     .then(dashboard => {
-        if (!searchUserEqualsRequestUser(dashboard.user, req.user)) res.status(401).send("You are not authorized to access this dashboard");
+        if (!routeUtility.searchUserEqualsRequestUser(dashboard.user, req.user)) res.status(401).send("You are not authorized to access this dashboard");
         return dashboard.remove();
     })
     .then(dashboard => {
