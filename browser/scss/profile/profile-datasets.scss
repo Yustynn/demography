@@ -1,4 +1,4 @@
-#dataset-summary-container {
+.dataset-summary-container {
     margin-top: 21px;
     .dataset-summary {
         .dataset-title {
@@ -39,5 +39,9 @@
         display: inline-block;
         width: 175px;
         text-align: left;
+    }
+
+    .hr-hack {
+        color: white;
     }
 }

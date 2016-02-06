@@ -1,23 +1,15 @@
-<!-- <div ng-repeat="dashboard in userDashboards">
-    <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })"><h3>{{dashboard.title}}</h3></a>
-    <button ng-click="removeDashboard(dashboard)">Remove dashboard</button>
-</div>
-
- -->
-<div class="container">
-    <div class="row">
-        <div>
-            <label>Looking for anything in particular?</label>
-            <br>
-            <input ng-model="searchText" type="text" placeholder="Search through all of your dashboards" size="33"></input>
-        </div>
-        <div ng-repeat="dashboard in userDashboards | filter: searchText" class="profile-dashboard">
-            <h2 class="dashboard-title">{{dashboard.title}}</h2>
-            <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })"><h3><img ng-src="/{{dashboard._id}}.png"></h3></a>
-            <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5>
-            <h5 class="dashboard-description">{{dashboard.dataset.shortDescription}}</h5>
-            <h6 class="dashboard-last-updated">{{dashboard.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</h6>
-            <button ng-click="removeDashboard(dashboard)">Remove dashboard</button>
-        </div>
+<div class="spacer"></div>
+<div id="search-and-filter" class="clearfix">
+    <div class="form-group">
+        <i class="fa fa-search"></i>
+        <input type="text" ng-model="searchText" class="form-control" placeholder="Search through all of our dashboards">
     </div>
+</div>
+<div ng-repeat="dashboard in userDashboards | filter: searchText" class="profile-dashboard">
+    <h2 class="dashboard-title">{{dashboard.title}}</h2>
+    <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })"><h3><img ng-src="/{{dashboard._id}}.png"></h3></a>
+    <p class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></p>
+    <p class="dashboard-description">{{dashboard.dataset.shortDescription}}</p>
+    <p class="dashboard-last-updated">Updated on {{dashboard.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</p>
+    <button class="btn btn-danger pull-left" ng-click="removeDashboard(dashboard)"><i class="fa fa-trash-o"></i>Remove dashboard</button>
 </div>

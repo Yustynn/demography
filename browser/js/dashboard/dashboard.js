@@ -32,8 +32,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;  //dont want to expose this
 
-    var editMode = true;
-
     if($scope.dashboard.widgets) {
         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
@@ -43,8 +41,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.dashboard.widgets = [];
         $scope.dashboard.nextWidgetId = 0;
     }
-
-    $scope.editMode = false;
 
     //set name for display
     if(currentDashboard.user.firstName && currentDashboard.user.lastName) {
@@ -67,6 +63,14 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
                 GraphService.resize(c.id);
                 //Probably want to pass in the widget size vs finding size inside of the function
+                var updatedWidget = {
+                    col: c.col,
+                    row: c.row,
+                    sizeX: c.sizeX,
+                    sizeY: c.sizeY,
+                    _id: c._id
+                };
+                WidgetFactory.update(updatedWidget);    //no ().then necessary here
             },
             handles: ['s', 'w', 'se', 'sw']
         },
@@ -79,34 +83,12 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
 
-
-    // $scope.toggleEditMode = function() {
-    //     $scope.editMode = !$scope.editMode;
-    //     $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
-    //     $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
-    //     if(!$scope.editMode) {
-    //         //whenever a user locks a dashboard, take a screenshot
-    //         DashboardFactory.takeScreenshot($stateParams)
-    //     }
-    // };
-
-    // $scope.getEditMode = function() {
-    //     return editMode;
-    // }
-
-    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    //     if(fromState.name === "dashboard") {
-
-    //     }
-    // })
-
     $scope.$on('$destroy', function () {
-        DashboardFactory.takeScreenshot($stateParams)
+        if($scope.dashboards.widgets) DashboardFactory.takeScreenshot($stateParams)
     })
 
-
     $scope.addWidget = function() {
-        editMode = true;
+
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
@@ -129,14 +111,5 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     };
 
-    var renderGraphs = function(){
-        setTimeout(function(){
-            GraphService.populateCharts($scope.dashboard.widgets.filter(function(widget){
-                return widget.type === 'graph';
-            }));
-
-        }, 800);
-    };
     GraphService.loadData(currentDataset.jsonData)
-    renderGraphs();
 });
