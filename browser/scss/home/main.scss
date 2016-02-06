@@ -55,10 +55,12 @@
         }
     }
     #company-description {
-        background: url(http://hdwallpapersfit.com/wp-content/uploads/2015/04/dark-background.jpg) no-repeat center center;
-        background-size: cover;
+        background-color: #222222;
+        /*background: url(http://hdwallpapersfit.com/wp-content/uploads/2015/04/dark-background.jpg) no-repeat center center;*/
+        /*background-size: cover;*/
+        height: 60px;
         margin-top: 80px;
-        .glyphicon {
+     /*   .glyphicon {
             margin-top: 50px;
             font-size: 100px;
             text-align: center;
@@ -78,6 +80,42 @@
             color: white;
             display: block;
             margin: 0 auto;
+        }*/
+        div {
+            /*margin-left: 20px;*/
+            /*margin-right: auto;
+            margin-left: auto;*/
+            h2 {
+                display: inline-block;
+                /*padding-top: 10px;*/
+                /*margin: 20px;*/
+                margin-left: 60px;
+                color: white;
+                margin-bottom: 0px;
+                margin-top: 10px;
+            }
+            h4 {
+                margin-bottom: 0px;
+                margin-top: 10px;
+                display: inline-block;
+                color: white;
+                margin-left: 8px;
+                /*text-align: center;*/
+            }
+            h3 {
+                margin-bottom: 0px;
+                margin-top: 10px;
+                display: inline-block;
+                color: white;
+                margin-left: 8px;
+            }
+            h8 {
+                font-size: 80%;
+                display: inline-block;
+                /*float: left;*/
+                color: gray;
+                margin-left: 400px;
+            }
         }
     }
 }

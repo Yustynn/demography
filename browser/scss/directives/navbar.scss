@@ -6,9 +6,16 @@
     z-index: 1000;
     margin-bottom: 0px;
     .navbar-brand {
+        margin-left: -55px;
         margin-right: 30px;
     }
     .glyphicon {
         color: white;
+    }
+    img {
+        width: 25%;
+        display: inline;
+        margin-right: 5px;
+        margin-bottom: 3px;
     }
 }
