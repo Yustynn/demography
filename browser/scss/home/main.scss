@@ -1,34 +1,35 @@
 #home {
+    margin-top: -40px;
     h1 {
         margin-top: 40px;
         text-align: center;
     }
     #main-search {
-        height: 100vh;
-        background: url(/data/graph.jpeg) no-repeat center center;
+        height: 87vh;
+        background: url(/data/home-image.png) no-repeat center center;
+        opacity: 0.85;
         background-size: cover;
         #main-search-page-header {
             font-size: 52px;
-            margin-top: 150px;
-            color: black;
+            margin-top: 320px;
+            color: #FFFFFF;
         }
         #main-search-page-subHeader {
             font-size: 42px;
             margin-top: 20px;
-            color: black;
+            color: #FFFFFF;
+        }
+        .btn {
+            background-color: black;
         }
         .input-group {
-            margin-top: 125px;
+            text-align: center;
+            margin-top: 10px;
         }
         button {
-            font-size: 24px;
-            &:active,
-            &:focus {
-                background: blue;
-            }
-        }
-        .right {
-            float: right
+            margin: 30px;
+            font-size: 18px;
+            border-color: white;
         }
     }
     #marketplace {
@@ -38,7 +39,12 @@
             margin-top: 100px;
         }
         img {
-            width: 100%;
+            display: block;
+            max-width: 100%; 
+            height: auto;
+            margin-top: 170px;
+            margin-left: auto;
+            margin-right: auto;
         }
         p {
             font-weight: normal;
@@ -49,29 +55,37 @@
         }
     }
     #company-description {
-        background: url(http://hdwallpapersfit.com/wp-content/uploads/2015/04/dark-background.jpg) no-repeat center center;
-        background-size: cover;
+        background-color: #222222;
+        height: 60px;
         margin-top: 80px;
-        .glyphicon {
-            margin-top: 50px;
-            font-size: 100px;
-            text-align: center;
-        }
-        h3 {
-            color: white;
-            text-align: center;
-            padding-bottom: 18px;
-            font-weight: bold;
-        }
-        p {
-            color: blue;
-            text-align: center;
-            font-size: 16px;
-        }
-        i {
-            color: white;
-            display: block;
-            margin: 0 auto;
+        div {
+            h2 {
+                display: inline-block;
+                margin-left: 60px;
+                color: white;
+                margin-bottom: 0px;
+                margin-top: 10px;
+            }
+            h4 {
+                margin-bottom: 0px;
+                margin-top: 10px;
+                display: inline-block;
+                color: white;
+                margin-left: 8px;
+            }
+            h3 {
+                margin-bottom: 0px;
+                margin-top: 10px;
+                display: inline-block;
+                color: white;
+                margin-left: 8px;
+            }
+            h8 {
+                font-size: 80%;
+                display: inline-block;
+                color: gray;
+                margin-left: 400px;
+            }
         }
     }
 }
