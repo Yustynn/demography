@@ -4,33 +4,57 @@
 }
 
 .box-content {
-    width:100%;
-    height:100%;
-    padding:10px;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
 }
 
 .widget-content-container {
-    clear:both;
-    width:100%;
-    height:100%;
+    clear: both;
+    width: 100%;
+    height: 100%;
 }
 
 .dc-chart {
-	text-align: center;
-	overflow: hidden;
+    text-align: center;
+    overflow: hidden;
 }
 
 .dc-table-label {
-    background: #5BC0DE;    /*bootstrap info*/
+    background: #5BC0DE;
+    /*bootstrap info*/
     font-size: 1.3em;
-/*    font-weight: bold;*/
+    /*    font-weight: bold;*/
     text-transform: uppercase;
     text-align: left;
     padding-left: 15px;
 }
+
 .dc-table-head {
     font-size: 1.1em;
-/*    font-weight: bold;*/
+    /*    font-weight: bold;*/
     text-transform: uppercase;
     text-align: center;
 }
+
+.colorSelect {
+    height: 80px;
+    width: 100px;
+    overflow: auto;
+    my-color {
+        font-style: none;
+        height: 18px;
+        width: 17px;
+        display: inline-block;
+        margin: 0px;
+        padding: 1px;
+        
+        &.active {
+            border: solid 1px black;
+        }
+    }
+}
+
+// .active {
+//     background-color: black;
+// }

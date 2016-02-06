@@ -9,8 +9,10 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             return {key: key};
         })
     };
-
+    //This will be an map with different themes, for now a single array
+    $scope.colorOptions = ['#3182bd','#6baed6','#9ecae1', '#c6dbef','#e6550d','#fd8d3c','#fdae6b','#fdd0a2','#31a354','#74c476','#a1d99b','#c7e9c0','#756bb1','#9e9ac8','#bcbddc','#dadaeb','#636363','#969696','#bdbdbd','#d9d9d9']
     //$scope.groupOptions = [{val:'sum'}, {val:'count'}];
+ 
 
     var selection = {
         group:'count'
@@ -47,11 +49,10 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
         $uibModalInstance.close(widget);
-        console.log(widget)
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group,{},graphSize,widget.graphGroup);
+           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group,{},graphSize,widget.graphGroup,widget.color);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);

@@ -101,7 +101,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     // })
 
     $scope.$on('$destroy', function () {
-        DashboardFactory.takeScreenshot($stateParams)
+        if($scope.dashboards.widgets) DashboardFactory.takeScreenshot($stateParams)
     })
 
 
