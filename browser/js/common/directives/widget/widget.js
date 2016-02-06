@@ -17,7 +17,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             }
             var c = scope.widget.chartObject;
             if (c && c.chart) {
-                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup);
+                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
             }
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
@@ -30,9 +30,13 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 widget.title = "Statistics";
                 widget.sizeX = 4;
                 widget.sizeY = 1;
+                graphSize = {
+                    width: gridWidth/widget.sizeX,
+                    height: gridWidth/widget.sizeY
+                }
                 //set width and height
 
-                var chartObj = GraphService.create(widget.id,'dataCount');
+                var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
                 widget.chartObject = chartObj;
                 WidgetFactory.update(widget);
             }

@@ -15,8 +15,7 @@ app.service('GraphService', function() {
         })
     }
 
-
-    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup) {
+    this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup,colorSettings) {
         chartOptions = chartOptions ? chartOptions : {}; //initialize for now to be empty, users will eventually submit this
 
         //Gets called after data load, accepts array of chartObjects
@@ -49,30 +48,28 @@ app.service('GraphService', function() {
             });
         }
 
-        // var grp = dim.group().reduceSum(function(d) {
-        //     return d.HR;
-        // })
-        //var chart = dc[chartType](chartContainer);
-
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
             chartObj.radius = chartRadius;
         } else if (chartType === "barChart") {
             //margins prevents axes labels from being cutoff
-            chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber);
+            debugger;
+            chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartWidth) {
                 chartObj.gap = chartWidth * .5 / size;
             }
         } else if (chartType === "rowChart") {
-            chartObj = makeRowChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber);
+            debugger;
+            chartObj = makeRowChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartHeight) {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "lineChart") {
-            chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber);
+
+            chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings)
             var size = dim.group().size();
             if (chartObj.gap * size >= chartHeight) {
                 chartObj.gap = chartHeight * .5 / size;
@@ -123,10 +120,13 @@ app.service('GraphService', function() {
             yAxis: yAxis, //User submitted value used for Group (grp)
             groupType: groupType, //User submitted action to be taken on group (i.e. reduceSum, count, etc)
             chartOptions: chartOptions, //User submitted chart options
-            chartGroup: chartGroup //Chart group it belongs to, charts belonging to the same group will be effected by changes in each others charts
+            chartGroup: chartGroup, //Chart group it belongs to, charts belonging to the same group will be effected by changes in each others charts
+            colorSettings: colorSettings
         };
 
+
         createChart(id, chartObj);
+
         return charts['chart' + id];
     };
 
@@ -185,16 +185,14 @@ app.service('GraphService', function() {
 
 
         var keys = Object.keys(chartOptions);
-        //debugger;
         keys.forEach(function(key) {
             if(key==="on"){
                 chart[key].apply(null,chartOptions[key])
             }else{
-                if (chart[key]) {
+                if (chart[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
                     chart[key](chartOptions[key])
                 }
 
-        // console.log("CHART", chart);
         // var keys = Object.keys(chartOptions);
         // //debugger;
         // keys.forEach(function(key) {
@@ -234,7 +232,7 @@ app.service('GraphService', function() {
     };
 
     //Bar Chart Option creator-has superfluous parameters for testing
-    function makeBarChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
+    function makeBarChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber,colorSettings) {
 
 
         var barChartOptions = {
@@ -288,11 +286,12 @@ app.service('GraphService', function() {
             barChartOptions[key] = chartOptions[key];
         });
 
-        return barChartOptions;
+        return setColor(barChartOptions,colorSettings);
+
     };
 
     //Row Chart Option creator-has superfluous parameters for testing
-    function makeRowChartObject(chartOptions, x, y, userDimension, userGroup) {
+    function makeRowChartObject(chartOptions, x, y, userDimension, userGroup,xAxisIsNumber,colorSettings) {
 
         var rowChartOptions = {
             title: function(d) { //defaults to key : value
@@ -312,11 +311,13 @@ app.service('GraphService', function() {
             rowChartOptions[key] = chartOptions[key];
         })
 
-        return rowChartOptions;
+        return setColor(rowChartOptions,colorSettings);
+
+        // return setColor(rowChartOptions,colorSettings);
     };
 
     //Line Chart
-    function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber) {
+    function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber,colorSettings) {
         var lineChartOptions = {
             transitionDuration: 500,
             mouseZoomable: false, //need to better understand
@@ -347,7 +348,7 @@ app.service('GraphService', function() {
             lineChartOptions[key] = chartOptions[key];
         })
 
-        return lineChartOptions;
+        return setColor(lineChartOptions,colorSettings);
     };
 
     //Data Table Chart Option creator-has superfluous parameters for testing
@@ -397,5 +398,33 @@ app.service('GraphService', function() {
             dataCountOptions[key] = chartOptions[key];
         });
         return dataCountOptions;
+    }
+
+    function setColor (chartObj,colorSettings){
+
+        /*
+        colorSettings takes form of {
+            colorChoice: [colors], Array of colors, even if just one, needs to be array
+            style: ['solid','gradient','theme','breakpoint'] one of these, can add more
+            options: (if breakpoint, we need to set a breakpoint, etc, this can change/should change)
+            //options can be the way to control any programatic assignment of colors
+        }
+        */
+        debugger;
+        if(colorSettings){
+            debugger;
+            if(colorSettings.style==='solid'){
+                debugger;
+                chartObj.colors = colorSettings.color;
+            }else if(colorSettings.style === 'theme'){
+                chartObj.colors = colorSettings.colorChoice
+            } else if(colorSettings.style === 'gradient'){
+
+            }
+        }else{
+            chartObj.colors = d3.scale.category20c(); //Sets default color scheme
+        }
+
+        return chartObj;
     }
 })

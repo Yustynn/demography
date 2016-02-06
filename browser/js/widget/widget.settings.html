@@ -67,6 +67,29 @@
                 </div>
 
             </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Style">Choose a style</label>
+                        <select name="Style" ng-model="form.color.style">
+                            <option value="solid">Solid</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <h3>Color</h3>
+                        <div class="colorSelect">
+                            <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
+                        </div>
+                        
+                        <!-- <select ng-model="form.color.color">
+                            <option ng-repeat="color in colorOptions" style='background-color: red'>{{color}}</option>
+                        </select> -->
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="modal-footer">
             <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
