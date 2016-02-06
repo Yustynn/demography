@@ -39,8 +39,12 @@
             margin-top: 100px;
         }
         img {
-            margin-top: 50px;
-            width: 80%;
+            display: block;
+            max-width: 100%; 
+            height: auto;
+            margin-top: 180px;
+            margin-left: auto;
+            margin-right: auto;
         }
         p {
             font-weight: normal;
