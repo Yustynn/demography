@@ -2,9 +2,10 @@
 app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
+    console.log($scope.chartType)
     //TODO: dropdown for labels from dataset once we have data loaded
     $scope.axisDropdowns = {
-        availableOptions : Object.keys(dataset.jsonData[0])
+        objectKeys : Object.keys(dataset.jsonData[0])
         .map(function(key){
             return {key: key};
         })
@@ -12,7 +13,9 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     //This will be an map with different themes, for now a single array
     $scope.colorOptions = ['#3182bd','#6baed6','#9ecae1', '#c6dbef','#e6550d','#fd8d3c','#fdae6b','#fdd0a2','#31a354','#74c476','#a1d99b','#c7e9c0','#756bb1','#9e9ac8','#bcbddc','#dadaeb','#636363','#969696','#bdbdbd','#d9d9d9']
     //$scope.groupOptions = [{val:'sum'}, {val:'count'}];
- 
+
+    var selectedColumns = [];
+    angular.copy($scope.axisDropdowns.objectKeys, selectedColumns);
 
     var selection = {
         group:'count'
@@ -22,12 +25,15 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         options: WidgetFactory.getGraphGroups()
     }
     //2-way binding!
+
     $scope.form = {
         title: widget.title,    //update title
         labelX: widget.labelX,  //update data on X
         labelY: widget.labelY,   //update data on Y
         group: selection.group,
-        graphGroup: 'Group1'
+        graphGroup: 'Group1',
+        orderBy: 'ascending',
+        columns: selectedColumns
     };
 
     $scope.addGraphGroup = function() {
@@ -48,14 +54,19 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
 
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
+        //debugger;
         $uibModalInstance.close(widget);
+
+        var _chartOptions = {
+            order: $scope.form.orderBy ? d3[$scope.form.orderBy] : d3.ascending,
+            columns: $scope.form.columns.length > 0 ? $scope.form.columns.map(function(col){return col.key; }) : null
+        };
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
             //'TEAM', 'AB'
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,$scope.form.group,{},graphSize,widget.graphGroup,widget.color);
+           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup);
            widget.chartObject = chartObj;
         }
         WidgetFactory.update(widget);
     };
-
 });

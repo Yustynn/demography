@@ -67,6 +67,14 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
                 GraphService.resize(c.id);
                 //Probably want to pass in the widget size vs finding size inside of the function
+                var updatedWidget = {
+                    col: c.col,
+                    row: c.row,
+                    sizeX: c.sizeX,
+                    sizeY: c.sizeY,
+                    _id: c._id
+                };
+                WidgetFactory.update(updatedWidget);    //no ().then necessary here
             },
             handles: ['s', 'w', 'se', 'sw']
         },
@@ -78,27 +86,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         mobileBreakPoint: 600, // if the screen is not wider that this, remove the grid layout and stack the items
         mobileModeEnabled: true, // whether or not to toggle mobile mode when screen width is less than mobileBreakPoint
     };
-
-
-    // $scope.toggleEditMode = function() {
-    //     $scope.editMode = !$scope.editMode;
-    //     $scope.gridsterOptions.resizable.enabled = !$scope.gridsterOptions.resizable.enabled;
-    //     $scope.gridsterOptions.draggable.enabled = !$scope.gridsterOptions.draggable.enabled;
-    //     if(!$scope.editMode) {
-    //         //whenever a user locks a dashboard, take a screenshot
-    //         DashboardFactory.takeScreenshot($stateParams)
-    //     }
-    // };
-
-    // $scope.getEditMode = function() {
-    //     return editMode;
-    // }
-
-    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-    //     if(fromState.name === "dashboard") {
-
-    //     }
-    // })
 
     $scope.$on('$destroy', function () {
         if($scope.dashboards.widgets) DashboardFactory.takeScreenshot($stateParams)
@@ -135,7 +122,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
                 return widget.type === 'graph';
             }));
 
-        }, 800);
+        }, 400);
     };
     GraphService.loadData(currentDataset.jsonData)
     renderGraphs();

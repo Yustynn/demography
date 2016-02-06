@@ -14,7 +14,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             var graphSize = {
                 width: gridWidth/scope.widget.sizeX,
                 height: gridWidth/scope.widget.sizeY
-            }            
+            }
             var c = scope.widget.chartObject;
             if (c && c.chart) {
                 GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
