@@ -1,12 +1,4 @@
-/*  GraphService
- *
- *   use this file for most of the graph logic, such as
- *   create and update of all chart types.
- *
- *   'public' functions: this.someFunc = function(){}
- *   'private' functions: function someFunc(){}
- *
- */
+//  GraphService
 
 app.service('GraphService', function() {
     var self = this;
@@ -43,7 +35,7 @@ app.service('GraphService', function() {
         if (groupType === "sum") {
             grp = dim.group().reduceSum(function(d) {
                 if (parseInt(d[yAxis])) d[yAxis] = Number(d[yAxis]);
-                console.log()
+
                 return Number(d[yAxis]);
             });
         } else if (groupType === "count") {
@@ -118,7 +110,6 @@ app.service('GraphService', function() {
             chartGroup: chartGroup //Chart group it belongs to, charts belonging to the same group will be effected by changes in each others charts
         };
 
-        console.log('chartObj: ',chartObj)
         createChart(id, chartObj)
         return charts['chart' + id];
     };
@@ -176,7 +167,7 @@ app.service('GraphService', function() {
         var chart = charts['chart' + id].chart;
         var chartGroup = charts['chart' + id].chartGroup;
 
-        console.log("CHART",chart)
+
         var keys = Object.keys(chartOptions);
         //debugger;
         keys.forEach(function(key) {
@@ -258,7 +249,6 @@ app.service('GraphService', function() {
             barChartOptions[key] = chartOptions[key];
         });
 
-
         return barChartOptions;
     };
 
@@ -331,10 +321,6 @@ app.service('GraphService', function() {
             //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('table table-hover', true);
             //     console.dir(table);
             // },
-            //  on: ['renderlet', function(table) {
-            //     table.selectAll('#widget-container-' + id + '> .box-content > .widget-content-container').classed('table table-hover', true);
-            //     console.dir(table);
-            // }],
             sortBy: function(d) {
                 return d[y];
             },
@@ -347,10 +333,11 @@ app.service('GraphService', function() {
             size: chartOptions.size ? chartOptions.size : 1000    //how many rows to display
         };
 
+        //here we are overwriting table chart options with chartopptions specified by user, if it is not null:
         Object.keys(chartOptions).forEach(function(key) {
-            tableChartOptions[key] = chartOptions[key];
+            if(chartOptions[key]) tableChartOptions[key] = chartOptions[key];
         });
-        console.log(tableChartOptions);
+
         return tableChartOptions;
     };
 

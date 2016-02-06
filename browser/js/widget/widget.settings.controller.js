@@ -55,8 +55,8 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         $uibModalInstance.close(widget);
 
         var _chartOptions = {
-            order: $scope.form.orderBy,
-            columns: $scope.form.columns
+            order: $scope.form.orderBy ? d3[$scope.form.orderBy] : d3.ascending,
+            columns: $scope.form.columns.length > 0 ? $scope.form.columns.map(function(col){return col.key; }) : null
         };
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
