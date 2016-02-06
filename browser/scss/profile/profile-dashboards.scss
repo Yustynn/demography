@@ -1,31 +1,60 @@
+#search-and-filter {
+    .form-group {
+        margin-bottom: 0px;
+        .fa {
+            font-size: 22px;
+            margin-right: 5px;
+            float: left;
+            clear: both;
+            display: inline-block;
+            margin-top: 7px;
+            margin-right: 10px;
+        }
+        input {
+            float: left;
+            display: inline-block;
+            max-width: 350px;
+        }
+    }
+}
+
 .profile-dashboard {
-	@include clearfix;
-	width: 83%;
-	background-color: #f7f7f7;
-	img {
-		display: block;
-		margin-left: auto;
-		margin-right: auto; 
-	}
-	.dashboard-title {
-		margin-bottom: 0px;
-		text-align: center;
-	}
-	.dashboard-description {
-		margin: 9px;
-	}
-	.dashboard-tags {
-		margin: 9px;
-	}
-	.dashboard-last-updated {
-		position: relative;
-		top: 9px;
-		margin: 10px;
-		float: left;
-	}
-	button {
-		padding: 0px;
-		float: right;
-		margin: 9px;
-	}
+    @include clearfix;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    padding-left: 30px;
+    padding-right: 30px;
+    .container {
+        margin-top: 20px;
+    }
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .dashboard-title {
+        padding-top: 20px;
+        margin-top: 20px;
+        margin-bottom: 0px;
+        text-align: center;
+    }
+    .dashboard-description {
+        font-size: 14px;
+        color: rgb(102, 102, 102);
+    }
+    .dashboard-last-updated {
+        font-size: 13px;
+        color: rgb(136, 136, 136);
+    }
+    .fa-trash-o {
+        margin-right: 8px;
+    }
+    button {
+        border-radius: 5px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        display: block;
+        width: 175px;
+        text-align: left;
+    }
 }
