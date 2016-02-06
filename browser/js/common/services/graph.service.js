@@ -48,17 +48,13 @@ app.service('GraphService', function() {
             });
         }
 
-        // var grp = dim.group().reduceSum(function(d) {
-        //     return d.HR;
-        // })
-        //var chart = dc[chartType](chartContainer);
-
         if (chartType === "pieChart") {
 
             chartObj = makePieChartObject(chartOptions);
             chartObj.radius = chartRadius;
         } else if (chartType === "barChart") {
             //margins prevents axes labels from being cutoff
+            debugger;
             chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartWidth) {
@@ -414,8 +410,11 @@ app.service('GraphService', function() {
             //options can be the way to control any programatic assignment of colors
         }
         */
+        debugger;
         if(colorSettings){
+            debugger;
             if(colorSettings.style==='solid'){
+                debugger;
                 chartObj.colors = colorSettings.color;
             }else if(colorSettings.style === 'theme'){
                 chartObj.colors = colorSettings.colorChoice
