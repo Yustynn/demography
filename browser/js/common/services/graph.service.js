@@ -3,17 +3,9 @@
 app.service('GraphService', function() {
     var self = this;
     var ndx, myData, grp;
-    var graphCount = 0; //temp for debugging chartGroups
+
     var charts = {}; //Object to store all instances of chart to resize/edit specific chart
 
-    // BOBBY NOTE: DELETE THIS
-    this.populateCharts = function(widgetArr) {
-        return;
-        widgetArr.forEach(function(widgetObj) {
-            var chartObj = widgetObj.chartObject;
-            if (chartObj) self.create(chartObj.id, chartObj.chartType, chartObj.xAxis, chartObj.yAxis, chartObj.groupType, chartObj.chartOptions)
-        })
-    }
 
     this.create = function(element, id, chartType, xAxis, yAxis, groupType, chartOptions,chartSize,chartGroup,colorSettings) {
         chartOptions = chartOptions ? chartOptions : {}; //initialize for now to be empty, users will eventually submit this
@@ -54,14 +46,13 @@ app.service('GraphService', function() {
             chartObj.radius = chartRadius;
         } else if (chartType === "barChart") {
             //margins prevents axes labels from being cutoff
-            debugger;
             chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartWidth) {
                 chartObj.gap = chartWidth * .5 / size;
             }
         } else if (chartType === "rowChart") {
-            debugger;
+
             chartObj = makeRowChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartHeight) {
@@ -410,11 +401,8 @@ app.service('GraphService', function() {
             //options can be the way to control any programatic assignment of colors
         }
         */
-        debugger;
         if(colorSettings){
-            debugger;
             if(colorSettings.style==='solid'){
-                debugger;
                 chartObj.colors = colorSettings.color;
             }else if(colorSettings.style === 'theme'){
                 chartObj.colors = colorSettings.colorChoice

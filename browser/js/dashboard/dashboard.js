@@ -32,8 +32,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;  //dont want to expose this
 
-    var editMode = true;
-
     if($scope.dashboard.widgets) {
         $scope.dashboard.nextWidgetId = $scope.dashboard.widgets.length ?
             Math.max.apply(Math, $scope.dashboard.widgets.map(function(w){return w.id; }))+1
@@ -43,8 +41,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         $scope.dashboard.widgets = [];
         $scope.dashboard.nextWidgetId = 0;
     }
-
-    $scope.editMode = false;
 
     //set name for display
     if(currentDashboard.user.firstName && currentDashboard.user.lastName) {
@@ -91,9 +87,8 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         if($scope.dashboards.widgets) DashboardFactory.takeScreenshot($stateParams)
     })
 
-
     $scope.addWidget = function() {
-        editMode = true;
+
         var newWidget = {
             //default widget settings
             id: $scope.dashboard.nextWidgetId,
@@ -116,14 +111,5 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     };
 
-    var renderGraphs = function(){
-        setTimeout(function(){
-            GraphService.populateCharts($scope.dashboard.widgets.filter(function(widget){
-                return widget.type === 'graph';
-            }));
-
-        }, 400);
-    };
     GraphService.loadData(currentDataset.jsonData)
-    renderGraphs();
 });
