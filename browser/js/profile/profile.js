@@ -7,7 +7,7 @@ app.config(function($stateProvider) {
         resolve: {
             loggedInUser: function(AuthService, $stateParams) {
                 return AuthService.getLoggedInUser()
-                    .then(function(user) {
+                    .then(user => {
                         $stateParams.userId = user._id;
                         return user;
                     });
@@ -89,16 +89,15 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
 
     $scope.removeDataset = function(dataset) {
         DatasetFactory.delete(dataset)
-        .then(function(deletedDataset) {
+        .then(deletedDataset => {
             // Remove the dataset from the $scope array
-            var userDatasetToDelete = $scope.userDatasets.filter(function(userDataset) {
+            var userDatasetsIndex = $scope.userDatasets.findIndex(userDataset => {
                 return userDataset._id === deletedDataset._id;
-            })[0];
-            var userDatasetsIndex = $scope.userDatasets.indexOf(userDatasetToDelete);
+            });
             $scope.userDatasets.splice(userDatasetsIndex, 1);
 
             // Remove the dashboards that associate with the dataset from the $scope array
-            var userDashboardsToDelete = $scope.userDashboards.filter(function(userDashboard) {
+            var userDashboardsToDelete = $scope.userDashboards.filter(userDashboard => {
                 return userDashboard.dataset._id === deletedDataset._id;
             });
             for (var i = 0; i < $scope.userDashboards.length; i++) {
@@ -115,19 +114,18 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
 
     $scope.removeDashboard = function(dashboard) {
         DashboardFactory.delete(dashboard)
-        .then(function(deletedDashboard) {
-            var userDashboardToDelete = $scope.userDashboards.filter(function(userDashboard) {
+        .then(deletedDashboard => {
+            var userDashboardIndex = $scope.userDashboards.findIndex(userDashboard => {
                 return userDashboard._id === deletedDashboard._id;
-            })[0];
-            var idx = $scope.userDashboards.indexOf(userDashboardToDelete);
-            $scope.userDashboards.splice(idx, 1);
+            });
+            $scope.userDashboards.splice(userDashboardIndex, 1);
         })
         .then(null, console.error);
     };
 
     $scope.createDashboard = function(dataset) {
         return DashboardFactory.create({ user: $scope.user._id, dataset: dataset._id, title: dataset.title, shortDescription: dataset.shortDescription, isPublic: dataset.isPublic })
-        .then(function(newDashboard){
+        .then(newDashboard => {
             $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
         });
     };
