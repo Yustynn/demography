@@ -46,21 +46,21 @@ app.service('GraphService', function() {
             chartObj.radius = chartRadius;
         } else if (chartType === "barChart") {
             //margins prevents axes labels from being cutoff
-            chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
+            chartObj = makeBarChartObject(chartOptions, xAxis, yAxis, dim, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartWidth) {
                 chartObj.gap = chartWidth * .5 / size;
             }
         } else if (chartType === "rowChart") {
 
-            chartObj = makeRowChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings);
+            chartObj = makeRowChartObject(chartOptions, xAxis, yAxis, dim, xAxisIsNumber,colorSettings);
             var size = dim.group().size();
             if (chartObj.gap * size >= chartHeight) {
                 chartObj.gap = chartHeight * .5 / size;
             }
         } else if (chartType === "lineChart") {
 
-            chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, grp, xAxisIsNumber,colorSettings)
+            chartObj = makeLineChartObject(chartOptions, xAxis, yAxis, dim, xAxisIsNumber,colorSettings)
             var size = dim.group().size();
             if (chartObj.gap * size >= chartHeight) {
                 chartObj.gap = chartHeight * .5 / size;
@@ -75,18 +75,7 @@ app.service('GraphService', function() {
             .append('table')
                 .attr('class', 'table table-hover table-condensed')  //http://getbootstrap.com/css/#tables-responsive
                 .attr('id', 'dataTable-'+id)
-// =======
-//             chartObj = makeTableChartObject(chartOptions, id, xAxis, yAxis);
 
-//             //modify chartContainer:
-//             var tableContainer = d3.select(chartContainer)
-//                 .attr('style', 'overflow: auto')
-//                 .append('table')
-//                 .attr('class', 'table table-hover table-bordered table-condensed') //http://getbootstrap.com/css/#tables-responsive
-//                 .attr('id', 'dataTable-' + id)
-// >>>>>>> master
-                //.attr('style', 'table-layout: fixed')
-                //chartContainer = tableContainer[0];
             chartContainer = $('#dataTable-' + id)[0];
 
         } else if (chartType === "dataCount") {
@@ -135,13 +124,6 @@ app.service('GraphService', function() {
             var chartWidth = chartContainer.offsetWidth;
             var chartHeight = chartContainer.offsetHeight;
             var chartRadius = chartWidth < chartHeight ? chartWidth / 2 : chartHeight / 2;
-            // var newWidth = document.getElementById('box-test').offsetWidth;
-            // chart.width(newWidth)
-            //   .transitionDuration(0);
-            // pie.transitionDuration(0);
-            // dc.renderAll();
-            // chart.transitionDuration(750);
-            // pie.transitionDuration(750);
 
             var chartObj = charts["chart" + id];
 
@@ -183,17 +165,6 @@ app.service('GraphService', function() {
                 if (chart[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
                     chart[key](chartOptions[key])
                 }
-
-        // var keys = Object.keys(chartOptions);
-        // //debugger;
-        // keys.forEach(function(key) {
-        //     chart[key](chartOptions[key]);
-
-        //     if (key === "on") {
-        //         chart[key].apply(null, chartOptions[key]);
-        //     } else {
-        //         chart[key](chartOptions[key]);
-
             }
         });
 
@@ -223,7 +194,7 @@ app.service('GraphService', function() {
     };
 
     //Bar Chart Option creator-has superfluous parameters for testing
-    function makeBarChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber,colorSettings) {
+    function makeBarChartObject(chartOptions, x, y, userDimension, xAxisIsNumber,colorSettings) {
 
 
         var barChartOptions = {
@@ -282,7 +253,7 @@ app.service('GraphService', function() {
     };
 
     //Row Chart Option creator-has superfluous parameters for testing
-    function makeRowChartObject(chartOptions, x, y, userDimension, userGroup,xAxisIsNumber,colorSettings) {
+    function makeRowChartObject(chartOptions, x, y, userDimension,xAxisIsNumber,colorSettings) {
 
         var rowChartOptions = {
             title: function(d) { //defaults to key : value
@@ -308,7 +279,7 @@ app.service('GraphService', function() {
     };
 
     //Line Chart
-    function makeLineChartObject(chartOptions, x, y, userDimension, userGroup, xAxisIsNumber,colorSettings) {
+    function makeLineChartObject(chartOptions, x, y, userDimension, xAxisIsNumber,colorSettings) {
         var lineChartOptions = {
             transitionDuration: 500,
             mouseZoomable: false, //need to better understand

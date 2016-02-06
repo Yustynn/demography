@@ -1,5 +1,5 @@
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset,element,graphSize) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
     console.log($scope.chartType)
@@ -63,9 +63,24 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         };
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
-            //'TEAM', 'AB'
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup,widget.color);
-           widget.chartObject = chartObj;
+
+           //var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup,widget.color);
+           var chartConstructor = {
+                id: widget.id,
+                chartType: graphTypeToCreate,
+                chartGroup: widget.graphGroup,
+                xAxis: widget.labelX.key,
+                yAxis: widget.labelY.key,
+                groupType: widget.group,
+                colorSettings: widget.color,
+                chartSize: graphSize
+            }
+
+            Object.keys(_chartOptions).forEach(function(key) {
+                chartConstructor[key] = _chartOptions[key];
+            });
+
+            widget.chartObject = ChartService.create(chartConstructor);
         }
         WidgetFactory.update(widget);
     };

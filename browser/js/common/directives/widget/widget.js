@@ -1,4 +1,4 @@
-app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, GraphService) {
+app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, GraphService, ChartService) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/widget/widget.html',
@@ -15,9 +15,27 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 width: gridWidth/scope.widget.sizeX,
                 height: gridWidth/scope.widget.sizeY
             }
+
             var c = scope.widget.chartObject;
             if (c && c.chart) {
-                GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
+
+                var chartConstructor = {
+                    id: c.id,
+                    chartType: c.chartType,
+                    chartGroup: c.chartGroup,
+                    xAxis: c.xAxis,
+                    yAxis: c.yAxis,
+                    groupType: c.groupType,
+                    colorSettings: c.colorSettings,
+                    chartSize: graphSize
+                }
+
+                Object.keys(c.chartOptions).forEach(function(key) {
+                    chartConstructor[key] = c.chartOptions[key];
+                });
+
+                ChartService.create(chartConstructor);
+                //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
             }
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
@@ -35,10 +53,10 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     height: gridWidth/widget.sizeY
                 }
                 //set width and height
-
-                var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
-                widget.chartObject = chartObj;
-                WidgetFactory.update(widget);
+console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
+                // var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
+                // widget.chartObject = chartObj;
+                // WidgetFactory.update(widget);
             }
 
             scope.element = element;

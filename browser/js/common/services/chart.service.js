@@ -1,39 +1,57 @@
 app.service('ChartService', function (ChartUtilsService){
-    console.log("ChartService");
     var ndx, myData;   //public variables shared between all chart instances
     var chartDict = {}; //Object to store all instances of chartDict
 
+    //public methods:
+
+    //use to create a new chart instance
+    this.create = function(chartConfig) {
+        var newChart = new Chart(chartConfig);
+    }
+
+    //use to both resize and update config. For resize, size must be specified:
+    this.update = function(chartConfig) {
+        //find chart from chart dict and call _update method
+    };
+
+    //same as this.update
+    this.resize = function(chartConfig) {
+        if (chartConfig.chartSize) this.update(chartConfig);
+    };
+
+    //load data is called when a dashboard is initialized
+    this.loadData = function(dataSet) {
+        myData = dataSet;
+        ndx = crossfilter(dataSet);
+    };
+
+    //Chart Constructor
     class Chart {
-        constructor(id, chartConfig) {
+        constructor(chartConfig) {
             //default settings that every chart needs regardless of type:
-            this.id = id;
+            this.id = chartConfig.id;
             this.chartType = chartConfig.chartType;
             this.height = chartConfig.chartSize.height;
             this.width = chartConfig.chartSize.width;
             this.chartGroup = chartConfig.chartGroup || 'Group1';
-            this.xAxisIsNumber; //TODO: move this into chart specific functionality
-            this.dim = ndx.dimension(function(d) {
-                if (parseInt(d[chartConfig.xAxis])) {
-                    d[chartConfig.xAxis] = Number(d[chartConfig.xAxis]);
-                    this.xAxisIsNumber = true; //Checks if xaxis is ordinal or linear
-                };
-                return d[chartConfig.xAxis];
-            });
-            this._configureChart();
-            this._createChart();
-        }
 
-        //methods that are private start with _ for readability:
-
-        //attaches properties to the chart instance
-        _configureChart() {
-            console.log('configuring chart');
-            var configuredChart = ChartUtilsService.configureChart['barChart']();
+            this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors
+            this._createChart();    //render the new chart
         };
 
-        //check for 'on' key and apply.
+        //attaches properties to the chart instance
+        _configureChart(chartConfig) {
+            console.log('configuring chart');
+            var additionalProps = ChartUtilsService.createChartOptions(chartConfig, ndx)
+            debugger;
+            angular.extend(this, additionalProps);
+            //now all properties exist on chart instance
+        };
+
+        //check for 'on' key and apply. Then add to chartDict and dc.renderAll
         _createChart() {
             for (var key in this) {
+                console.log(key);
                 if(key === "on"){
                     this[key].apply(null,this[key]) //not sure this still works. check table formatting to find out if this is the right syntax
                 }
@@ -43,38 +61,12 @@ app.service('ChartService', function (ChartUtilsService){
                 //     }
                 // }
             };
-
+            debugger
             chartDict[this.id] = this;   //add new chart to dict
-            dc.renderAll(this.chartGroup);
+            dc.renderAll(this.chartGroup);  //render all connected charts
         };
 
-        _updateChart(chartConfig) {
-            if (this.chartType !== chartConfig.chartType)
-            {
-                //must completely reset chart type.
-            }
-        };
     };
 
-
-    this.create = function(id, chartConfig) {
-        var newChart = new Chart(id, chartConfig);
-    }
-
-    //use to both resize and update config. For resize, size must be specified:
-    this.update = function(id, chartConfig) {
-        //find chart from chart dict and call _update method
-    };
-
-    //same as this.update
-    this.resize = function(id, chartConfig) {
-        if (chartConfig.chartSize) this.update(id, chartConfig);
-    }
-
-    //load data is called when a dashboard is initialized
-    this.loadData = function(dataSet) {
-        myData = dataSet;
-        ndx = crossfilter(dataSet);
-    }
 });
 

@@ -61,7 +61,8 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         resizable:{
             enabled: true,
             stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
-                GraphService.resize(c.id);
+                console.error("NEED TO IMPLEMENT RESIZE LATER");
+                //GraphService.resize(c.id);
                 //Probably want to pass in the widget size vs finding size inside of the function
                 var updatedWidget = {
                     col: c.col,
@@ -111,6 +112,5 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     };
     ChartService.loadData(currentDataset.jsonData)
-    ChartService.create(100, {chartType: 'barChart', chartSize:{height:100, width: 100}})
-    GraphService.loadData(currentDataset.jsonData)
+    //GraphService.loadData(currentDataset.jsonData)
 });
