@@ -143,7 +143,6 @@ describe('Dataset Route', function() {
                 .expect(200)
                 .end(function(err,response){
                     if(err) return done(err);
-                    console.log(response.body)
                     expect(response.body.length).to.be.equal(1);
                     expect(arrayContainsKeyVal(response.body,{isPublic: false})).to.be.false;
                 })

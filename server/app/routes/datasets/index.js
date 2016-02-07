@@ -18,7 +18,6 @@ var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 // GET /api/datasets/
 router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
-    console.log("HIT")
     var queryObject = req.query;
 
     if (queryObject.user && !routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = true;
