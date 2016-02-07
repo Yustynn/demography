@@ -55,7 +55,6 @@ router.get("/:id", function(req, res, next) {
 });
 
 router.post("/", ensureAuthenticated, function(req, res, next) {
-    console.log("req.body from router", req.body)
     Dashboard.create(req.body)
     .then(createdDashboard => res.status(201).send(createdDashboard))
 });

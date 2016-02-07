@@ -20,6 +20,10 @@ var schema = new mongoose.Schema({
     	type: Date,
     	default: Date.now
     },
+    screenshot: {
+        type: String,
+        default: 'data/DashboardBackground.jpg'
+    },
     isPublic: {
     	type: Boolean, default: false
     },
