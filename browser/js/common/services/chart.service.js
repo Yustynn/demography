@@ -6,7 +6,7 @@ app.service('ChartService', function (ChartUtilsService){
 
     //use to create a new chart instance
     this.create = function(chartConfig) {
-        var newChart = new Chart(chartConfig);
+        return new Chart(chartConfig);
     }
 
     //use to both resize and update config. For resize, size must be specified:
@@ -34,7 +34,8 @@ app.service('ChartService', function (ChartUtilsService){
             this.height = chartConfig.chartSize.height;
             this.width = chartConfig.chartSize.width;
             this.chartGroup = chartConfig.chartGroup || 'Group1';
-
+            this.container = chartConfig.container;
+            this.chart = dc[this.chartType](this.container,this.chartGroup);
             this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors
             this._createChart();    //render the new chart
         };
@@ -42,9 +43,7 @@ app.service('ChartService', function (ChartUtilsService){
         //attaches properties to the chart instance
         _configureChart(chartConfig) {
             console.log('configuring chart');
-            var additionalProps = ChartUtilsService.createChartOptions(chartConfig, ndx)
-            debugger;
-            angular.extend(this, additionalProps);
+            angular.extend(this, ChartUtilsService.createChartOptions(chartConfig, ndx));
             //now all properties exist on chart instance
         };
 
@@ -53,20 +52,18 @@ app.service('ChartService', function (ChartUtilsService){
             for (var key in this) {
                 console.log(key);
                 if(key === "on"){
-                    this[key].apply(null,this[key]) //not sure this still works. check table formatting to find out if this is the right syntax
+                    this.chart[key].apply(null,this[key]) //not sure this still works. check table formatting to find out if this is the right syntax
                 }
-                // else {
-                //     if (this[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
-                //         this[key](this.chartOptions[key])
-                //     }
-                // }
+                else {
+                    if (this.chart[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
+                        this.chart[key](this[key])
+                    }
+                }
             };
-            debugger
+
             chartDict[this.id] = this;   //add new chart to dict
             dc.renderAll(this.chartGroup);  //render all connected charts
         };
-
     };
 
 });
-

@@ -20,7 +20,6 @@ app.service('ChartUtilsService', function(){
             slicesCap: 20,
             renderLabel: true,
             label: function(d) { //defaults to Key
-                debugger;//do we still have access to the data?
                 return d.key;
             },
             title: function(d) { //defaults to key : value
@@ -33,7 +32,6 @@ app.service('ChartUtilsService', function(){
 
     //REUSABLE HELPER METHODS:
     var _createGroup = function(c) {
-        debugger;
         let grp;
         if (c.groupType === "sum") {
             grp = _dim.group().reduceSum(function(d) {

@@ -67,6 +67,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
            //var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup,widget.color);
            var chartConstructor = {
                 id: widget.id,
+                container: element,
                 chartType: graphTypeToCreate,
                 chartGroup: widget.graphGroup,
                 xAxis: widget.labelX.key,
@@ -81,6 +82,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             });
 
             widget.chartObject = ChartService.create(chartConstructor);
+            debugger;
         }
         WidgetFactory.update(widget);
     };
