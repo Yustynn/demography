@@ -15,7 +15,6 @@ router.post("/", function(req, res, next) {
         .dest(path.join(__dirname, "../../../db/screenshots"))
         .run()
         .then(data => {
-            console.log("DATA: ",data[0].filename)
             return Dashboard.update({_id: req.body.dashboardId},{ $set: { screenshot: data[0].filename }})
         })
         .then(data => {
