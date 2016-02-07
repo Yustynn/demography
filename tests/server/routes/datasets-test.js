@@ -70,7 +70,6 @@ describe('Dataset Route', function() {
         mongoose.connect(dbURI, done);
     });
 
-    //Add product expects product in form of {product: _id, quantity: number}
 
     beforeEach('Create users and add datasets', function(done) {
         User.create([userInfo1,userInfo2], function(err, users) {
@@ -96,6 +95,7 @@ describe('Dataset Route', function() {
 
 
     beforeEach('Create guest and User', function(done) {
+        //We want two logged in users and one non logged in user
         userAgent1 = supertest.agent(app);
         userAgent2 = supertest.agent(app);
         guestAgent = supertest.agent(app)
@@ -116,6 +116,7 @@ describe('Dataset Route', function() {
 
     describe('Logged in Users', function() {
 
+        
         it('can view all public datasets and only their private datasets', function(done) {
             userAgent2.get('/api/datasets')//This user should have access to their private dataset and user1's public dataset 
                 .expect(200)

@@ -26,6 +26,8 @@ var arrayContainsKeyVal = function(array, keyVal) {
 
 describe('Dashboard Route', function() {
 
+    //Create a user and a dataset information objects
+
     var userInfo = {
         email: "cellar@door.com",
         password: '28d6h42m12s'
@@ -35,6 +37,8 @@ describe('Dashboard Route', function() {
         title: "Test Public Dataset",
         isPublic: true
     }
+
+    //Declare options for a private and a public dataset
 
     var publicDashboard = {
         title: "Test Public Dashboard",
@@ -48,26 +52,32 @@ describe('Dashboard Route', function() {
         isPublic: false
     }
 
+
+    //Declare variables for the logged in and non logged in userAgents for testing
     var userAgent;
     var guestAgent;
+
+    //Declare variables that will hold information about the created user and dataset
     var userId;
     var publicDataset;
-    var updatedCart;
 
     beforeEach('Establish DB connection', function(done) {
         if (mongoose.connection.db) return done();
         mongoose.connect(dbURI, done);
     });
 
-    //Add product expects product in form of {product: _id, quantity: number}
 
     beforeEach('Create user and add a dataset', function(done) {
+        
+        //Add user and dataset to database
+        
         User.create(userInfo, function(err, user) {
             userId = user._id;
             datasetInfo.user = userId;
             DataSet.create(datasetInfo, function(err, createdDataset) {
                 if (err) return done(err)
 
+                //Add userIds and Dataset Id to dashboard info
                 publicDataset = createdDataset;
                 privateDashboard.dataset = publicDataset._id;
                 privateDashboard.user = userId;
@@ -95,7 +105,7 @@ describe('Dashboard Route', function() {
     });
 
     describe('Logged in Users', function() {
-
+        //This test checks to make sure a logged in user can make Dashboards that are either public or private
         it('can make a Public and Private Dashboard', function(done) {
             userAgent.post('/api/dashboards').send(publicDashboard)
                 .expect(201)
@@ -132,6 +142,7 @@ describe('Dashboard Route', function() {
 
     describe('Viewing dashboards', function() {
 
+        //Before each test add a private and a public dashboard into the database tied to the logged in user
         beforeEach('Create public and private dashboard for logged in user', function(done) {
             userAgent.post('/api/dashboards').send(publicDashboard)
                 .end(function(err, response) {
@@ -142,6 +153,8 @@ describe('Dashboard Route', function() {
                         })
                 });
         });
+
+        //Test to make sure that Logged in user can view both their private and public Dashboards
 
         it('Logged in users can view all of their private and public dashboards', function(done) {
 
@@ -156,6 +169,8 @@ describe('Dashboard Route', function() {
                 })
         })
 
+        //Test to make sure Non logged in user only has access to public Dashboard and not private ones
+
         it('Non Logged in users can view only public dashboards', function(done) {
 
             guestAgent.get('/api/dashboards')
@@ -163,8 +178,8 @@ describe('Dashboard Route', function() {
                 .end(function(err, res) {
                     if (err) return done(err)
                     expect(res.body.length).to.be.equal(1)
-                    expect(arrayContainsKeyVal(res.body, {isPublic: true})).to.be.true;
-                    expect(arrayContainsKeyVal(res.body, {isPublic: false})).to.be.false;
+                    expect(arrayContainsKeyVal(res.body, {isPublic: true})).to.be.true;//Check that the dashboards are public
+                    expect(arrayContainsKeyVal(res.body, {isPublic: false})).to.be.false;//Check that none of the dashboards are private
                     done()
                 })
 
