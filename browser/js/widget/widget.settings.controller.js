@@ -68,20 +68,14 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
            var chartConstructor = {
                 id: widget.id,
                 container: element,
-                chartOptions: {
-                    chartType: graphTypeToCreate,
-                    chartGroup: widget.graphGroup,
-                    xAxis: widget.labelX.key,
-                    yAxis: widget.labelY.key,
-                    groupType: widget.group,
-                    colorSettings: widget.color
-                },
+                chartType: graphTypeToCreate,
+                chartGroup: widget.graphGroup,
+                xAxis: widget.labelX.key,
+                yAxis: widget.labelY.key,
+                groupType: widget.group,
+                colorSettings: widget.color,
                 chartSize: graphSize
             }
-
-            Object.keys(_chartOptions).forEach(function(key) {
-                chartConstructor[key] = _chartOptions[key];
-            });
 
             widget.chartObject = ChartService.create(chartConstructor);
             debugger;

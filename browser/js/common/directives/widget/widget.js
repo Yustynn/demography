@@ -22,20 +22,18 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 var chartConstructor = {
                     id: c.id,
                     container: $(element).find('.widget-content-container')[0],
-                    chartOptions: {
-                        chartType: c.chartType,
-                        chartGroup: c.chartGroup,
-                        xAxis: c.xAxis,
-                        yAxis: c.yAxis,
-                        groupType: c.groupType,
-                        colorSettings: c.colorSettings
-                    },
+                    chartType: c.chartType,
+                    chartGroup: c.chartGroup,
+                    xAxis: c.xAxis,
+                    yAxis: c.yAxis,
+                    groupType: c.groupType,
+                    colorSettings: c.colorSettings,
                     chartSize: graphSize
                 }
 
-                Object.keys(c.chartOptions).forEach(function(key) {
-                    chartConstructor[key] = c.chartOptions[key];
-                });
+                // Object.keys(c.chartOptions).forEach(function(key) {
+                //     chartConstructor[key] = c.chartOptions[key];
+                // });
 
                 ChartService.create(chartConstructor);
                 //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
