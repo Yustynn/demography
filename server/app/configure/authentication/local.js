@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
 module.exports = function (app) {
-
+    
     // When passport.authenticate('local') is used, this function will receive
     // the email and password to run the actual authentication logic.
     var strategyFn = function (email, password, done) {
@@ -26,9 +26,11 @@ module.exports = function (app) {
 
     passport.use(new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, strategyFn));
 
+
+
     // A POST /login route is created to handle login.
     app.post('/login', function (req, res, next) {
-
+        console.log('TEST')
         var authCb = function (err, user) {
 
             if (err) return next(err);
@@ -53,6 +55,7 @@ module.exports = function (app) {
         passport.authenticate('local', authCb)(req, res, next);
 
     });
+
 
     // A POST /signup route is created to handle signup.
     app.post('/signup', function(req, res, next) {
