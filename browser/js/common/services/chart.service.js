@@ -28,7 +28,7 @@ app.service('ChartService', function (ChartUtilsService){
     //Chart Constructor
     class Chart {
         constructor(chartConfig) {
-            //default settings that every chart needs regardless of type:
+            //default settings that every dc chart needs regardless of type:
             this.id = chartConfig.id;
             this.chartType = chartConfig.chartType;
             this.height = chartConfig.chartSize.height;
@@ -37,14 +37,13 @@ app.service('ChartService', function (ChartUtilsService){
             this.container = chartConfig.container;
             this.chart = dc[this.chartType](this.container,this.chartGroup);
             this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors
+            debugger;   //check extended properties
             this._createChart();    //render the new chart
         };
 
         //attaches properties to the chart instance
         _configureChart(chartConfig) {
-            console.log('configuring chart');
             angular.extend(this, ChartUtilsService.createChartOptions(chartConfig, ndx));
-            //now all properties exist on chart instance
         };
 
         //check for 'on' key and apply. Then add to chartDict and dc.renderAll
@@ -63,6 +62,7 @@ app.service('ChartService', function (ChartUtilsService){
 
             chartDict[this.id] = this;   //add new chart to dict
             dc.renderAll(this.chartGroup);  //render all connected charts
+            debugger;
         };
     };
 

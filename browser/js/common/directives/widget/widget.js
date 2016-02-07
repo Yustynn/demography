@@ -22,12 +22,14 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 var chartConstructor = {
                     id: c.id,
                     container: $(element).find('.widget-content-container')[0],
-                    chartType: c.chartType,
-                    chartGroup: c.chartGroup,
-                    xAxis: c.xAxis,
-                    yAxis: c.yAxis,
-                    groupType: c.groupType,
-                    colorSettings: c.colorSettings,
+                    chartOptions: {
+                        chartType: c.chartType,
+                        chartGroup: c.chartGroup,
+                        xAxis: c.xAxis,
+                        yAxis: c.yAxis,
+                        groupType: c.groupType,
+                        colorSettings: c.colorSettings
+                    },
                     chartSize: graphSize
                 }
 

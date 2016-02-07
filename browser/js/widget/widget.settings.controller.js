@@ -68,12 +68,14 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
            var chartConstructor = {
                 id: widget.id,
                 container: element,
-                chartType: graphTypeToCreate,
-                chartGroup: widget.graphGroup,
-                xAxis: widget.labelX.key,
-                yAxis: widget.labelY.key,
-                groupType: widget.group,
-                colorSettings: widget.color,
+                chartOptions: {
+                    chartType: graphTypeToCreate,
+                    chartGroup: widget.graphGroup,
+                    xAxis: widget.labelX.key,
+                    yAxis: widget.labelY.key,
+                    groupType: widget.group,
+                    colorSettings: widget.color
+                },
                 chartSize: graphSize
             }
 

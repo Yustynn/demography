@@ -88,12 +88,12 @@ app.service('GraphService', function() {
         if(!chartObj.dimension) chartObj.dimension = dim;
         if(!chartObj.group) chartObj.group = grp;
 
-        var chart = dc[chartType](chartContainer,chartGroup);
+        var dcChart = dc[chartType](chartContainer,chartGroup);
 
         //Add chart to Dictionary with a reference to the chart, and it's specific type (pie,bar,etc)
         //Is there a way to find out what kind of chart it is by checking the instance itself?
         charts['chart' + id] = {
-            chart: chart, //Actual chart (i.e. dc.pieChart()) instance
+            chart: dcChart, //Actual chart (i.e. dc.pieChart()) instance
             chartType: chartType, //Type of chart (i.e.pie,bar,etc)
             id: id,
             xAxis: xAxis, //User inputed value used for Dimension(dim)
