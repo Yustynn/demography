@@ -7,7 +7,7 @@
 </div>
 <div ng-repeat="dashboard in userDashboards | filter: searchText" class="profile-dashboard">
     <h2 class="dashboard-title">{{dashboard.title}}</h2>
-    <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })"><h3><img ng-src="/{{dashboard._id}}.png"></h3></a>
+    <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })"><h3><img ng-src="{{dashboard.screenshot}}"></h3></a>
     <p class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></p>
     <p class="dashboard-description">{{dashboard.dataset.shortDescription}}</p>
     <p class="dashboard-last-updated">Updated on {{dashboard.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</p>
