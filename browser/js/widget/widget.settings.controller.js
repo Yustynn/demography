@@ -78,7 +78,6 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             }
 
             widget.chartObject = ChartService.create(chartConstructor);
-            debugger;
         }
         WidgetFactory.update(widget);
     };

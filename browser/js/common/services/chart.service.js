@@ -2,8 +2,6 @@ app.service('ChartService', function (ChartUtilsService){
     var ndx, myData;   //public variables shared between all chart instances
     var chartDict = {}; //Object to store all instances of chartDict
 
-    //public methods:
-
     //use to create a new chart instance
     this.create = function(chartConfig) {
         return new Chart(chartConfig);
@@ -30,40 +28,39 @@ app.service('ChartService', function (ChartUtilsService){
         constructor(chartConfig) {
             //default settings that every dc chart needs regardless of type:
             this.id = chartConfig.id;
+            if(chartConfig.groupType) this.groupType = chartConfig.groupType;
+            if(chartConfig.xAxis) this.xAxis = chartConfig.xAxis;
+            if(chartConfig.yAxis) this.yAxis = chartConfig.yAxis;
+            if(chartConfig.colorSettings) this.colorSettings = chartConfig.colorSettings;
             this.chartType = chartConfig.chartType;
             this.height = chartConfig.chartSize.height;
             this.width = chartConfig.chartSize.width;
             this.chartGroup = chartConfig.chartGroup || 'Group1';
-            this.container = chartConfig.container;
-            this.chart = dc[this.chartType](this.container,this.chartGroup);
+            this.chart = dc[this.chartType](chartConfig.container,this.chartGroup);
             this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors
-            debugger;   //check extended properties
             this._createChart();    //render the new chart
         };
 
-        //attaches properties to the chart instance
+        //attaches properties to the DC chart instance
         _configureChart(chartConfig) {
-            angular.extend(this, ChartUtilsService.createChartOptions(chartConfig, ndx));
-        };
-
-        //check for 'on' key and apply. Then add to chartDict and dc.renderAll
-        _createChart() {
-            for (var key in this) {
-                console.log(key);
+            var chartSpecificConfig = ChartUtilsService.createChartOptions(chartConfig, ndx);
+            //angular.extend(this, ChartUtilsService.createChartOptions(chartConfig, ndx));
+            for (var key in chartSpecificConfig) {
+                //check for 'on' key and apply. Then add to chartDict and dc.renderAll
                 if(key === "on"){
-                    this.chart[key].apply(null,this[key]) //not sure this still works. check table formatting to find out if this is the right syntax
+                    this.chart[key].apply(null,chartSpecificConfig[key]) //not sure this still works. check table formatting to find out if this is the right syntax
                 }
                 else {
                     if (this.chart[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
-                        this.chart[key](this[key])
+                        this.chart[key](chartSpecificConfig[key])
                     }
                 }
             };
+        };
 
+        _createChart() {
             chartDict[this.id] = this;   //add new chart to dict
             dc.renderAll(this.chartGroup);  //render all connected charts
-            debugger;
         };
     };
-
 });
