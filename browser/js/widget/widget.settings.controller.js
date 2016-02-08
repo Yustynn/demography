@@ -69,4 +69,5 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         }
         WidgetFactory.update(widget);
     };
+
 });
