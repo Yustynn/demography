@@ -34,7 +34,6 @@ app.service('ChartService', function (ChartUtilsService){
             this.chartType = chartConfig.chartType;
             this.height = chartConfig.height;
             this.width = chartConfig.width;
-            debugger;
             this.chartGroup = chartConfig.chartGroup || 'Group1';
             this.chart = dc[this.chartType](chartConfig.container,this.chartGroup);
             this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors
@@ -52,7 +51,6 @@ app.service('ChartService', function (ChartUtilsService){
                     this.chart[key].apply(null,chartSpecificConfig[key]) //not sure this still works. check table formatting to find out if this is the right syntax
                 }
                 else {
-                    debugger;
                     if (this.chart[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
                         this.chart[key](chartSpecificConfig[key])
                     }
