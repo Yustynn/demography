@@ -60,19 +60,19 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         rowHeight: 'match',
         resizable:{
             enabled: true,
-            stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
-                console.error("NEED TO IMPLEMENT RESIZE LATER");
-                //GraphService.resize(c.id);
-                //Probably want to pass in the widget size vs finding size inside of the function
-                var updatedWidget = {
-                    col: c.col,
-                    row: c.row,
-                    sizeX: c.sizeX,
-                    sizeY: c.sizeY,
-                    _id: c._id
-                };
-                WidgetFactory.update(updatedWidget);    //no ().then necessary here
-            },
+            // stop: function(a,b,c){  //On resize stop, this call back fires (relabel a,b,c)
+            //     // console.error("NEED TO IMPLEMENT RESIZE LATER");
+            //     // //GraphService.resize(c.id);
+            //     // //Probably want to pass in the widget size vs finding size inside of the function
+            //     // var updatedWidget = {
+            //     //     col: c.col,
+            //     //     row: c.row,
+            //     //     sizeX: c.sizeX,
+            //     //     sizeY: c.sizeY,
+            //     //     _id: c._id
+            //     // };
+            //     // WidgetFactory.update(updatedWidget);    //no ().then necessary here
+            // },
             handles: ['s', 'w', 'se', 'sw']
         },
         maxSizeX: 12, // maximum column width of an item
@@ -111,6 +111,29 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             }
         });
     };
+
+    $scope.$on('gridster-item-transition-end', function(item) {
+        debugger;
+    // item.$element
+    // item.gridster
+    // item.row
+    // item.col
+    // item.sizeX
+    // item.sizeY
+    // item.minSizeX
+    // item.minSizeY
+    // item.maxSizeX
+    // item.maxSizeY
+})
+
+    $scope.$on('gridster-resized', function(sizes, gridster) {
+        console.log("RESIZED TRIGGERED IN DASHBOARD>JS");
+        debugger;
+    // sizes[0] = width
+    // sizes[1] = height
+    // gridster.
+})
+
     ChartService.loadData(currentDataset.jsonData)
     //GraphService.loadData(currentDataset.jsonData)
 });

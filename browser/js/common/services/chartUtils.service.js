@@ -190,7 +190,7 @@ app.service('ChartUtilsService', function() {
             //then overwrite defaults
             _newConfigObj[key] = c[key];
         }
-        debugger
+        //debugger
         return _newConfigObj;
     }
 
@@ -228,7 +228,7 @@ app.service('ChartUtilsService', function() {
         let c = chartOptions.colorSettings;
         if(c){
             if(c.style === "solid"){
-                debugger;
+                //debugger;
                 chartOptions.colors = c.color;
             }
         }
@@ -240,7 +240,7 @@ app.service('ChartUtilsService', function() {
 
     //PUBLIC METHODS:
     this.createChartOptions = function(config, ndx, dataset) {
-        debugger;
+
         _ndx = ndx;
         _dataset = dataset;
         if (config.chartType === 'barChart') return configureBarChart(config);

@@ -9,11 +9,13 @@ app.service('ChartService', function (ChartUtilsService){
     //use to both resize and update config. For resize, size must be specified:
     this.update = function(chartConfig) {
         //find chart from chart dict and call _update method
+        var thisChart = chartDict[chartConfig.id];
+        thisChart._update(chartConfig);
     };
 
     //same as this.update
     this.resize = function(chartConfig) {
-        if (chartConfig.chartSize) this.update(chartConfig);
+        if (chartConfig.width || chartConfig.height) this.update(chartConfig);
     };
 
     //load data is called when a dashboard is initialized
@@ -56,12 +58,20 @@ app.service('ChartService', function (ChartUtilsService){
                     }
                 }
             };
-            debugger;
+            //debugger;
         };
 
         _createChart() {
             chartDict[this.id] = this;   //add new chart to dict
             dc.renderAll(this.chartGroup);  //render all connected charts
         };
+
+        _update(chartConfig) {
+            for (var key in chartConfig) {
+                if(this[key]) this[key] = chartConfig[key];
+            }
+            chartDict[this.id] = this;
+            dc.renderAll(this.chartGroup);  //render all connected charts
+        }
     };
 });

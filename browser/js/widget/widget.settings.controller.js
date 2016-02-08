@@ -72,7 +72,8 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
                 yAxis: widget.labelY.key,
                 groupType: widget.group,
                 colorSettings: widget.color,
-                chartSize: graphSize,
+                width: graphSize.width,
+                height: graphSize.height,
                 columns: _chartOptions.columns,
                 order: _chartOptions.order
             }
@@ -81,4 +82,5 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         }
         WidgetFactory.update(widget);
     };
+
 });

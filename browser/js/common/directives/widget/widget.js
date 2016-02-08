@@ -1,4 +1,4 @@
-app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, GraphService, ChartService) {
+app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, GraphService, ChartService, $rootScope) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/widget/widget.html',
@@ -15,10 +15,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 width: gridWidth/scope.widget.sizeX,
                 height: gridWidth/scope.widget.sizeY
             }
-            // var graphSize = {}
-            // graphSize.width = gridWidth/scope.widget.sizeX;
-            // graphSize.height = gridWidth/scope.widget.sizeY;
-
 
             var c = scope.widget.chartObject;
             if (c && c.chart) {
@@ -34,11 +30,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     colorSettings: c.colorSettings,
                     width: graphSize.width,
                     height: graphSize.height
-                }
-
-                // Object.keys(c.chartOptions).forEach(function(key) {
-                //     chartConstructor[key] = c.chartOptions[key];
-                // });
+                };
 
                 ChartService.create(chartConstructor);
                 //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
@@ -95,19 +87,29 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
             //used to ng-hide new-widget-selector
             scope.noGraph = function (widget){
                 return widget.chartObject && widget.chartObject!={};
-            }
+            };
 
-            scope.$on('gridster-item-transition-end', function (item) {
+            scope.$watch('widget', function(){
+                console.log("changed");
+
+                graphSize = {
+                    width: gridWidth/scope.widget.sizeX,
+                    height: gridWidth/scope.widget.sizeY
+                }
+
+                //console.log(scope.widget);
+
+                ChartService.resize({id: scope.widget.id, width: graphSize.width, height: graphSize.height});
                 var updatedWidget = {
-                    col: item.targetScope.widget.col,
-                    row: item.targetScope.widget.row,
-                    sizeX: item.targetScope.widget.sizeX,
-                    sizeY: item.targetScope.widget.sizeY,
-                    _id: item.targetScope.widget._id
+                    col: scope.widget.col,
+                    row: scope.widget.row,
+                    sizeX: scope.widget.sizeX,
+                    sizeY: scope.widget.sizeY,
+                    _id: scope.widget._id
                 };
                 WidgetFactory.update(updatedWidget);    //no ().then necessary here
-            });
 
+              }, true);
         }
     };
 });
