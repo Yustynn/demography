@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-sm-7">
                     <div class="form-group">
-                        <label for="selectX"><span ng-show="{{chartType==='dataTable'}}">Order By</span><span ng-hide="{{chartType==='dataTable'}}">Label X-Axis</span></label>
+                        <label for="selectY"><span ng-show="{{chartType==='dataTable'}}">Order By</span><span ng-hide="{{chartType==='dataTable'}}">Label Y-Axis</span></label>
                         <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
                     </div>
                     <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">

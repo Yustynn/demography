@@ -2,7 +2,6 @@
 app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
-    console.log($scope.chartType)
     //TODO: dropdown for labels from dataset once we have data loaded
     $scope.axisDropdowns = {
         objectKeys : Object.keys(dataset.jsonData[0])
