@@ -34,7 +34,6 @@ app.service('ChartService', function (ChartUtilsService){
             this.chartType = chartConfig.chartType;
             this.height = chartConfig.height;
             this.width = chartConfig.width;
-
             this.chartGroup = chartConfig.chartGroup || 'Group1';
             this.chart = dc[this.chartType](chartConfig.container,this.chartGroup);
             this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors

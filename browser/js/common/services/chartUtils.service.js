@@ -35,34 +35,8 @@ app.service('ChartUtilsService', function() {
             },
             order: d3.ascending, //can be ascending and descending
             size: 1000    //how many rows to display
-        }
-    }
-
-    var configureBarChart = function(c){
-        console.log('configuring bar chart')
-
-        var barOptions = _overWriteDefaults(c,'barChart')
-
-        let _currentDim = _createDimensionFromXAxisLabel(c,barOptions);
-
-        barOptions.dimension = _currentDim;
-        barOptions.group = _createGroup(c,_currentDim); //<--- UGLY
-        barOptions.x = d3.scale.ordinal();
-        barOptions.xUnits = dc.units.ordinal;
-
-        barOptions = _configureXAxis(barOptions,_currentDim)
-        delete barOptions.yAxis
-        delete barOptions.xAxis //xAxis and yAxis will break bar chart
-        return barOptions;
-    }
-
-    var configurePieChart = function(c) {
-        console.log('configuring pie chart');
-        let currentDim = _createDimensionFromXAxisLabel(c)
-        var pieObj = {
-            dimension: currentDim,
-            group: _createGroup(c,currentDim),
-            radius: c.chartSize.width < c.chartSize.height ? c.chartSize.width / 2 : c.chartSize.height / 2,
+        },
+        pieChart: {
             innerRadius: 0,
             slicesCap: 20,
             renderLabel: true,
@@ -72,8 +46,70 @@ app.service('ChartUtilsService', function() {
             title: function(d) { //defaults to key : value
                 return [d.key, d.value].join(' : ');
             }
-        };
-        return pieObj;
+        },
+        lineChart: {
+            transitionDuration: 500,
+            mouseZoomable: false, //need to better understand
+            margins: {
+                top: 5,
+                left: 20,
+                right: 10,
+                bottom: 10
+            },
+            elasticY: true,
+            brushOn: false,
+            title: function(d) { //{ /*Default to both, give option for either*/ }
+                return [d.key, d.value].join(' : ');
+            }
+        },
+        rowChart: {
+            title: function(d) { //defaults to key : value
+                return [d.key, d.value].join(' : ');
+            },
+            elasticX: true,
+            gap: 10,
+            margins: {
+                top: 5,
+                left: 10,
+                right: 10,
+                bottom: 20
+            }
+        }
+    }
+
+    var configureBarChart = function(c) {
+        console.log('configuring bar chart')
+        var barOptions = _overWriteDefaults(c, 'barChart')
+
+        let _currentDim = _createDimensionFromXAxisLabel(c, barOptions);
+
+        barOptions.dimension = _currentDim;
+        barOptions.group = _createGroup(c, _currentDim); //<--- UGLY
+
+        barOptions = _configureXAxis(barOptions, _currentDim)
+        barOptions = _configureGap(barOptions,_currentDim,'barChart')
+        barOptions = _setColors(barOptions);
+
+        delete barOptions.yAxis
+        delete barOptions.xAxis //xAxis and yAxis will break bar chart
+
+        return barOptions;
+    };
+
+    var configurePieChart = function(c) {
+        console.log('configuring pie chart');
+        let _currentDim = _createDimensionFromXAxisLabel(c)
+        var pieOptions = _overWriteDefaults(c,'pieChart');
+
+        pieOptions.dimension = _currentDim;
+        pieOptions.group = _createGroup(c,_currentDim)
+
+        pieOptions.radius = c.width < c.height ? c.width / 2 : c.height / 2,
+
+        delete pieOptions.yAxis
+        delete pieOptions.xAxis //xAxis and yAxis will break bar chart
+
+        return pieOptions;
     };
 
     var configureDataTable = function(c) {
@@ -85,11 +121,38 @@ app.service('ChartUtilsService', function() {
         chartOptions.group = _createGroup(c,_currentDim); //<--- UGLY
         if (!chartOptions.columns) chartOptions.columns = Object.keys(dataset[0]);
         return chartOptions;
+    };
 
-    }
+    var configureLineChart = function(c){
+        var lineOptions = _overWriteDefaults(c,'lineChart')
+        let _currentDim = _createDimensionFromXAxisLabel(c,lineOptions);
+
+        lineOptions.dimension = _currentDim;
+        lineOptions.group = _createGroup(c,_currentDim);
+        lineOptions = _configureXAxis(lineOptions,_currentDim);
+        lineOptions = _setColors(lineOptions);
+        delete lineOptions.yAxis;
+        delete lineOptions.xAxis; //xAxis and yAxis will break bar chart
+        return lineOptions;
+    };
+
+    var configureRowChart = function(c){
+        var rowOptions = _overWriteDefaults(c,'rowChart')
+        let _currentDim = _createDimensionFromXAxisLabel(c,rowOptions);
+
+        rowOptions.dimension = _currentDim;
+        rowOptions.group = _createGroup(c,_currentDim);
+        rowOptions = _configureXAxis(rowOptions,_currentDim);
+        rowOptions = _configureGap(rowOptions,_currentDim,'rowChart')
+        rowOptions = _setColors(rowOptions);
+
+        delete rowOptions.yAxis;
+        delete rowOptions.xAxis; //xAxis and yAxis will break bar chart
+        return rowOptions;
+    };
 
     //REUSABLE HELPER METHODS:
-    var _createGroup = function(c,_dim) {
+    var _createGroup = function(c, _dim) {
         let grp;
 
         if (c.groupType === "sum") {
@@ -108,7 +171,7 @@ app.service('ChartUtilsService', function() {
         return grp;
     };
 
-    var _createDimensionFromXAxisLabel = function(c,chartOptions) {
+    var _createDimensionFromXAxisLabel = function(c, chartOptions) {
         let xAxisIsNumber = false;
         var _dim = _ndx.dimension(function(d) {
             if (parseInt(d[c.xAxis])) {
@@ -117,7 +180,7 @@ app.service('ChartUtilsService', function() {
             };
             return d[c.xAxis];
         });
-        if(chartOptions) chartOptions.xAxisIsNumber = xAxisIsNumber;
+        if (chartOptions) chartOptions.xAxisIsNumber = xAxisIsNumber;
         return _dim;
     };
 
@@ -131,16 +194,48 @@ app.service('ChartUtilsService', function() {
         return _newConfigObj;
     }
 
-    var _configureXAxis = function(chartOptions,_currentDim){
-        if(chartOptions.xAxisIsNumber){
-
+    var _configureXAxis = function(chartOptions, _currentDim) {
+        if (chartOptions.xAxisIsNumber) {
             var min = _currentDim.bottom(1)[0][chartOptions.xAxis];
             var max = _currentDim.top(1)[0][chartOptions.xAxis];
             chartOptions.x = d3.scale.linear().domain([min, max]);
             chartOptions.xUnits = dc.units.integers;
         }
+        else {
+            chartOptions.x = d3.scale.ordinal()
+            chartOptions.xUnits = dc.units.ordinal;
+        }
+        return chartOptions;
+    };
+
+    //This function makes sure the gap size is not too big for the chart width or height depending on chart type
+    var _configureGap = function(chartOptions, _currentDim, chartType){
+
+        var heightOrWidth = {
+            'rowChart': 'height',
+            'barChart': 'width'
+        }
+        var size = _currentDim.group().size();
+        if (chartOptions.gap * size >= chartOptions[heightOrWidth[chartType]]) {
+                chartOptions.gap = chartOptions[heightOrWidth[chartType]] * .5 / size;
+            }
+
         return chartOptions;
     }
+
+    //Set colors, needs to be fleshed out
+    var _setColors = function(chartOptions){
+        let c = chartOptions.colorSettings;
+        if(c){
+            if(c.style === "solid"){
+                debugger;
+                chartOptions.colors = c.color;
+            }
+        }
+
+        return chartOptions;
+    }
+
 
 
     //PUBLIC METHODS:
@@ -151,5 +246,7 @@ app.service('ChartUtilsService', function() {
         if (config.chartType === 'barChart') return configureBarChart(config);
         if (config.chartType === 'pieChart') return configurePieChart(config);
         if (config.chartType === 'dataTable') return configureDataTable(config);
+        if (config.chartType === 'lineChart') return configureLineChart(config);
+        if (config.chartType === 'rowChart') return configureRowChart(config);
     }
 });
