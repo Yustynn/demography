@@ -70,9 +70,4 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         WidgetFactory.update(widget);
     };
 
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-    })
-
-
 });
