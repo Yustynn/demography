@@ -19,9 +19,7 @@ app.config(function($stateProvider) {
             },
             userDatasets: function(DatasetFactory, loggedInUser) {
                 return DatasetFactory.fetchAllByUser(loggedInUser._id)
-                .then(datasets => {
-                    return datasets;
-                })
+                .then(datasets => datasets)
                 .then(null, console.error);
             }
         }
