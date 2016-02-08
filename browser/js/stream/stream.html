@@ -19,7 +19,7 @@
                             <h6 class="last-updated">{{dashboard.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</h6>
                         </div>
                     </div>
-                    <img class="dashboard-screenshot" ng-src="/{{dashboard._id}}.png">
+                    <img class="dashboard-screenshot" ng-src="/{{dashboard.screenshot}}">
                     <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5>
                     <h5 class="dashboard-description">{{dashboard.dataset.shortDescription}}</h5>
                 </div>

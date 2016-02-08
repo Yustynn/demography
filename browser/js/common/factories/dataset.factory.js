@@ -10,7 +10,8 @@ app.factory('DatasetFactory', function($http, Upload) {
                     file: datasetFile,
                     user: datasetMetaData.user,
                     title: datasetMetaData.title,
-                    shortDescription: datasetMetaData.shortDescription
+                    shortDescription: datasetMetaData.shortDescription,
+                    isPublic: datasetMetaData.isPublic,
                 }
             }).success(function(data, status, headers, config) {
                 console.log('Dataset created: ', data);
