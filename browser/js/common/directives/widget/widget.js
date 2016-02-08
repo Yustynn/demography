@@ -7,7 +7,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             dataset: '=',
             dashboard: '='
         },
-        link: function (scope, element, attrs) {
+        link: function (scope, element, attrs, controller) {
+            console.dir(controller);
             var grid = $('.gridster')[0];
             var gridWidth = grid.offsetWidth;
             //Temporary size stuff
@@ -89,27 +90,28 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
                 return widget.chartObject && widget.chartObject!={};
             };
 
-            scope.$watch('widget', function(){
+            scope.$on('item-needs-update', function(item) {
                 console.log("changed");
-
                 graphSize = {
-                    width: gridWidth/scope.widget.sizeX,
-                    height: gridWidth/scope.widget.sizeY
+                    width: gridWidth/(12/scope.widget.sizeX),
+                    height: gridWidth/(12/scope.widget.sizeY)
                 }
 
                 //console.log(scope.widget);
 
                 ChartService.resize({id: scope.widget.id, width: graphSize.width, height: graphSize.height});
+                // debugger;
                 var updatedWidget = {
                     col: scope.widget.col,
                     row: scope.widget.row,
                     sizeX: scope.widget.sizeX,
                     sizeY: scope.widget.sizeY,
-                    _id: scope.widget._id
+                    _id: scope.widget._id,
+                    chartObject: scope.widget.chartObject
                 };
                 WidgetFactory.update(updatedWidget);    //no ().then necessary here
 
-              }, true);
+              });
         }
     };
 });

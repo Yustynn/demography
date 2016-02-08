@@ -67,10 +67,13 @@ app.service('ChartService', function (ChartUtilsService){
         };
 
         _update(chartConfig) {
+            // debugger;
             for (var key in chartConfig) {
-                if(this[key]) this[key] = chartConfig[key];
+                debugger;
+                if(this.chart[key]) this.chart[key](chartConfig[key]);
             }
             chartDict[this.id] = this;
+            // debugger;
             dc.renderAll(this.chartGroup);  //render all connected charts
         }
     };
