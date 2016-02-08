@@ -68,9 +68,9 @@ describe('Dashboard Route', function() {
 
 
     beforeEach('Create user and add a dataset', function(done) {
-        
+
         //Add user and dataset to database
-        
+
         User.create(userInfo, function(err, user) {
             userId = user._id;
             datasetInfo.user = userId;
@@ -171,7 +171,8 @@ describe('Dashboard Route', function() {
 
         //Test to make sure Non logged in user only has access to public Dashboard and not private ones
 
-        it('Non Logged in users can view only public dashboards', function(done) {
+        // Not adding in any functionality for "non logged in users"
+        xit('Non Logged in users can view only public dashboards', function(done) {
 
             guestAgent.get('/api/dashboards')
                 .expect(200)

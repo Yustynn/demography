@@ -19,10 +19,14 @@ var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
     var queryObject = req.query;
+    queryObject.isPublic = true;
 
-    if (queryObject.user && !routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = true;
+    // If a specific user data is requested by the same user, send it back
+    if (queryObject.user && routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = false;
     DataSet.find(queryObject)
-    .then(datasets => res.status(200).json(datasets))
+    .then(datasets => {
+        res.status(200).json(datasets);
+    })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to access these datasets";
         next(err);
