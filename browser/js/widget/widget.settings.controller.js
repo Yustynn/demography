@@ -62,7 +62,6 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         };
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
-
            //var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup,widget.color);
            var chartConstructor = {
                 id: widget.id,
@@ -73,7 +72,9 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
                 yAxis: widget.labelY.key,
                 groupType: widget.group,
                 colorSettings: widget.color,
-                chartSize: graphSize
+                chartSize: graphSize,
+                columns: _chartOptions.columns,
+                order: _chartOptions.order
             }
 
             widget.chartObject = ChartService.create(chartConstructor);

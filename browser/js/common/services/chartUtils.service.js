@@ -1,5 +1,5 @@
 app.service('ChartUtilsService', function() {
-    var _ndx;
+    var _ndx, _dataset;
 
     var chartDefaults = {
         barChart: {
@@ -24,24 +24,35 @@ app.service('ChartUtilsService', function() {
                 chart.selectAll('g.x text')
                     .attr('transform', 'translate(-15,60) rotate(270)')
             }
+        },
+        dataTable : {
+            sortBy: function(d) {
+                return d[chartDefaults.barChart.yAxis];
+            },
+            //columns: Object.keys(dataset[0]), //cant set this here...WHY?
+            group: function(d) {
+                return d[chartDefaults.barChart.xAxis]; //create a new header for grouped values
+            },
+            order: d3.ascending, //can be ascending and descending
+            size: 1000    //how many rows to display
         }
     }
 
     var configureBarChart = function(c){
         console.log('configuring bar chart')
-        
+
         var barOptions = _overWriteDefaults(c,'barChart')
-        
+
         let _currentDim = _createDimensionFromXAxisLabel(c,barOptions);
-        
+
         barOptions.dimension = _currentDim;
         barOptions.group = _createGroup(c,_currentDim); //<--- UGLY
         barOptions.x = d3.scale.ordinal();
         barOptions.xUnits = dc.units.ordinal;
-        
+
         barOptions = _configureXAxis(barOptions,_currentDim)
         delete barOptions.yAxis
-        delete barOptions.xAxis //xAxis and yAxis will break bar chart 
+        delete barOptions.xAxis //xAxis and yAxis will break bar chart
         return barOptions;
     }
 
@@ -64,6 +75,18 @@ app.service('ChartUtilsService', function() {
         };
         return pieObj;
     };
+
+    var configureDataTable = function(c) {
+        console.log('configuring data table');
+
+        var chartOptions = _overWriteDefaults(c,'dataTable');
+        let _currentDim = _createDimensionFromXAxisLabel(c,chartOptions);
+        chartOptions.dimension = _currentDim;
+        chartOptions.group = _createGroup(c,_currentDim); //<--- UGLY
+        if (!chartOptions.columns) chartOptions.columns = Object.keys(dataset[0]);
+        return chartOptions;
+
+    }
 
     //REUSABLE HELPER METHODS:
     var _createGroup = function(c,_dim) {
@@ -99,16 +122,18 @@ app.service('ChartUtilsService', function() {
     };
 
     var _overWriteDefaults = function(c, chartType) {
-        let _newConfigObj = chartDefaults[chartType]
+        let _newConfigObj = chartDefaults[chartType]    //set required defaults
         for (var key in c) {
+            //then overwrite defaults
             _newConfigObj[key] = c[key];
         }
+        debugger
         return _newConfigObj;
     }
 
     var _configureXAxis = function(chartOptions,_currentDim){
         if(chartOptions.xAxisIsNumber){
-            
+
             var min = _currentDim.bottom(1)[0][chartOptions.xAxis];
             var max = _currentDim.top(1)[0][chartOptions.xAxis];
             chartOptions.x = d3.scale.linear().domain([min, max]);
@@ -119,9 +144,12 @@ app.service('ChartUtilsService', function() {
 
 
     //PUBLIC METHODS:
-    this.createChartOptions = function(config, ndx) {
+    this.createChartOptions = function(config, ndx, dataset) {
+        debugger;
         _ndx = ndx;
+        _dataset = dataset;
         if (config.chartType === 'barChart') return configureBarChart(config);
         if (config.chartType === 'pieChart') return configurePieChart(config);
+        if (config.chartType === 'dataTable') return configureDataTable(config);
     }
 });
