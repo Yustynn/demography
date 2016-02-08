@@ -29,7 +29,6 @@ app.factory('WidgetFactory', function ($http){
             graphGroups.push(groupName);
         },
         getGraphGroups: function(){
-            console.log(graphGroups)
             return graphGroups;
         }
     }

@@ -15,6 +15,10 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 width: gridWidth/scope.widget.sizeX,
                 height: gridWidth/scope.widget.sizeY
             }
+            // var graphSize = {}
+            // graphSize.width = gridWidth/scope.widget.sizeX;
+            // graphSize.height = gridWidth/scope.widget.sizeY;
+
 
             var c = scope.widget.chartObject;
             if (c && c.chart) {
@@ -28,7 +32,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     yAxis: c.yAxis,
                     groupType: c.groupType,
                     colorSettings: c.colorSettings,
-                    chartSize: graphSize
+                    width: graphSize.width,
+                    height: graphSize.height
                 }
 
                 // Object.keys(c.chartOptions).forEach(function(key) {
@@ -93,7 +98,6 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
             }
 
             scope.$on('gridster-item-transition-end', function (item) {
-                console.log("HIT From Widget")
                 var updatedWidget = {
                     col: item.targetScope.widget.col,
                     row: item.targetScope.widget.row,
