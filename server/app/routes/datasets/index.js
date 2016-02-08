@@ -22,11 +22,9 @@ router.get("/", function(req, res, next) {
     queryObject.isPublic = true;
 
     // If a specific user data is requested by the same user, send it back
-    if (queryObject.user && routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = false;
+    if (queryObject.user && routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) delete queryObject.isPublic;
     DataSet.find(queryObject)
-    .then(datasets => {
-        res.status(200).json(datasets);
-    })
+    .then(datasets => res.status(200).json(datasets))
     .then(null, function(err) {
         err.message = "Something went wrong when trying to access these datasets";
         next(err);
