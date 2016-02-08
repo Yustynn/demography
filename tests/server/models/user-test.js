@@ -25,6 +25,7 @@ describe('User model', function () {
         expect(User).to.be.a('function');
     });
 
+
     describe('password encryption', function () {
 
         describe('generateSalt method', function () {

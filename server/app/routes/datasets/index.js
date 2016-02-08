@@ -21,7 +21,6 @@ router.get("/", function(req, res, next) {
     var queryObject = req.query;
 
     if (queryObject.user && !routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) queryObject.isPublic = true;
-
     DataSet.find(queryObject)
     .then(datasets => res.status(200).json(datasets))
     .then(null, function(err) {
