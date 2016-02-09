@@ -12,7 +12,7 @@
             <div>
                 <label>Choose graph type</label>
                 <div class="new-widget-selector">
-                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="openSettings(widget, dataset._id,'barChart')"><i class="material-icons">insert_chart</i></a>
+                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="openSettixngs(widget, dataset._id,'barChart')"><i class="material-icons">insert_chart</i></a>
                     <a title="new row chart" role="button" tooltip-placement="bottom" uib-tooltip="New Row Chart" ng-click="openSettings(widget, dataset._id,'rowChart')"><i class="material-icons gly-rotate-90">insert_chart</i></a>
                     <a title="new pie chart" role="button" tooltip-placement="bottom" uib-tooltip="New Pie Chart" ng-click="openSettings(widget, dataset._id,'pieChart')"><i class="material-icons">donut_small</i></a>
                     <a title="new line chart" role="button" tooltip-placement="bottom" uib-tooltip="New Line Chart" ng-click="openSettings(widget, dataset._id,'lineChart')"><i class="material-icons">timeline</i></a>
@@ -22,54 +22,7 @@
             </div>
             <div ng-click="toggleBarChartAccordion()">TEMP BAR CHART BUTTON</div>
             <div class="widget-settings">
-
-                <div uib-collapse="barChartCollapsed">
-                    <div class="well well-lg">
-                        <h5>Bar Chart Settings</h5>
-
-                        <div class="row">
-                            <br>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="selectX">X-Axis</label>
-                                    <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="selectY">Y-Axis</label>
-                                    <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="groupBy">Group by</label>
-                                    <select name="groupBy" ng-model="form.group">
-                                        <option value="count">Count</option>
-                                        <option value="sum">Sum</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="graphGroup">Graph Group</label>
-                                    <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options"></select>
-                                    <span ng-click="addGraphGroup()"><i class="glyphicon glyphicon-plus"></i></span>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="style">Fill style</label>
-                                    <select name="style" ng-model="form.color.style">
-                                        <option value="solid">Solid</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="color">Fill color</label>
-                                    <div class="colorSelect">
-                                        <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
+                <create-barchart bar-chart-collapsed="barChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-barchart>
             </div>
 
         </div>

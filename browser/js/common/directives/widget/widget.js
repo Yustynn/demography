@@ -8,7 +8,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             dashboard: '='
         },
         link: function (scope, element, attrs, controller) {
-            console.dir(controller);
             var grid = $('.gridster')[0];
             var gridWidth = grid.offsetWidth;
             //Temporary size stuff

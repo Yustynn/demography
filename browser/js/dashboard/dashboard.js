@@ -75,10 +75,13 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         if(!!$scope.dashboard.widgets.length) DashboardFactory.takeScreenshot($stateParams)
     })
 
+    // BOBBY / JONATAN NOTE: This nees to be moved to the widget.settings.controller
+        // Potentially add an event emitter so we can update the dashboard scope
     $scope.addWidget = function() {
 
+        // Create a new widget
         var newWidget = {
-            //default widget settings
+            // Default widget settings
             id: $scope.dashboard.nextWidgetId,
             title: "New Graph",
             type: 'graph',
@@ -86,6 +89,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             sizeY: 4,
             chartObject: {}
         };
+
         $scope.dashboard.widgets.push(newWidget);
         $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
         newWidget.dashboard = $scope.dashboard._id;

@@ -1,4 +1,4 @@
-app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset,element,graphSize) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset, element, graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
 
@@ -54,12 +54,13 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         columns: selectedColumns
     };
 
-    $scope.addGraphGroup = function() {
-        var newGroup = 'Group'+ ($scope.graphGroups.options.length+1);
-        WidgetFactory.addGraphGroup(newGroup);
-        $scope.form.graphGroup= newGroup;
-        $scope.graphGroups.options = WidgetFactory.getGraphGroups();
-    };
+    // BOBBY NOTE: Moved this to the directive
+    // $scope.addGraphGroup = function() {
+    //     var newGroup = 'Group'+ ($scope.graphGroups.options.length+1);
+    //     WidgetFactory.addGraphGroup(newGroup);
+    //     $scope.form.graphGroup= newGroup;
+    //     $scope.graphGroups.options = WidgetFactory.getGraphGroups();
+    // };
 
     $scope.dismiss = function() {
         $uibModalInstance.dismiss();
@@ -82,6 +83,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         //this modal is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
 
+            // Creates new graph
             var chartConfig = {
                 id: widget.id,
                 container: element,
