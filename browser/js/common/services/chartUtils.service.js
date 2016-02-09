@@ -268,5 +268,6 @@ app.service('ChartUtilsService', function() {
         if (config.chartType === 'dataTable') return configureDataTable(config);
         if (config.chartType === 'lineChart') return configureLineChart(config);
         if (config.chartType === 'rowChart') return configureRowChart(config);
+        if (config.chartType === 'dataCount') return configureDataCount(config);
     }
 });

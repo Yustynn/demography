@@ -46,14 +46,19 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 widget.sizeX = 4;
                 widget.sizeY = 1;
                 graphSize = {
-                    width: gridWidth/(12/scope.widget.sizeX)-40,
-                    height: gridWidth/(12/scope.widget.sizeY)-74
-                }
-                //set width and height
-console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
-                // var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
-                // widget.chartObject = chartObj;
-                // WidgetFactory.update(widget);
+                    width: gridWidth/(12/widget.sizeX)-40,
+                    height: gridWidth/(12/widget.sizeY)-74
+                };
+
+                var chartConstructor = {
+                    id: widget.id,
+                    container: $('#widget-container-'+widget.id).children()[1],
+                    chartType: 'dataCount',
+                    width: graphSize.width,
+                    height: graphSize.height
+                };
+                widget.chartObject = ChartService.create(chartConstructor);
+                WidgetFactory.update(widget);
             }
 
             scope.element = element;
@@ -89,6 +94,7 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
             };
 
             scope.$on('item-needs-update', function(item) {
+
                 console.log("changed");
                 graphSize = {
                     width: gridWidth/(12/scope.widget.sizeX)-40,
