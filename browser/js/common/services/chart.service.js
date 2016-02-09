@@ -3,6 +3,7 @@ app.service('ChartService', function (ChartUtilsService){
     var chartDict = {}; //Object to store all instances of chartDict
     //use to create a new chart instance
     this.create = function(chartConfig) {
+
         return new Chart(chartConfig);
     }
 
@@ -46,7 +47,6 @@ app.service('ChartService', function (ChartUtilsService){
         _configureChart(chartConfig) {
             var chartSpecificConfig = ChartUtilsService.createChartOptions(chartConfig, ndx, myData);
             //angular.extend(this, ChartUtilsService.createChartOptions(chartConfig, ndx));
-
             for (var key in chartSpecificConfig) {
                 //check for 'on' key and apply. Then add to chartDict and dc.renderAll
                 if(key === "on"){
@@ -58,22 +58,19 @@ app.service('ChartService', function (ChartUtilsService){
                     }
                 }
             };
-            //debugger;
         };
 
         _createChart() {
+            // debugger;
             chartDict[this.id] = this;   //add new chart to dict
             dc.renderAll(this.chartGroup);  //render all connected charts
         };
 
         _update(chartConfig) {
-            // debugger;
             for (var key in chartConfig) {
-                debugger;
                 if(this.chart[key]) this.chart[key](chartConfig[key]);
             }
             chartDict[this.id] = this;
-            // debugger;
             dc.renderAll(this.chartGroup);  //render all connected charts
         }
     };

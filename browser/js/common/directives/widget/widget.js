@@ -13,8 +13,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             var gridWidth = grid.offsetWidth;
             //Temporary size stuff
             var graphSize = {
-                width: gridWidth/scope.widget.sizeX,
-                height: gridWidth/scope.widget.sizeY
+                    width: gridWidth/(12/scope.widget.sizeX),
+                    height: gridWidth/(12/scope.widget.sizeY)
             }
 
             var c = scope.widget.chartObject;
@@ -48,8 +48,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 widget.sizeX = 4;
                 widget.sizeY = 1;
                 graphSize = {
-                    width: gridWidth/widget.sizeX,
-                    height: gridWidth/widget.sizeY
+                    width: gridWidth/(12/scope.widget.sizeX),
+                    height: gridWidth/(12/scope.widget.sizeY)
                 }
                 //set width and height
 console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
@@ -92,6 +92,8 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
 
             scope.$on('item-needs-update', function(item) {
                 console.log("changed");
+                console.dir(scope);
+                debugger;
                 graphSize = {
                     width: gridWidth/(12/scope.widget.sizeX),
                     height: gridWidth/(12/scope.widget.sizeY)

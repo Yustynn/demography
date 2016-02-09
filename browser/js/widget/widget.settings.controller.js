@@ -52,6 +52,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     };
 
     $scope.submit = function() {
+
         angular.extend(widget, $scope.form); //update widget with settings from form
         //debugger;
         $uibModalInstance.close(widget);
@@ -60,10 +61,13 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             order: $scope.form.orderBy ? d3[$scope.form.orderBy] : d3.ascending,
             columns: $scope.form.columns.length > 0 ? $scope.form.columns.map(function(col){return col.key; }) : null
         };
+
+
+
         //this widget is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
-           //var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup,widget.color);
-           var chartConstructor = {
+
+            var chartConfig = {
                 id: widget.id,
                 container: element,
                 chartType: graphTypeToCreate,
@@ -76,9 +80,15 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
                 height: graphSize.height,
                 columns: _chartOptions.columns,
                 order: _chartOptions.order
-            }
+            };
 
-            widget.chartObject = ChartService.create(chartConstructor);
+            widget.chartObject = ChartService.create(chartConfig);
+        }
+        else {
+            //only get updated properties:
+           console.error("UPDATING NOT YET WORKING");
+
+            //widget.chartObject = ChartService.update(chartConfig);
         }
         WidgetFactory.update(widget);
     };

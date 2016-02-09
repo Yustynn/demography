@@ -26,13 +26,6 @@ app.service('ChartUtilsService', function() {
             }
         },
         dataTable : {
-            sortBy: function(d) {
-                return d[chartDefaults.barChart.yAxis];
-            },
-            //columns: Object.keys(dataset[0]), //cant set this here...WHY?
-            group: function(d) {
-                return d[chartDefaults.barChart.xAxis]; //create a new header for grouped values
-            },
             order: d3.ascending, //can be ascending and descending
             size: 1000    //how many rows to display
         },
@@ -118,8 +111,16 @@ app.service('ChartUtilsService', function() {
         var chartOptions = _overWriteDefaults(c,'dataTable');
         let _currentDim = _createDimensionFromXAxisLabel(c,chartOptions);
         chartOptions.dimension = _currentDim;
-        chartOptions.group = _createGroup(c,_currentDim); //<--- UGLY
-        if (!chartOptions.columns) chartOptions.columns = Object.keys(dataset[0]);
+        chartOptions.sortBy = function(d) {
+            return d[c.yAxis];
+        };
+
+        chartOptions.group = function(d) {
+            return d[c.xAxis]; //create a new header for grouped values
+        };
+        if (!chartOptions.columns) chartOptions.columns = Object.keys(_dataset[0]);
+        delete chartOptions.yAxis;
+        delete chartOptions.xAxis;
         return chartOptions;
     };
 
@@ -240,7 +241,6 @@ app.service('ChartUtilsService', function() {
 
     //PUBLIC METHODS:
     this.createChartOptions = function(config, ndx, dataset) {
-
         _ndx = ndx;
         _dataset = dataset;
         if (config.chartType === 'barChart') return configureBarChart(config);
