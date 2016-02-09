@@ -92,17 +92,12 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
 
             scope.$on('item-needs-update', function(item) {
                 console.log("changed");
-                console.dir(scope);
-                debugger;
                 graphSize = {
                     width: gridWidth/(12/scope.widget.sizeX),
                     height: gridWidth/(12/scope.widget.sizeY)
                 }
 
-                //console.log(scope.widget);
-
                 ChartService.resize({id: scope.widget.id, width: graphSize.width, height: graphSize.height});
-                // debugger;
                 var updatedWidget = {
                     col: scope.widget.col,
                     row: scope.widget.row,
