@@ -1,8 +1,6 @@
-//https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
-    //TODO: dropdown for labels from dataset once we have data loaded
     $scope.axisDropdowns = {
         objectKeys : Object.keys(dataset.jsonData[0])
         .map(function(key){
@@ -23,7 +21,6 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.graphGroups = {
         options: WidgetFactory.getGraphGroups()
     }
-    //2-way binding!
 
     $scope.form = {
         title: widget.title,    //update title
@@ -52,9 +49,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     };
 
     $scope.submit = function() {
-
         angular.extend(widget, $scope.form); //update widget with settings from form
-        //debugger;
         $uibModalInstance.close(widget);
 
         var _chartOptions = {
@@ -62,9 +57,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             columns: $scope.form.columns.length > 0 ? $scope.form.columns.map(function(col){return col.key; }) : null
         };
 
-
-
-        //this widget is used to both create and update graphs. hence this logic:
+        //this modal is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
 
             var chartConfig = {
@@ -87,10 +80,8 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
         else {
             //only get updated properties:
            console.error("UPDATING NOT YET WORKING");
-
             //widget.chartObject = ChartService.update(chartConfig);
         }
         WidgetFactory.update(widget);
     };
-
 });

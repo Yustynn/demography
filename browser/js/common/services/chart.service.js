@@ -1,9 +1,8 @@
 app.service('ChartService', function (ChartUtilsService){
     var ndx, myData;   //public variables shared between all chart instances
     var chartDict = {}; //Object to store all instances of chartDict
-    //use to create a new chart instance
-    this.create = function(chartConfig) {
 
+    this.create = function(chartConfig) {
         return new Chart(chartConfig);
     }
 
@@ -38,30 +37,27 @@ app.service('ChartService', function (ChartUtilsService){
             this.height = chartConfig.height;
             this.width = chartConfig.width;
             this.chartGroup = chartConfig.chartGroup || 'Group1';
-            this.chart = dc[this.chartType](chartConfig.container,this.chartGroup);
-            this._configureChart(chartConfig); //configure with chart specific properties and user settings such as colors
+            var chartSpecificConfig = ChartUtilsService.createChartOptions(chartConfig, ndx, myData); //configure with chart specific properties and user settings such as colors
+            this.chart = dc[this.chartType](chartSpecificConfig.container,this.chartGroup);
+            this._applyToChart(chartSpecificConfig);
             this._createChart();    //render the new chart
         };
 
         //attaches properties to the DC chart instance
-        _configureChart(chartConfig) {
-            var chartSpecificConfig = ChartUtilsService.createChartOptions(chartConfig, ndx, myData);
-            //angular.extend(this, ChartUtilsService.createChartOptions(chartConfig, ndx));
-            for (var key in chartSpecificConfig) {
-                //check for 'on' key and apply. Then add to chartDict and dc.renderAll
+        _applyToChart(chartConfig) {
+            for (var key in chartConfig) {
                 if(key === "on"){
-                    this.chart[key].apply(null,chartSpecificConfig[key]) //not sure this still works. check table formatting to find out if this is the right syntax
+                    this.chart[key].apply(null,chartConfig[key]) //not sure this still works. check table formatting to find out if this is the right syntax
                 }
                 else {
                     if (this.chart[key]) {//temporary fix to make sure if a chart is called with a function it can't take, it doesn't break anything
-                        this.chart[key](chartSpecificConfig[key])
+                        this.chart[key](chartConfig[key])
                     }
                 }
             };
         };
 
         _createChart() {
-            // debugger;
             chartDict[this.id] = this;   //add new chart to dict
             dc.renderAll(this.chartGroup);  //render all connected charts
         };
@@ -72,6 +68,6 @@ app.service('ChartService', function (ChartUtilsService){
             }
             chartDict[this.id] = this;
             dc.renderAll(this.chartGroup);  //render all connected charts
-        }
+        };
     };
 });

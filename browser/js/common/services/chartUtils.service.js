@@ -105,25 +105,6 @@ app.service('ChartUtilsService', function() {
         return pieOptions;
     };
 
-    var configureDataTable = function(c) {
-        console.log('configuring data table');
-
-        var chartOptions = _overWriteDefaults(c,'dataTable');
-        let _currentDim = _createDimensionFromXAxisLabel(c,chartOptions);
-        chartOptions.dimension = _currentDim;
-        chartOptions.sortBy = function(d) {
-            return d[c.yAxis];
-        };
-
-        chartOptions.group = function(d) {
-            return d[c.xAxis]; //create a new header for grouped values
-        };
-        if (!chartOptions.columns) chartOptions.columns = Object.keys(_dataset[0]);
-        delete chartOptions.yAxis;
-        delete chartOptions.xAxis;
-        return chartOptions;
-    };
-
     var configureLineChart = function(c){
         var lineOptions = _overWriteDefaults(c,'lineChart')
         let _currentDim = _createDimensionFromXAxisLabel(c,lineOptions);
@@ -150,6 +131,33 @@ app.service('ChartUtilsService', function() {
         delete rowOptions.yAxis;
         delete rowOptions.xAxis; //xAxis and yAxis will break bar chart
         return rowOptions;
+    };
+
+    var configureDataTable = function(c) {
+        var chartOptions = _overWriteDefaults(c,'dataTable');
+        let _currentDim = _createDimensionFromXAxisLabel(c,chartOptions);
+        chartOptions.dimension = _currentDim;
+        chartOptions.sortBy = function(d) {
+            return d[c.yAxis];
+        };
+
+        chartOptions.group = function(d) {
+            return d[c.xAxis]; //create a new header for grouped values
+        };
+        if (!chartOptions.columns) chartOptions.columns = Object.keys(_dataset[0]);
+
+        //modify css:
+        var tableContainer = d3.select(chartOptions.container)
+            .attr('style', 'overflow: auto')
+            .append('table')
+                .attr('class', 'table table-hover table-condensed')  //http://getbootstrap.com/css/#tables-responsive
+                .attr('id', 'dataTable-'+chartOptions.id)
+
+        chartOptions.container = $('#dataTable-' + chartOptions.id)[0];
+
+        delete chartOptions.yAxis;
+        delete chartOptions.xAxis;
+        return chartOptions;
     };
 
     //REUSABLE HELPER METHODS:
