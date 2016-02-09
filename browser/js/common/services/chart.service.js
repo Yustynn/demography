@@ -63,6 +63,9 @@ app.service('ChartService', function (ChartUtilsService){
         };
 
         _update(chartConfig) {
+            if(this.chartType==='pieChart'){
+                chartConfig.radius = chartConfig.width < chartConfig.height ? chartConfig.width / 2 : chartConfig.height / 2
+            }
             for (var key in chartConfig) {
                 if(this.chart[key]) this.chart[key](chartConfig[key]);
             }
