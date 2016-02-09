@@ -1,9 +1,7 @@
-//https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset,element,graphSize) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
 
-    //TODO: dropdown for labels from dataset once we have data loaded
     $scope.axisDropdowns = {
         objectKeys : Object.keys(dataset.jsonData[0])
         .map(function(key){
@@ -45,7 +43,6 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.graphGroups = {
         options: WidgetFactory.getGraphGroups()
     }
-    //2-way binding!
 
     $scope.form = {
         title: widget.title,    //update title
@@ -75,18 +72,37 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
 
     $scope.submit = function() {
         angular.extend(widget, $scope.form); //update widget with settings from form
-        //debugger;
         $uibModalInstance.close(widget);
 
         var _chartOptions = {
             order: $scope.form.orderBy ? d3[$scope.form.orderBy] : d3.ascending,
             columns: $scope.form.columns.length > 0 ? $scope.form.columns.map(function(col){return col.key; }) : null
         };
-        //this widget is used to both create and update graphs. hence this logic:
+
+        //this modal is used to both create and update graphs. hence this logic:
         if(graphTypeToCreate) {
-            //'TEAM', 'AB'
-           var chartObj = GraphService.create(element,widget.id,graphTypeToCreate, widget.labelX.key, widget.labelY.key,widget.group,_chartOptions,graphSize,widget.graphGroup,widget.color);
-           widget.chartObject = chartObj;
+
+            var chartConfig = {
+                id: widget.id,
+                container: element,
+                chartType: graphTypeToCreate,
+                chartGroup: widget.graphGroup,
+                xAxis: widget.labelX.key,
+                yAxis: widget.labelY.key,
+                groupType: widget.group,
+                colorSettings: widget.color,
+                width: graphSize.width,
+                height: graphSize.height,
+                columns: _chartOptions.columns,
+                order: _chartOptions.order
+            };
+
+            widget.chartObject = ChartService.create(chartConfig);
+        }
+        else {
+            //only get updated properties:
+           console.error("UPDATING NOT YET WORKING");
+            //widget.chartObject = ChartService.update(chartConfig);
         }
         WidgetFactory.update(widget);
     };
