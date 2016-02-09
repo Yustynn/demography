@@ -1,0 +1,47 @@
+<div class="row">
+            <div class="col-sm-5">
+                <div class="form-group"><span ng-hide="{{chartType==='dataTable'}}">
+                             <label for="groupBy">Group Data By</label>
+                            <select name="groupBy" ng-model="form.group">
+                                <option value="count">Count</option>
+                                <option value="sum">Sum</option>
+                            </select>
+                        </span>
+                </div>
+                <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">
+                        <label for="select-columns">Columns</label>
+                            <select multiple name="select-columns" id="select-columns" ng-model="form.columns" ng-options="column.key for column in axisDropdowns.objectKeys">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <label for="selectY">Graph Group</label>
+                            <select ng-model="form.graphGroup" name="graphGroup" id="graphGroup" ng-options="option for option in graphGroups.options"></select>
+                            <span>
+                                <a ng-click="addGraphGroup()" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>add group</a>
+                            </span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label for="Style">Choose a style</label>
+                    <select name="Style" ng-model="form.color.style">
+                        <option value="solid">Solid</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <h3>Color</h3>
+                    <div class="colorSelect">
+                        <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

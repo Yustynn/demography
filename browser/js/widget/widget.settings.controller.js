@@ -2,7 +2,7 @@
 app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
-    console.log($scope.chartType)
+
     //TODO: dropdown for labels from dataset once we have data loaded
     $scope.axisDropdowns = {
         objectKeys : Object.keys(dataset.jsonData[0])
@@ -10,6 +10,27 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             return {key: key};
         })
     };
+
+    // Collapse all "settings" accordions by default in the add chart modal
+    $scope.barChartCollapsed = true;
+    $scope.pieChartCollapsed = true;
+    $scope.lineChartCollapsed = true;
+
+    $scope.toggleBarChartAccordion = function() {
+        if ($scope.barChartCollapsed) $scope.barChartCollapsed = false;
+        else $scope.barChartCollapsed = true;
+    }
+
+    $scope.togglePieChartAccordion = function() {
+        if ($scope.pieChartCollapsed) $scope.pieChartCollapsed = false;
+        else $scope.pieChartCollapsed = true;
+    }
+
+    $scope.toggleLineChartAccordion = function() {
+        if ($scope.lineChartCollapsed) $scope.lineChartCollapsed = false;
+        else $scope.lineChartCollapsed = true;
+    }
+
     //This will be an map with different themes, for now a single array
     $scope.colorOptions = ['#3182bd','#6baed6','#9ecae1', '#c6dbef','#e6550d','#fd8d3c','#fdae6b','#fdd0a2','#31a354','#74c476','#a1d99b','#c7e9c0','#756bb1','#9e9ac8','#bcbddc','#dadaeb','#636363','#969696','#bdbdbd','#d9d9d9']
     //$scope.groupOptions = [{val:'sum'}, {val:'count'}];
