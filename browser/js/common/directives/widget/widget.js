@@ -1,4 +1,4 @@
-app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, GraphService, ChartService, $rootScope) {
+app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, ChartService, $rootScope) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/widget/widget.html',
@@ -33,7 +33,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 };
 
                 ChartService.create(chartConstructor);
-                //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
             }
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
