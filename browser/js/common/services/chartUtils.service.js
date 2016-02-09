@@ -25,10 +25,6 @@ app.service('ChartUtilsService', function() {
                     .attr('transform', 'translate(-15,60) rotate(270)')
             }
         },
-        dataTable : {
-            order: d3.ascending, //can be ascending and descending
-            size: 1000    //how many rows to display
-        },
         pieChart: {
             innerRadius: 0,
             slicesCap: 20,
@@ -66,6 +62,19 @@ app.service('ChartUtilsService', function() {
                 left: 10,
                 right: 10,
                 bottom: 20
+            }
+        },
+        dataTable : {
+            order: d3.ascending, //can be ascending and descending
+            size: 1000    //how many rows to display
+        },
+        dataCount : {
+            group: _ndx.groupAll(),
+            dimension: _ndx,
+            html: {
+                some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
+                    ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
+                all: 'All <strong>%total-count</strong> records selected.'
             }
         }
     }
@@ -160,6 +169,10 @@ app.service('ChartUtilsService', function() {
         return chartOptions;
     };
 
+    var configureDataCount = function(c) {
+        return _overWriteDefaults(c,'dataCount');
+    };
+
     //REUSABLE HELPER METHODS:
     var _createGroup = function(c, _dim) {
         let grp;
@@ -244,8 +257,6 @@ app.service('ChartUtilsService', function() {
 
         return chartOptions;
     }
-
-
 
     //PUBLIC METHODS:
     this.createChartOptions = function(config, ndx, dataset) {
