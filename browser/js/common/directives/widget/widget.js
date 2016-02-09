@@ -34,7 +34,11 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
 
                 ChartService.create(chartConstructor);
                 //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
+            } else {
+                console.log("OPENING CREATE CHART MODEL");
+                openSettings(scope.widget, scope.dashboard.dataset._id);
             }
+
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
                 scope.dashboard.widgets.splice(scope.dashboard.widgets.indexOf(widget), 1);
@@ -51,7 +55,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     height: gridWidth/(12/scope.widget.sizeY)
                 }
                 //set width and height
-console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
+                console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
                 // var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
                 // widget.chartObject = chartObj;
                 // WidgetFactory.update(widget);
@@ -59,7 +63,33 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
 
             scope.element = element;
 
-            scope.openSettings = function (widget, datasetId, graphTypeToCreate) {
+            // BOBBY NOTE: ORIGAL SETTINGS
+            // scope.openSettings = function (widget, datasetId, graphTypeToCreate) {
+            //     $uibModal.open({
+            //         scope: scope,
+            //         templateUrl: 'js/widget/widget.settings.html',
+            //         controller: 'WidgetSettingsCtrl',
+            //         resolve: {
+            //             widget: function() {
+            //                 return widget;
+            //             },
+            //             graphTypeToCreate: function() {
+            //                 return graphTypeToCreate || null;
+            //             },
+            //             dataset: function() {
+            //                 return DatasetFactory.fetchOne(datasetId);
+            //             },
+            //             element: function(){
+            //                 return $(element).find('.widget-content-container')[0]
+            //             },
+            //             graphSize: function(){
+            //                 return graphSize;
+            //             }
+            //         }
+            //     });
+            // };
+
+            function openSettings (widget, datasetId) {
                 $uibModal.open({
                     scope: scope,
                     templateUrl: 'js/widget/widget.settings.html',
@@ -67,9 +97,6 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
                     resolve: {
                         widget: function() {
                             return widget;
-                        },
-                        graphTypeToCreate: function() {
-                            return graphTypeToCreate || null;
                         },
                         dataset: function() {
                             return DatasetFactory.fetchOne(datasetId);

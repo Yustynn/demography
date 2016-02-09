@@ -1,6 +1,6 @@
-app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset, element, graphSize) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, WidgetFactory, GraphService, ChartService, dataset, element, graphSize) {
     $scope.widget = widget;
-    $scope.chartType = graphTypeToCreate;
+    $scope.chartType;
 
     $scope.axisDropdowns = {
         objectKeys : Object.keys(dataset.jsonData[0])
@@ -14,9 +14,17 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     $scope.pieChartCollapsed = true;
     $scope.lineChartCollapsed = true;
 
+    // Functions to toggle accordions
+        // Consider creating a single, dynamic function that can do all of this
     $scope.toggleBarChartAccordion = function() {
-        if ($scope.barChartCollapsed) $scope.barChartCollapsed = false;
-        else $scope.barChartCollapsed = true;
+        if ($scope.barChartCollapsed) {
+            $scope.barChartCollapsed = false;
+            $scope.chartType = "barChart";
+        }
+        else {
+            $scope.barChartCollapsed = true;
+            $scope.chartType = undefined;
+        }
     }
 
     $scope.togglePieChartAccordion = function() {
@@ -67,6 +75,7 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
     };
 
     $scope.remove = function() {
+        console.log("$scope.dashboard: ", $scope.dashboard);
         $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
         $uibModalInstance.close();
     };
@@ -80,14 +89,15 @@ app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $ui
             columns: $scope.form.columns.length > 0 ? $scope.form.columns.map(function(col){return col.key; }) : null
         };
 
-        //this modal is used to both create and update graphs. hence this logic:
-        if(graphTypeToCreate) {
+        // this modal is used to both create and update graphs. hence this logic:
+            // BOBBY NOTE: This logic needs to change
+        if($scope.chartType) {
 
             // Creates new graph
             var chartConfig = {
                 id: widget.id,
                 container: element,
-                chartType: graphTypeToCreate,
+                chartType: $scope.chartType,
                 chartGroup: widget.graphGroup,
                 xAxis: widget.labelX.key,
                 yAxis: widget.labelY.key,
