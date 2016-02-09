@@ -69,8 +69,6 @@ app.service('ChartUtilsService', function() {
             size: 1000    //how many rows to display
         },
         dataCount : {
-            group: _ndx.groupAll(),
-            dimension: _ndx,
             html: {
                 some: '<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
                     ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
@@ -170,7 +168,10 @@ app.service('ChartUtilsService', function() {
     };
 
     var configureDataCount = function(c) {
-        return _overWriteDefaults(c,'dataCount');
+        var chartOptions = _overWriteDefaults(c,'dataCount');
+        chartOptions.group= _ndx.groupAll();
+        chartOptions.dimension= _ndx;
+        return chartOptions;
     };
 
     //REUSABLE HELPER METHODS:
