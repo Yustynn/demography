@@ -1,4 +1,4 @@
-app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, GraphService, ChartService, $rootScope) {
+app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, ChartService, $rootScope) {
     return {
         restrict: 'E',
         templateUrl: 'js/common/directives/widget/widget.html',
@@ -18,7 +18,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
 
             var c = scope.widget.chartObject;
             if (c && c.chart) {
-
                 var chartConstructor = {
                     id: c.id,
                     container: $(element).find('.widget-content-container')[0],
@@ -33,7 +32,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 };
 
                 ChartService.create(chartConstructor);
-                //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
             }
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
@@ -41,20 +39,26 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             };
 
             scope.createDatacountWidget = function(widget, datasetId) {
-
+                console.dir(widget);
                 //set title
                 widget.title = "Statistics";
                 widget.sizeX = 4;
                 widget.sizeY = 1;
                 graphSize = {
-                    width: gridWidth/(12/scope.widget.sizeX)-40,
-                    height: gridWidth/(12/scope.widget.sizeY)-74
-                }
-                //set width and height
-console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
-                // var chartObj = GraphService.create($(element).find('.widget-content-container')[0],widget.id,'dataCount',null,null,null,null,graphSize);
-                // widget.chartObject = chartObj;
-                // WidgetFactory.update(widget);
+                    width: gridWidth/(12/widget.sizeX)-40,
+                    height: gridWidth/(12/widget.sizeY)-74
+                };
+
+                var chartConstructor = {
+                    id: widget.id,
+                    container: $('#widget-container-'+widget.id).children()[1],
+                    chartType: 'dataCount',
+                    chartGroup: 'Group1',
+                    width: graphSize.width,
+                    height: graphSize.height
+                };
+                widget.chartObject = ChartService.create(chartConstructor);
+                WidgetFactory.update(widget);
             }
 
             scope.element = element;
@@ -90,6 +94,7 @@ console.error('NEED TO IMPLEMENT DATACOUNTWIDGET LATER');
             };
 
             scope.$on('item-needs-update', function(item) {
+
                 console.log("changed");
                 graphSize = {
                     width: gridWidth/(12/scope.widget.sizeX)-40,

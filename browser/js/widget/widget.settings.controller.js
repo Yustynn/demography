@@ -1,4 +1,4 @@
-app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, GraphService, ChartService, dataset,element,graphSize) {
+app.controller('WidgetSettingsCtrl', function ($scope, $timeout, $rootScope, $uibModalInstance, widget, graphTypeToCreate, WidgetFactory, ChartService, dataset,element,graphSize) {
     $scope.widget = widget;
     $scope.chartType = graphTypeToCreate;
     $scope.axisDropdowns = {
