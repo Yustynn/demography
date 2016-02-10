@@ -23,7 +23,6 @@ app.service('ChartUtilsService', function() {
             gap: 20,
             renderHorizontalGridLines: true,
             renderlet: function(chart) {
-                console.log("are we here?")
                 chart.selectAll('g.x text')
                     .attr('transform', 'translate(-15, 60)', 'rotate(270)')
             }
@@ -88,11 +87,15 @@ app.service('ChartUtilsService', function() {
 
         barOptions.dimension = _currentDim;
         barOptions.group = _createGroup(c, _currentDim); //<--- UGLY
-        var maxLength = _getMaxXAxisLabelLength(c,barOptions);
+        var maxXLength = _getMaxXAxisLabelLength(c,barOptions);
+        var maxYLength = _getMaxYAxisLabelLength(c,barOptions);
+
         barOptions.renderlet = function(chart) {
             chart.selectAll('g.x text')
-                .attr('transform', 'translate(-15,'+maxLength*4.5+'), rotate(270)')
+                .attr('transform', 'translate(-15,'+maxXLength*4.3+'), rotate(270)')
             }
+
+        barOptions.margins.left = maxYLength*20
 
         barOptions = _configureXAxis(barOptions, _currentDim)
         barOptions = _configureGap(barOptions,_currentDim,'barChart')
@@ -220,6 +223,15 @@ app.service('ChartUtilsService', function() {
         _dataset.forEach(function(d) {
             if(d[c.xAxis].length > maxLength) maxLength = d[c.xAxis].length
             return d[c.xAxis];
+        });
+        return maxLength;
+    }
+
+    var _getMaxYAxisLabelLength = function(c,chartOptions){
+        let maxLength = 0;
+        _dataset.forEach(function(d) {
+            if(d[c.yAxis].length > maxLength) maxLength = d[c.yAxis].length
+            return d[c.yAxis];
         });
         return maxLength;
     }
