@@ -17,7 +17,7 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
         if (accordionToKeepOpen !== "rowChart") $scope.rowChartCollapsed = true;
         if (accordionToKeepOpen !== "pieChart") $scope.pieChartCollapsed = true;
         if (accordionToKeepOpen !== "lineChart") $scope.lineChartCollapsed = true;
-        if (accordionToKeepOpen !== "datachart") $scope.datachart = true;
+        if (accordionToKeepOpen !== "dataTable") $scope.datachart = true;
     }
 
     closeAllAccordions();
@@ -72,7 +72,7 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
         closeAllAccordions("datachart");
         if ($scope.datachart) {
             $scope.datachart = false;
-            $scope.chartType = "datachart";
+            $scope.chartType = "dataTable";
         } else {
             $scope.datachart = true;
             $scope.chartType = undefined;
@@ -166,26 +166,22 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
 
     // BOBBY NOTE: Need to move this in so the statistics box works
 
-    // $scope.createDatacountWidget = function(widget, datasetId) {
-    //     widget.title = "Statistics";
-    //     widget.sizeX = 4;
-    //     widget.sizeY = 1;
-    //     graphSize = {
-    //         width: gridWidth/(12/widget.sizeX)-40,
-    //         height: gridWidth/(12/widget.sizeY)-74
-    //     };
+    $scope.createDatacountWidget = function(widget, datasetId) {
+        widget.title = "Statistics";
+        widget.sizeX = 4;
+        widget.sizeY = 1;
 
-    //     var chartConstructor = {
-    //         id: widget.id,
-    //         container: $('#widget-container-'+widget.id).children()[1],
-    //         chartType: 'dataCount',
-    //         chartGroup: 'Group1',
-    //         width: graphSize.width,
-    //         height: graphSize.height
-    //     };
-    //     widget.chartObject = ChartService.create(chartConstructor);
-    //     WidgetFactory.update(widget);
-    //     $uibModalInstance.close(widget);
-    // }
+        var chartConstructor = {
+            id: widget.id,
+            container: $('#widget-container-'+widget.id).children()[1],
+            chartType: 'dataCount',
+            chartGroup: 'Group1',
+            width: graphSize.width,
+            height: graphSize.height
+        };
+        widget.chartObject = ChartService.create(chartConstructor);
+        WidgetFactory.update(widget);
+        $uibModalInstance.close(widget);
+    }
 
 });

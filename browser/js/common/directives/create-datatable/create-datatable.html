@@ -5,28 +5,28 @@
             <br>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="selectX">X-Axis</label>
+                    <label for="selectX">Group by</label>
                     <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
                 </div>
                 <div class="form-group">
-                    <label for="selectY">Graph Group</label>
+                    <label for="selectY">Order By</label>
                     <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
-                </div>
-                <div class="form-group">
-                    <label for="groupBy">Group by</label>
-                    <select name="groupBy" ng-model="form.group">
-                        <option value="count">Count</option>
-                        <option value="sum">Sum</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="graphGroup">Group Data By</label>
-                    <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options"></select>
-                    <span ng-click="addGraphGroup()"><i class="glyphicon glyphicon-plus"></i></span>
                 </div>
                 <div class="form-group">
                     <label for="select-columns">Columns</label>
                     <select multiple name="select-columns" ng-model="form.columns" ng-options="column.key for column in axisDropdowns.objectKeys"></select>
+                </div>
+                <div class="form-group">
+                    <label for="orderData">Order</label>
+                    <select name="orderData" ng-model="form.orderBy">
+                        <option value="ascending">Ascending</option>
+                        <option value="descending">Descending</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="graphGroup">Graph Group</label>
+                    <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options"></select>
+                    <span ng-click="addGraphGroup()"><i class="glyphicon glyphicon-plus"></i></span>
                 </div>
             </div>
             <div class="col-md-6">

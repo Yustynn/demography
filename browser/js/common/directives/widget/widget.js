@@ -42,27 +42,27 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 scope.dashboard.widgets.splice(scope.dashboard.widgets.indexOf(widget), 1);
             };
 
-            scope.createDatacountWidget = function(widget, datasetId) {
-                //set title
-                widget.title = "Statistics";
-                widget.sizeX = 4;
-                widget.sizeY = 1;
-                graphSize = {
-                    width: gridWidth/(12/widget.sizeX)-40,
-                    height: gridWidth/(12/widget.sizeY)-74
-                };
+            // scope.createDatacountWidget = function(widget, datasetId) {
+            //     //set title
+            //     widget.title = "Statistics";
+            //     widget.sizeX = 4;
+            //     widget.sizeY = 1;
+            //     graphSize = {
+            //         width: gridWidth/(12/widget.sizeX)-40,
+            //         height: gridWidth/(12/widget.sizeY)-74
+            //     };
 
-                var chartConstructor = {
-                    id: widget.id,
-                    container: $('#widget-container-'+widget.id).children()[1],
-                    chartType: 'dataCount',
-                    chartGroup: 'Group1',
-                    width: graphSize.width,
-                    height: graphSize.height
-                };
-                widget.chartObject = ChartService.create(chartConstructor);
-                WidgetFactory.update(widget);
-            }
+            //     var chartConstructor = {
+            //         id: widget.id,
+            //         container: $('#widget-container-'+widget.id).children()[1],
+            //         chartType: 'dataCount',
+            //         chartGroup: 'Group1',
+            //         width: graphSize.width,
+            //         height: graphSize.height
+            //     };
+            //     widget.chartObject = ChartService.create(chartConstructor);
+            //     WidgetFactory.update(widget);
+            // }
 
             scope.element = element;
 
