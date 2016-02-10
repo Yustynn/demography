@@ -5,6 +5,9 @@
     .page-header {
         margin-top: 20px;
     }
+    .btn-info {
+        border-radius: 5px;
+    }
     ul {
         list-style: none;
     }
@@ -14,7 +17,6 @@
         background-color: #fff;
     }
     .box-header {
-        /*background-color: #333;*/
         text-transform: capitalize;
         padding-left: 10px;
         border-bottom: 1px dotted #eee;
@@ -24,7 +26,6 @@
     .box-header h4 {
         margin-top: 8px;
         display: inline-block;
-        /*color: white;*/
     }
     .box-content {
         padding: 10px;
@@ -35,12 +36,6 @@
         cursor: pointer;
         position: absolute;
     }
-    a {
-        color: #ccc;
-    }
-/*    form {
-        margin-bottom: 0;
-    }*/
     .gridster {
         border: 1px solid #ccc;
     }
@@ -62,6 +57,24 @@
       -ms-transform: rotate(90deg);
       -o-transform: rotate(90deg);
       transform: rotate(90deg);
+    }
+
+    .box-header-btns {
+        a {
+            color: #ccc;
+        }
+        a:hover {
+            color: #008cba;
+        }
+    }
+
+    .new-widget-selector {
+        a {
+            color: #ccc;
+        }
+        a:hover {
+            color: #008cba;
+        }
     }
 
 }

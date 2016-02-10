@@ -27,7 +27,7 @@ app.config(function ($stateProvider) {
 });
 
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, DashboardFactory, WidgetFactory, $stateParams, $rootScope, ChartService){
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, $uibModal, DatasetFactory, DashboardFactory, WidgetFactory, $stateParams, $rootScope, ChartService){
     //$scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;  //dont want to expose this
@@ -72,13 +72,14 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     };
 
     $scope.$on('$destroy', function () {
-        if(!!$scope.dashboard.widgets.length) DashboardFactory.takeScreenshot($stateParams)
-    })
+        if(!!$scope.dashboard.widgets.length) DashboardFactory.takeScreenshot($stateParams);
+    });
 
     $scope.addWidget = function() {
 
+        // Create a new widget
         var newWidget = {
-            //default widget settings
+            // Default widget settings
             id: $scope.dashboard.nextWidgetId,
             title: "New Graph",
             type: 'graph',
@@ -86,6 +87,7 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
             sizeY: 4,
             chartObject: {}
         };
+
         $scope.dashboard.widgets.push(newWidget);
         $scope.dashboard.nextWidgetId = $scope.dashboard.nextWidgetId + 1;
         newWidget.dashboard = $scope.dashboard._id;

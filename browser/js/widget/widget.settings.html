@@ -1,132 +1,38 @@
-<!-- https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/widget_settings.html -->
+<div class="widget-modal-container">
     <form name="_form" class="form-horizontal" ng-submit="submit(_form)">
         <div class="modal-header">
-            <div class="row">
-                <div class="col-xs-10">
-                    <h3>New {{chartType ? (chartType | capitalize) : "Chart"}}</h3>
-                </div>
-                <div class="col-xs-2">
-                    <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-                </div>
-            </div>
+            <h3>New Chart</h3>
+            <button type="button" class="close pull-right" ng-click="remove()" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
-            <div class="form-group" ng-class="{error: _form.title.$error && _form.submitted}">
+            <div class="chart-title" ng-class="{error: _form.title.$error && _form.submitted}">
                 <label for="title">Title</label>
-                <input type="text" class="form-control" ng-model="form.title" name="title" />
+                <input type="text" name="title" class="form-control" ng-model="form.title"/>
             </div>
-
-
-        <div class="box-content">
-            <div class="new-widget-selector" ng-hide="noGraph(widget)">
-                <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph"  ng-click="openSettings(widget, dataset._id,'barChart')"><i class="material-icons">insert_chart</i></a>
-                <a title="new row chart" role="button" tooltip-placement="bottom" uib-tooltip="New Row Chart" ng-click="openSettings(widget, dataset._id,'rowChart')"><i class="material-icons gly-rotate-90">insert_chart</i></a>
-                <a title="new pie chart" tooltip-placement="bottom" uib-tooltip="New Pie Chart" role="button" ng-click="openSettings(widget, dataset._id,'pieChart')"><i class="material-icons">donut_small</i></a>
-                <a title="new line chart" role="button" tooltip-placement="bottom" uib-tooltip="New Line Chart" ng-click="openSettings(widget, dataset._id,'lineChart')"><i class="material-icons">timeline</i></a>
-                <a title="new table chart" role="button" tooltip-placement="bottom" uib-tooltip="New Table Chart" ng-click="openSettings(widget, dataset._id,'dataTable')"><i class="material-icons">grid_on</i></a>
-                <a title="new text panel" role="button" tooltip-placement="bottom" uib-tooltip="New Text Panel" ng-click="createDatacountWidget(widget, dataset._id)" disabled><i class="material-icons">looks_one</i></a>
-            </div>
-        <div class="widget-content-container"></div>
-
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="form-group">
-                        <label for="selectX"><span ng-show="chartType==='dataTable'">Group By</span><span ng-hide="chartType==='dataTable'">Label X-Axis</span></label>
-                        <select name="selectX" id="selectX" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
-                    </div>
-                </div>
-                <div class="col-sm-7">
-                    <div class="form-group">
-                        <label for="selectY"><span ng-show="{{chartType==='dataTable'}}">Order By</span><span ng-hide="{{chartType==='dataTable'}}">Label Y-Axis</span></label>
-                        <select name="selectY" id="selectY" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
-                    </div>
-                    <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">
-                         <label for="orderData">Order</label>
-                        <select name="orderData" ng-model="form.orderBy">
-                            <option value="ascending">Ascending</option>
-                            <option value="descending">Descending</option>
-                        </select>
-                    </span>
-                    </div>
-                </div>
-            </div class="row">
-            <!--row-->
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="form-group"><span ng-hide="{{chartType==='dataTable'}}">
-                         <label for="groupBy">Group Data By</label>
-                        <select name="groupBy" ng-model="form.group">
-                            <option value="count">Count</option>
-                            <option value="sum">Sum</option>
-                        </select>
-                    </span>
-                    </div>
-                    <div class="form-group"><span ng-show="{{chartType==='dataTable'}}">
-                    <label for="select-columns">Columns</label>
-                        <select multiple name="select-columns" id="select-columns" ng-model="form.columns" ng-options="column.key for column in axisDropdowns.objectKeys">
-                        </select>
-                    </div>
+            <div>
+                <label>Choose graph type</label>
+                <div class="new-widget-selector">
+                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="toggleBarChartAccordion()" ng-class="{'active-widget-selector': !barChartCollapsed}"><i class="material-icons">insert_chart</i></a>
+                    <a title="new row chart" role="button" tooltip-placement="bottom" uib-tooltip="New Row Chart" ng-click="toggleRowChartAccordion()" ng-class="{'active-widget-selector': !rowChartCollapsed}"><i class="material-icons gly-rotate-90">insert_chart</i></a>
+                    <a title="new pie chart" role="button" tooltip-placement="bottom" uib-tooltip="New Pie Chart" ng-click="togglePieChartAccordion()" ng-class="{'active-widget-selector': !pieChartCollapsed}"><i class="material-icons">donut_small</i></a>
+                    <a title="new line chart" role="button" tooltip-placement="bottom" uib-tooltip="New Line Chart" ng-click="toggleLineChartAccordion()" ng-class="{'active-widget-selector': !lineChartCollapsed}"><i class="material-icons">timeline</i></a>
+                    <a title="new table chart" role="button" tooltip-placement="bottom" uib-tooltip="New Table Chart" ng-click="toggleDataTableAccordion()" ng-class="{'active-widget-selector': !datachart}"><i class="material-icons">grid_on</i></a>
+                    <a title="new text panel" role="button" tooltip-placement="bottom" uib-tooltip="New Text Panel" ng-click="createDatacountWidget(widget, dataset._id)" disabled><i class="material-icons">looks_one</i></a>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-7">
-                    <div class="form-group">
-                        <label for="selectY">Graph Group</label>
-                        <select ng-model="form.graphGroup" name="graphGroup" id="graphGroup" ng-options="option for option in graphGroups.options"></select>
-                        <span>
-                            <a ng-click="addGraphGroup()" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-plus"></i>add group</a>
-                        </span>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-sm-5">
-                    <div class="form-group">
-                        <label for="Style">Choose a style</label>
-                        <select name="Style" ng-model="form.color.style">
-                            <option value="solid">Solid</option>
-                            <option value="theme">Theme</option>
-                            <option value="gradient">Gradient</option>
-                            <option value="breakPoint">Break Point</option>
-
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-5">
-                    <div class="form-group">
-                        <h3>Color</h3>
-                        <div class="colorSelect">
-                            <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
-                        </div>
-                        
-                        <!-- <select ng-model="form.color.color">
-                            <option ng-repeat="color in colorOptions" style='background-color: red'>{{color}}</option>
-                        </select> -->
-                    </div>
-                </div>
+            <div class="widget-settings">
+                <create-barchart bar-chart-collapsed="barChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-barchart>
+                <create-rowchart row-chart-collapsed="rowChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-rowchart>
+                <create-piechart pie-chart-collapsed="pieChartCollapsed" form="form" axis-dropdowns="axisDropdowns" graph-groups="graphGroups"></create-piechart>
+                <create-linechart line-chart-collapsed="lineChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-linechart>
+                <create-datatable datachart="datachart" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-datatable>
             </div>
 
         </div>
         <div class="modal-footer">
             <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
-            <a ng-click="dismiss()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+            <a ng-click="remove()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
             <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
         </div>
     </form>
+</div>
