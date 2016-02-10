@@ -87,11 +87,15 @@ app.service('ChartUtilsService', function() {
 
         barOptions.dimension = _currentDim;
         barOptions.group = _createGroup(c, _currentDim); //<--- UGLY
-        var maxLength = _getMaxXAxisLabelLength(c,barOptions);
+        var maxXLength = _getMaxXAxisLabelLength(c,barOptions);
+        var maxYLength = _getMaxYAxisLabelLength(c,barOptions);
+
         barOptions.renderlet = function(chart) {
             chart.selectAll('g.x text')
-                .attr('transform', 'translate(-15,'+maxLength*4.5+'), rotate(270)')
+                .attr('transform', 'translate(-15,'+maxXLength*4.3+'), rotate(270)')
             }
+
+        barOptions.margins.left = maxYLength*20
 
         barOptions = _configureXAxis(barOptions, _currentDim)
         barOptions = _configureGap(barOptions,_currentDim,'barChart')
