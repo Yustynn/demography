@@ -1,7 +1,7 @@
 app.service('ChartUtilsService', function() {
     var _ndx, _dataset;
 
-    //c = user options
+    //c = user selected options
 
     var chartDefaults = {
         barChart: {
