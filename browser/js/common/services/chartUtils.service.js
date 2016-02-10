@@ -96,11 +96,20 @@ app.service('ChartUtilsService', function() {
         var maxYLength = _getMaxYAxisLabelLength(c,barOptions);
 
         barOptions.renderlet = function(chart) {
-            chart.selectAll('g.x text')
-                .attr('transform', 'translate(-15,'+maxXLength*4.3+'), rotate(270)')
-            }
+            if(!barOptions.xAxisIsNumber) {
+                //if is text/ ordinal
+                chart.selectAll('g.x text')
+                    .attr('transform', 'translate(-15,'+maxXLength*4.3+'), rotate(270)')
+            } else {
+                //if is numeric/ linear
+                chart.selectAll('g.x text')
+                    .attr('transform', 'translate(0,'+maxXLength*4.3+')')
+                }
+        }
 
-        barOptions.margins.left = maxYLength*20
+        if (barOptions.xAxisIsNumber) barOptions.margins.bottom = maxXLength*10
+        else barOptions.margins.bottom = maxXLength*10;
+        barOptions.margins.left = maxYLength*10;
 
         barOptions = _configureXAxis(barOptions, _currentDim)
         barOptions = _configureGap(barOptions,_currentDim,'barChart')
@@ -136,6 +145,26 @@ app.service('ChartUtilsService', function() {
         lineOptions.group = _createGroup(c,_currentDim);
         lineOptions = _configureXAxis(lineOptions,_currentDim);
         lineOptions = _setColors(lineOptions);
+
+        var maxXLength = _getMaxXAxisLabelLength(c,lineOptions);
+        var maxYLength = _getMaxYAxisLabelLength(c,lineOptions);
+
+        lineOptions.renderlet = function(chart) {
+            if(!lineOptions.xAxisIsNumber) {
+                //if is text/ ordinal
+                chart.selectAll('g.x text')
+                    .attr('transform', 'translate(-15,'+maxXLength*4.3+'), rotate(270)')
+            } else {
+                //if is numeric/ linear
+                chart.selectAll('g.x text')
+                    .attr('transform', 'translate(0,'+maxXLength*4.3+')')
+                }
+        }
+
+        if (lineOptions.xAxisIsNumber) lineOptions.margins.bottom = maxXLength*10
+        else lineOptions.margins.bottom = maxXLength*10;
+        lineOptions.margins.left = maxYLength*10;
+
         delete lineOptions.yAxis;
         delete lineOptions.xAxis; //xAxis and yAxis will break bar chart
         return lineOptions;
@@ -150,6 +179,25 @@ app.service('ChartUtilsService', function() {
         rowOptions = _configureXAxis(rowOptions,_currentDim);
         rowOptions = _configureGap(rowOptions,_currentDim,'rowChart')
         rowOptions = _setColors(rowOptions);
+
+        var maxXLength = _getMaxXAxisLabelLength(c,rowOptions);
+        var maxYLength = _getMaxYAxisLabelLength(c,rowOptions);
+
+        rowOptions.renderlet = function(chart) {
+            if(!rowOptions.xAxisIsNumber) {
+                //if is text/ ordinal
+                chart.selectAll('g.x text')
+                    .attr('transform', 'translate(-15,'+maxXLength*4.3+'), rotate(270)')
+            } else {
+                //if is numeric/ linear
+                chart.selectAll('g.x text')
+                    .attr('transform', 'translate(0,'+maxXLength*4.3+')')
+                }
+        }
+
+        if (rowOptions.xAxisIsNumber) rowOptions.margins.bottom = maxXLength*10
+        else rowOptions.margins.bottom = maxXLength*10;
+        rowOptions.margins.left = maxYLength*10;
 
         delete rowOptions.yAxis;
         delete rowOptions.xAxis; //xAxis and yAxis will break bar chart
@@ -226,7 +274,7 @@ app.service('ChartUtilsService', function() {
     var _getMaxXAxisLabelLength = function(c,chartOptions){
         let maxLength = 0;
         _dataset.forEach(function(d) {
-            if(d[c.xAxis].length > maxLength) maxLength = d[c.xAxis].length
+            if(d[c.xAxis].toString().length > maxLength) maxLength = d[c.xAxis].toString().length
             return d[c.xAxis];
         });
         return maxLength;
@@ -235,7 +283,7 @@ app.service('ChartUtilsService', function() {
     var _getMaxYAxisLabelLength = function(c,chartOptions){
         let maxLength = 0;
         _dataset.forEach(function(d) {
-            if(d[c.yAxis].length > maxLength) maxLength = d[c.yAxis].length
+            if(d[c.yAxis].toString().length > maxLength) maxLength = d[c.yAxis].toString().length
             return d[c.yAxis];
         });
         return maxLength;
