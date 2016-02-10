@@ -23,7 +23,6 @@ app.service('ChartUtilsService', function() {
             gap: 20,
             renderHorizontalGridLines: true,
             renderlet: function(chart) {
-                console.log("are we here?")
                 chart.selectAll('g.x text')
                     .attr('transform', 'translate(-15, 60)', 'rotate(270)')
             }
@@ -220,6 +219,15 @@ app.service('ChartUtilsService', function() {
         _dataset.forEach(function(d) {
             if(d[c.xAxis].length > maxLength) maxLength = d[c.xAxis].length
             return d[c.xAxis];
+        });
+        return maxLength;
+    }
+
+    var _getMaxYAxisLabelLength = function(c,chartOptions){
+        let maxLength = 0;
+        _dataset.forEach(function(d) {
+            if(d[c.yAxis].length > maxLength) maxLength = d[c.yAxis].length
+            return d[c.yAxis];
         });
         return maxLength;
     }
