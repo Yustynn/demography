@@ -27,7 +27,7 @@ app.config(function ($stateProvider) {
 });
 
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
-app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, GraphService, DashboardFactory, WidgetFactory, $stateParams, $rootScope, ChartService){
+app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, DashboardFactory, WidgetFactory, $stateParams, $rootScope, ChartService){
     //$scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;  //dont want to expose this
@@ -107,5 +107,4 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 })
 
     ChartService.loadData(currentDataset.jsonData)
-    //GraphService.loadData(currentDataset.jsonData)
 });
