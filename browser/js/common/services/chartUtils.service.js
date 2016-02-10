@@ -1,6 +1,8 @@
 app.service('ChartUtilsService', function() {
     var _ndx, _dataset;
 
+    //c = user options
+
     var chartDefaults = {
         barChart: {
             margins: {
@@ -21,8 +23,9 @@ app.service('ChartUtilsService', function() {
             gap: 20,
             renderHorizontalGridLines: true,
             renderlet: function(chart) {
+                console.log("are we here?")
                 chart.selectAll('g.x text')
-                    .attr('transform', 'translate(-15,60) rotate(270)')
+                    .attr('transform', 'translate(-15, 60)', 'rotate(270)')
             }
         },
         pieChart: {
@@ -85,6 +88,11 @@ app.service('ChartUtilsService', function() {
 
         barOptions.dimension = _currentDim;
         barOptions.group = _createGroup(c, _currentDim); //<--- UGLY
+        var maxLength = _getMaxXAxisLabelLength(c,barOptions);
+        barOptions.renderlet = function(chart) {
+            chart.selectAll('g.x text')
+                .attr('transform', 'translate(-15,'+maxLength*4.5+'), rotate(270)')
+            }
 
         barOptions = _configureXAxis(barOptions, _currentDim)
         barOptions = _configureGap(barOptions,_currentDim,'barChart')
@@ -206,6 +214,15 @@ app.service('ChartUtilsService', function() {
         if (chartOptions) chartOptions.xAxisIsNumber = xAxisIsNumber;
         return _dim;
     };
+
+    var _getMaxXAxisLabelLength = function(c,chartOptions){
+        let maxLength = 0;
+        _dataset.forEach(function(d) {
+            if(d[c.xAxis].length > maxLength) maxLength = d[c.xAxis].length
+            return d[c.xAxis];
+        });
+        return maxLength;
+    }
 
     var _overWriteDefaults = function(c, chartType) {
         let _newConfigObj = chartDefaults[chartType]    //set required defaults
