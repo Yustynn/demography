@@ -79,8 +79,23 @@ app.service('ChartUtilsService', function() {
         }
     }
 
+
+    var configurePieChart = function(c) {
+        let _currentDim = _createDimensionFromXAxisLabel(c)
+        var pieOptions = _overWriteDefaults(c,'pieChart');
+
+        pieOptions.dimension = _currentDim;
+        pieOptions.group = _createGroup(c,_currentDim)
+
+        pieOptions.radius = c.width < c.height ? c.width / 2 : c.height / 2,
+
+        delete pieOptions.yAxis
+        delete pieOptions.xAxis //xAxis and yAxis will break bar chart
+
+        return pieOptions;
+    };
+
     var configureBarChart = function(c) {
-        console.log('configuring bar chart')
         var barOptions = _overWriteDefaults(c, 'barChart')
 
         let _currentDim = _createDimensionFromXAxisLabel(c, barOptions);
@@ -102,9 +117,9 @@ app.service('ChartUtilsService', function() {
                 }
         }
 
-        if (barOptions.xAxisIsNumber) barOptions.margins.bottom = maxXLength*10
+        if (barOptions.xAxisIsNumber) barOptions.margins.bottom = maxXLength*20
         else barOptions.margins.bottom = maxXLength*10;
-        barOptions.margins.left = maxYLength*10;
+        barOptions.margins.left = maxYLength*15;
 
         barOptions = _configureXAxis(barOptions, _currentDim)
         barOptions = _configureGap(barOptions,_currentDim,'barChart')
@@ -114,22 +129,6 @@ app.service('ChartUtilsService', function() {
         delete barOptions.xAxis //xAxis and yAxis will break bar chart
 
         return barOptions;
-    };
-
-    var configurePieChart = function(c) {
-        console.log('configuring pie chart');
-        let _currentDim = _createDimensionFromXAxisLabel(c)
-        var pieOptions = _overWriteDefaults(c,'pieChart');
-
-        pieOptions.dimension = _currentDim;
-        pieOptions.group = _createGroup(c,_currentDim)
-
-        pieOptions.radius = c.width < c.height ? c.width / 2 : c.height / 2,
-
-        delete pieOptions.yAxis
-        delete pieOptions.xAxis //xAxis and yAxis will break bar chart
-
-        return pieOptions;
     };
 
     var configureLineChart = function(c){
@@ -156,9 +155,9 @@ app.service('ChartUtilsService', function() {
                 }
         }
 
-        if (lineOptions.xAxisIsNumber) lineOptions.margins.bottom = maxXLength*10
+        if (lineOptions.xAxisIsNumber) lineOptions.margins.bottom = maxXLength*20
         else lineOptions.margins.bottom = maxXLength*10;
-        lineOptions.margins.left = maxYLength*10;
+        lineOptions.margins.left = maxYLength*15;
 
         delete lineOptions.yAxis;
         delete lineOptions.xAxis; //xAxis and yAxis will break bar chart
@@ -190,9 +189,9 @@ app.service('ChartUtilsService', function() {
                 }
         }
 
-        if (rowOptions.xAxisIsNumber) rowOptions.margins.bottom = maxXLength*10
+        if (rowOptions.xAxisIsNumber) rowOptions.margins.bottom = maxXLength*20
         else rowOptions.margins.bottom = maxXLength*10;
-        rowOptions.margins.left = maxYLength*10;
+        rowOptions.margins.left = maxYLength*15;
 
         delete rowOptions.yAxis;
         delete rowOptions.xAxis; //xAxis and yAxis will break bar chart
@@ -239,27 +238,31 @@ app.service('ChartUtilsService', function() {
 
         if (c.groupType === "sum") {
             grp = _dim.group().reduceSum(function(d) {
-                if (parseInt(d[c.yAxis])) d[c.yAxis] = Number(d[c.yAxis]);
-
+                if (_filterInt(d[c.yAxis]) !== -1) d[c.yAxis] = _filterInt(d[c.yAxis]);
                 return Number(d[c.yAxis]);
             });
         } else if (c.groupType === "count") {
             grp = _dim.group().reduceCount(function(d) {
-                if (parseInt(d[c.yAxis])) d[c.yAxis] = Number(d[c.yAxis]);
-
+                if (_filterInt(d[c.yAxis]) !== -1) d[c.yAxis] = _filterInt(d[c.yAxis]);
                 return d[c.yAxis];
             });
         }
         return grp;
     };
 
+    var _filterInt = function (value) {
+      if(/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
+        return Number(value);
+      return -1;
+    }
+
     var _createDimensionFromXAxisLabel = function(c, chartOptions) {
         let xAxisIsNumber = false;
         var _dim = _ndx.dimension(function(d) {
-            if (parseInt(d[c.xAxis])) {
-                d[c.xAxis] = Number(d[c.xAxis]);
+            if (_filterInt(d[c.xAxis]) !==-1) {
+                d[c.xAxis] = _filterInt(d[c.xAxis]);
                 xAxisIsNumber = true;
-            };
+            }
             return d[c.xAxis];
         });
         if (chartOptions) chartOptions.xAxisIsNumber = xAxisIsNumber;
@@ -269,7 +272,7 @@ app.service('ChartUtilsService', function() {
     var _getMaxXAxisLabelLength = function(c,chartOptions){
         let maxLength = 0;
         _dataset.forEach(function(d) {
-            if(d[c.xAxis].toString().length > maxLength) maxLength = d[c.xAxis].toString().length
+            if(d[c.xAxis].toString().length > maxLength) maxLength = d[c.xAxis].toString().length;
             return d[c.xAxis];
         });
         return maxLength;
@@ -278,9 +281,10 @@ app.service('ChartUtilsService', function() {
     var _getMaxYAxisLabelLength = function(c,chartOptions){
         let maxLength = 0;
         _dataset.forEach(function(d) {
-            if(d[c.yAxis].toString().length > maxLength) maxLength = d[c.yAxis].toString().length
+            if(d[c.yAxis].toString().length > maxLength) maxLength = d[c.yAxis].toString().length;
             return d[c.yAxis];
         });
+
         return maxLength;
     }
 
