@@ -18,7 +18,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
 
             var c = scope.widget.chartObject;
             if (c && c.chart) {
-
                 var chartConstructor = {
                     id: c.id,
                     container: $(element).find('.widget-content-container')[0],
@@ -40,7 +39,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             };
 
             scope.createDatacountWidget = function(widget, datasetId) {
-
+                console.dir(widget);
                 //set title
                 widget.title = "Statistics";
                 widget.sizeX = 4;
@@ -54,6 +53,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     id: widget.id,
                     container: $('#widget-container-'+widget.id).children()[1],
                     chartType: 'dataCount',
+                    chartGroup: 'Group1',
                     width: graphSize.width,
                     height: graphSize.height
                 };
