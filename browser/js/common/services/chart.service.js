@@ -46,8 +46,6 @@ app.service('ChartService', function (ChartUtilsService){
         //attaches properties to the DC chart instance
         _applyToChart(chartConfig) {
             for (var key in chartConfig) {
-                console.log(key, chartConfig[key])
-                debugger
                 if(key === "on"){
                     this.chart[key].apply(null,chartConfig[key]) //not sure this still works. check table formatting to find out if this is the right syntax
                 }
