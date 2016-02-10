@@ -1,9 +1,9 @@
-app.directive('createBarchart', function(WidgetFactory) {
+app.directive('createRowchart', function(WidgetFactory) {
     return {
         restrict: "E",
-        templateUrl: 'js/common/directives/create-barchart/create-barchart.html',
+        templateUrl: 'js/common/directives/create-rowchart/create-rowchart.html',
         scope: {
-            barChartCollapsed: '=',
+            rowChartCollapsed: '=',
             form: '=',
             axisDropdowns: '=',
             colorOptions: '=',

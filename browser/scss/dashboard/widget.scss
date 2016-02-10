@@ -1,3 +1,8 @@
+.modal-content {
+    margin-top: 200px;
+    padding: 15px;
+}
+
 .widget-modal-container {
     label {
         font-size: 16px;
@@ -23,7 +28,7 @@
             a:hover {
                 color: #008cba;
             }
-            a:active {
+            .active-widget-selector {
                 color: #008cba;
             }
             .material-icons {
@@ -77,15 +82,10 @@
     }
 }
 
-.box {
-    display: flex;
-    flex-flow: column;
-}
-
 .widget-container {
-    .modal-content {
-        margin-top: 200px;
-        padding: 15px;
+    .box {
+        display: flex;
+        flex-flow: column;
     }
     .box-content {
         flex: 1 1 auto;

@@ -12,16 +12,20 @@
             <div>
                 <label>Choose graph type</label>
                 <div class="new-widget-selector">
-                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="toggleBarChartAccordion()"><i class="material-icons">insert_chart</i></a>
-                    <a title="new row chart" role="button" tooltip-placement="bottom" uib-tooltip="New Row Chart" ng-click="openSettings(widget, dataset._id,'rowChart')"><i class="material-icons gly-rotate-90">insert_chart</i></a>
-                    <a title="new pie chart" role="button" tooltip-placement="bottom" uib-tooltip="New Pie Chart" ng-click="openSettings(widget, dataset._id,'pieChart')"><i class="material-icons">donut_small</i></a>
-                    <a title="new line chart" role="button" tooltip-placement="bottom" uib-tooltip="New Line Chart" ng-click="openSettings(widget, dataset._id,'lineChart')"><i class="material-icons">timeline</i></a>
-                    <a title="new table chart" role="button" tooltip-placement="bottom" uib-tooltip="New Table Chart" ng-click="openSettings(widget, dataset._id,'dataTable')"><i class="material-icons">grid_on</i></a>
+                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="toggleBarChartAccordion()" ng-class="{'active-widget-selector': !barChartCollapsed}"><i class="material-icons">insert_chart</i></a>
+                    <a title="new row chart" role="button" tooltip-placement="bottom" uib-tooltip="New Row Chart" ng-click="toggleRowChartAccordion()" ng-class="{'active-widget-selector': !rowChartCollapsed}"><i class="material-icons gly-rotate-90">insert_chart</i></a>
+                    <a title="new pie chart" role="button" tooltip-placement="bottom" uib-tooltip="New Pie Chart" ng-click="togglePieChartAccordion()" ng-class="{'active-widget-selector': !pieChartCollapsed}"><i class="material-icons">donut_small</i></a>
+                    <a title="new line chart" role="button" tooltip-placement="bottom" uib-tooltip="New Line Chart" ng-click="toggleLineChartAccordion()" ng-class="{'active-widget-selector': !lineChartCollapsed}"><i class="material-icons">timeline</i></a>
+                    <a title="new table chart" role="button" tooltip-placement="bottom" uib-tooltip="New Table Chart" ng-click="toggleDataTableAccordion()" ng-class="{'active-widget-selector': !datachart}"><i class="material-icons">grid_on</i></a>
                     <a title="new text panel" role="button" tooltip-placement="bottom" uib-tooltip="New Text Panel" ng-click="createDatacountWidget(widget, dataset._id)" disabled><i class="material-icons">looks_one</i></a>
                 </div>
             </div>
             <div class="widget-settings">
                 <create-barchart bar-chart-collapsed="barChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-barchart>
+                <create-rowchart row-chart-collapsed="rowChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-rowchart>
+                <create-piechart pie-chart-collapsed="pieChartCollapsed" form="form" axis-dropdowns="axisDropdowns" graph-groups="graphGroups"></create-piechart>
+                <create-linechart line-chart-collapsed="lineChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-linechart>
+                <create-datatable datachart="datachart" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-datatable>
             </div>
 
         </div>

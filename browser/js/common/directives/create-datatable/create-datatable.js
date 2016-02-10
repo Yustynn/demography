@@ -1,13 +1,14 @@
-app.directive('createBarchart', function(WidgetFactory) {
+app.directive('createDatatable', function(WidgetFactory) {
     return {
         restrict: "E",
-        templateUrl: 'js/common/directives/create-barchart/create-barchart.html',
+        templateUrl: 'js/common/directives/create-datatable/create-datatable.html',
         scope: {
-            barChartCollapsed: '=',
+            datachart: '=',
             form: '=',
             axisDropdowns: '=',
             colorOptions: '=',
-            graphGroups: '='
+            graphGroups: '=',
+            test: '='
         },
         link: function(scope, element, attrs) {
             // BOBBY NOTE: Is this something that needs to be repeated in each create-chart directive??

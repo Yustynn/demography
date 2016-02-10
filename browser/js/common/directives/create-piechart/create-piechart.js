@@ -1,12 +1,11 @@
-app.directive('createBarchart', function(WidgetFactory) {
+app.directive('createPiechart', function(WidgetFactory) {
     return {
         restrict: "E",
-        templateUrl: 'js/common/directives/create-barchart/create-barchart.html',
+        templateUrl: 'js/common/directives/create-piechart/create-piechart.html',
         scope: {
-            barChartCollapsed: '=',
+            pieChartCollapsed: '=',
             form: '=',
             axisDropdowns: '=',
-            colorOptions: '=',
             graphGroups: '='
         },
         link: function(scope, element, attrs) {

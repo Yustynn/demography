@@ -12,13 +12,20 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
     };
 
     // Collapse all "settings" accordions by default in the add chart modal
-    $scope.barChartCollapsed = true;
-    $scope.pieChartCollapsed = true;
-    $scope.lineChartCollapsed = true;
+    function closeAllAccordions (accordionToKeepOpen) {
+        if (accordionToKeepOpen !== "barChart") $scope.barChartCollapsed = true;
+        if (accordionToKeepOpen !== "rowChart") $scope.rowChartCollapsed = true;
+        if (accordionToKeepOpen !== "pieChart") $scope.pieChartCollapsed = true;
+        if (accordionToKeepOpen !== "lineChart") $scope.lineChartCollapsed = true;
+        if (accordionToKeepOpen !== "datachart") $scope.datachart = true;
+    }
+
+    closeAllAccordions();
 
     // Functions to toggle accordions
     // Consider creating a single, dynamic function that can do all of this
     $scope.toggleBarChartAccordion = function() {
+        closeAllAccordions("barChart");
         if ($scope.barChartCollapsed) {
             $scope.barChartCollapsed = false;
             $scope.chartType = "barChart";
@@ -28,14 +35,48 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
         }
     }
 
+    $scope.toggleRowChartAccordion = function() {
+        closeAllAccordions("rowChart");
+        if ($scope.rowChartCollapsed) {
+            $scope.rowChartCollapsed = false;
+            $scope.chartType = "rowChart";
+        } else {
+            $scope.rowChartCollapsed = true;
+            $scope.chartType = undefined;
+        }
+    }
+
     $scope.togglePieChartAccordion = function() {
-        if ($scope.pieChartCollapsed) $scope.pieChartCollapsed = false;
-        else $scope.pieChartCollapsed = true;
+        closeAllAccordions("pieChart");
+        if ($scope.pieChartCollapsed) {
+            $scope.pieChartCollapsed = false;
+            $scope.chartType = "pieChart";
+        } else {
+            $scope.pieChartCollapsed = true;
+            $scope.chartType = undefined;
+        }
     }
 
     $scope.toggleLineChartAccordion = function() {
-        if ($scope.lineChartCollapsed) $scope.lineChartCollapsed = false;
-        else $scope.lineChartCollapsed = true;
+        closeAllAccordions("lineChart");
+        if ($scope.lineChartCollapsed) {
+            $scope.lineChartCollapsed = false;
+            $scope.chartType = "lineChart";
+        } else {
+            $scope.lineChartCollapsed = true;
+            $scope.chartType = undefined;
+        }
+    }
+
+    $scope.toggleDataTableAccordion = function() {
+        closeAllAccordions("datachart");
+        if ($scope.datachart) {
+            $scope.datachart = false;
+            $scope.chartType = "datachart";
+        } else {
+            $scope.datachart = true;
+            $scope.chartType = undefined;
+        }
     }
 
     //This will be an map with different themes, for now a single array
@@ -118,11 +159,33 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
     // This is used to close the model with the escape key
         // Removing the widget from this failure callback currently doesn't work
     $uibModalInstance.result.then(function() {
-        console.log("Form successfully submitted!");
         $uibModalStack.dismissAll();
     }, function() {
-        console.log("Failure handler ran!");
         $uibModalStack.dismissAll();
     });
+
+    // BOBBY NOTE: Need to move this in so the statistics box works
+
+    // $scope.createDatacountWidget = function(widget, datasetId) {
+    //     widget.title = "Statistics";
+    //     widget.sizeX = 4;
+    //     widget.sizeY = 1;
+    //     graphSize = {
+    //         width: gridWidth/(12/widget.sizeX)-40,
+    //         height: gridWidth/(12/widget.sizeY)-74
+    //     };
+
+    //     var chartConstructor = {
+    //         id: widget.id,
+    //         container: $('#widget-container-'+widget.id).children()[1],
+    //         chartType: 'dataCount',
+    //         chartGroup: 'Group1',
+    //         width: graphSize.width,
+    //         height: graphSize.height
+    //     };
+    //     widget.chartObject = ChartService.create(chartConstructor);
+    //     WidgetFactory.update(widget);
+    //     $uibModalInstance.close(widget);
+    // }
 
 });

@@ -1,0 +1,44 @@
+<div uib-collapse="lineChartCollapsed">
+    <div class="well well-lg">
+        <h5>Line Chart Settings</h5>
+        <div class="row">
+            <br>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="selectX">X-Axis</label>
+                    <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
+                </div>
+                <div class="form-group">
+                    <label for="selectY">Y-Axis</label>
+                    <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
+                </div>
+                <div class="form-group">
+                    <label for="groupBy">Group by</label>
+                    <select name="groupBy" ng-model="form.group">
+                        <option value="count">Count</option>
+                        <option value="sum">Sum</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="graphGroup">Graph Group</label>
+                    <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options"></select>
+                    <span ng-click="addGraphGroup()"><i class="glyphicon glyphicon-plus"></i></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="style">Fill style</label>
+                    <select name="style" ng-model="form.color.style">
+                        <option value="solid">Solid</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="color">Fill color</label>
+                    <div class="colorSelect">
+                        <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
