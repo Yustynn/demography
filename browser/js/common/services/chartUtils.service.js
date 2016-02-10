@@ -271,7 +271,16 @@ app.service('ChartUtilsService', function() {
                 chartOptions.colorAccessor = function(d,i){
                     return d.value;
                 }
-            
+            }else if(c.style ==="breakPoint"){
+                var max = _grp.top(1)[0].value;
+                var scale = d3.scale.linear()
+                            .domain([0,1])
+                            .range(['#887C7A','red'])
+
+                chartOptions.colors = scale;
+                chartOptions.colorAccessor = function(d,i){
+                    return d.value > max-20 ? 1 : 0;
+                }
             }
         }
 
