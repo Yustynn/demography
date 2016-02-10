@@ -7,9 +7,9 @@ app.service('ChartUtilsService', function() {
         barChart: {
             margins: {
                 top: 5,
-                left: 40,
+                left: 20,
                 right: 10,
-                bottom: 130
+                bottom: 60
             },
             centerBar: false, //'boolean'
             x: d3.scale.ordinal(),
@@ -20,7 +20,7 @@ app.service('ChartUtilsService', function() {
             // yAxisLabel: c.yAxis, // 'value'
             // xAxisLabel: c.xAxis, //'value'
             elasticY: true, //'value'
-            gap: 20,
+            gap: 5,
             renderHorizontalGridLines: true,
             renderlet: function(chart) {
                 chart.selectAll('g.x text')
@@ -99,9 +99,14 @@ app.service('ChartUtilsService', function() {
         var barOptions = _overWriteDefaults(c, 'barChart')
 
         let _currentDim = _createDimensionFromXAxisLabel(c, barOptions);
+        let _currentGrp = _createGroup(c,_currentDim);
 
         barOptions.dimension = _currentDim;
-        barOptions.group = _createGroup(c, _currentDim); //<--- UGLY
+        barOptions.group = _currentGrp; //<--- UGLY
+
+        barOptions.xAxisLabel = c.xAxis;
+        barOptions.yAxisLabel = c.yAxis;
+
         var maxXLength = _getMaxXAxisLabelLength(c,barOptions);
         var maxYLength = _getMaxYAxisLabelLength(c,barOptions);
 
@@ -123,7 +128,7 @@ app.service('ChartUtilsService', function() {
 
         barOptions = _configureXAxis(barOptions, _currentDim)
         barOptions = _configureGap(barOptions,_currentDim,'barChart')
-        barOptions = _setColors(barOptions);
+        barOptions = _setColors(barOptions,_currentGrp);
 
         delete barOptions.yAxis
         delete barOptions.xAxis //xAxis and yAxis will break bar chart
@@ -328,12 +333,38 @@ app.service('ChartUtilsService', function() {
     }
 
     //Set colors, needs to be fleshed out
-    var _setColors = function(chartOptions){
+    var _setColors = function(chartOptions,_grp){
         let c = chartOptions.colorSettings;
         if(c){
             if(c.style === "solid"){
                 //debugger;
                 chartOptions.colors = c.color;
+            }else if(c.style === "theme"){
+                chartOptions.colorAccessor = function(d,i){
+                    return i;
+                }
+            }else if(c.style === "gradient"){
+                var idx = _grp.all().length;
+                var max = _grp.top(1)[0].value;
+                var min = _grp.top(idx)[idx-1].value;
+                var scale = d3.scale.linear()
+                            .domain([min,max])
+                            .range(['#887C7A',c.color])
+                
+                chartOptions.colors = scale;
+                chartOptions.colorAccessor = function(d,i){
+                    return d.value;
+                }
+            }else if(c.style ==="breakPoint"){
+                var max = _grp.top(1)[0].value;
+                var scale = d3.scale.linear()
+                            .domain([0,1])
+                            .range(['#887C7A','red'])
+
+                chartOptions.colors = scale;
+                chartOptions.colorAccessor = function(d,i){
+                    return d.value > max-20 ? 1 : 0;
+                }
             }
         }
 
