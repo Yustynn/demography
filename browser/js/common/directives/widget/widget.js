@@ -32,38 +32,41 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                 };
 
                 ChartService.create(chartConstructor);
+                //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
+            } else {
+                openSettings(scope.widget, scope.dashboard.dataset._id);
             }
+
             scope.remove = function (widget) {
                 if(widget._id) WidgetFactory.delete(widget._id);
                 scope.dashboard.widgets.splice(scope.dashboard.widgets.indexOf(widget), 1);
             };
 
-            scope.createDatacountWidget = function(widget, datasetId) {
-                console.dir(widget);
-                //set title
-                widget.title = "Statistics";
-                widget.sizeX = 4;
-                widget.sizeY = 1;
-                graphSize = {
-                    width: gridWidth/(12/widget.sizeX)-40,
-                    height: gridWidth/(12/widget.sizeY)-74
-                };
+            // scope.createDatacountWidget = function(widget, datasetId) {
+            //     //set title
+            //     widget.title = "Statistics";
+            //     widget.sizeX = 4;
+            //     widget.sizeY = 1;
+            //     graphSize = {
+            //         width: gridWidth/(12/widget.sizeX)-40,
+            //         height: gridWidth/(12/widget.sizeY)-74
+            //     };
 
-                var chartConstructor = {
-                    id: widget.id,
-                    container: $('#widget-container-'+widget.id).children()[1],
-                    chartType: 'dataCount',
-                    chartGroup: 'Group1',
-                    width: graphSize.width,
-                    height: graphSize.height
-                };
-                widget.chartObject = ChartService.create(chartConstructor);
-                WidgetFactory.update(widget);
-            }
+            //     var chartConstructor = {
+            //         id: widget.id,
+            //         container: $('#widget-container-'+widget.id).children()[1],
+            //         chartType: 'dataCount',
+            //         chartGroup: 'Group1',
+            //         width: graphSize.width,
+            //         height: graphSize.height
+            //     };
+            //     widget.chartObject = ChartService.create(chartConstructor);
+            //     WidgetFactory.update(widget);
+            // }
 
             scope.element = element;
 
-            scope.openSettings = function (widget, datasetId, graphTypeToCreate) {
+            function openSettings (widget, datasetId) {
                 $uibModal.open({
                     scope: scope,
                     templateUrl: 'js/widget/widget.settings.html',
@@ -71,9 +74,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     resolve: {
                         widget: function() {
                             return widget;
-                        },
-                        graphTypeToCreate: function() {
-                            return graphTypeToCreate || null;
                         },
                         dataset: function() {
                             return DatasetFactory.fetchOne(datasetId);
