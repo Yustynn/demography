@@ -109,5 +109,4 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
 })
 
     ChartService.loadData(currentDataset.jsonData)
-    //GraphService.loadData(currentDataset.jsonData)
 });
