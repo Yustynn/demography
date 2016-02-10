@@ -2,7 +2,7 @@
     <form name="_form" class="form-horizontal" ng-submit="submit(_form)">
         <div class="modal-header">
             <h3>New Chart</h3>
-            <button type="button" class="close pull-right" ng-click="dismiss()" aria-hidden="true">&times;</button>
+            <button type="button" class="close pull-right" ng-click="remove()" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
             <div class="chart-title" ng-class="{error: _form.title.$error && _form.submitted}">
@@ -12,7 +12,7 @@
             <div>
                 <label>Choose graph type</label>
                 <div class="new-widget-selector">
-                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="openSettixngs(widget, dataset._id,'barChart')"><i class="material-icons">insert_chart</i></a>
+                    <a title="new bar chart" role="button" tooltip-placement="bottom" uib-tooltip="Bar Graph" ng-click="toggleBarChartAccordion()"><i class="material-icons">insert_chart</i></a>
                     <a title="new row chart" role="button" tooltip-placement="bottom" uib-tooltip="New Row Chart" ng-click="openSettings(widget, dataset._id,'rowChart')"><i class="material-icons gly-rotate-90">insert_chart</i></a>
                     <a title="new pie chart" role="button" tooltip-placement="bottom" uib-tooltip="New Pie Chart" ng-click="openSettings(widget, dataset._id,'pieChart')"><i class="material-icons">donut_small</i></a>
                     <a title="new line chart" role="button" tooltip-placement="bottom" uib-tooltip="New Line Chart" ng-click="openSettings(widget, dataset._id,'lineChart')"><i class="material-icons">timeline</i></a>
@@ -20,7 +20,6 @@
                     <a title="new text panel" role="button" tooltip-placement="bottom" uib-tooltip="New Text Panel" ng-click="createDatacountWidget(widget, dataset._id)" disabled><i class="material-icons">looks_one</i></a>
                 </div>
             </div>
-            <div ng-click="toggleBarChartAccordion()">TEMP BAR CHART BUTTON</div>
             <div class="widget-settings">
                 <create-barchart bar-chart-collapsed="barChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-barchart>
             </div>
@@ -28,7 +27,7 @@
         </div>
         <div class="modal-footer">
             <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
-            <a ng-click="dismiss()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
+            <a ng-click="remove()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
             <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
         </div>
     </form>
