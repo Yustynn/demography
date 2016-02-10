@@ -1,0 +1,321 @@
+[{
+    "_id": "56afe83c87ad86fbfc68e278",
+    "date": "2015-09-13",
+    "week": 1,
+    "targets": 9,
+    "receptions": 6,
+    "receivingYards": 62,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83d87ad86fbfc68e2d6",
+    "date": "2016-01-03",
+    "week": 17,
+    "targets": 16,
+    "receptions": 8,
+    "receivingYards": 126,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83e87ad86fbfc68e334",
+    "date": "2015-12-27",
+    "week": 16,
+    "targets": 10,
+    "receptions": 8,
+    "receivingYards": 115,
+    "receivingTDs": 2,
+    "rushAttempts": 2,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83e87ad86fbfc68e390",
+    "date": "2015-12-19",
+    "week": 15,
+    "targets": 7,
+    "receptions": 4,
+    "receivingYards": 74,
+    "receivingTDs": 0,
+    "rushAttempts": 0,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83e87ad86fbfc68e3c5",
+    "date": "2015-12-13",
+    "week": 14,
+    "targets": 10,
+    "receptions": 6,
+    "receivingYards": 125,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83f87ad86fbfc68e403",
+    "date": "2015-12-06",
+    "week": 13,
+    "targets": 13,
+    "receptions": 12,
+    "receivingYards": 131,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83f87ad86fbfc68e42f",
+    "date": "2015-11-29",
+    "week": 12,
+    "targets": 11,
+    "receptions": 9,
+    "receivingYards": 131,
+    "receivingTDs": 2,
+    "rushAttempts": 2,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83f87ad86fbfc68e475",
+    "date": "2015-11-22",
+    "week": 11,
+    "targets": 10,
+    "receptions": 5,
+    "receivingYards": 47,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83f87ad86fbfc68e4c6",
+    "date": "2015-11-12",
+    "week": 10,
+    "targets": 10,
+    "receptions": 3,
+    "receivingYards": 23,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe83f87ad86fbfc68e4e1",
+    "date": "2015-11-08",
+    "week": 9,
+    "targets": 8,
+    "receptions": 4,
+    "receivingYards": 44,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe84087ad86fbfc68e4ff",
+    "date": "2015-11-01",
+    "week": 8,
+    "targets": 18,
+    "receptions": 9,
+    "receivingYards": 108,
+    "receivingTDs": 0,
+    "rushAttempts": 0,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe84087ad86fbfc68e534",
+    "date": "2015-10-25",
+    "week": 7,
+    "targets": 7,
+    "receptions": 4,
+    "receivingYards": 67,
+    "receivingTDs": 0,
+    "rushAttempts": 0,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe84087ad86fbfc68e555",
+    "date": "2015-10-18",
+    "week": 6,
+    "targets": 9,
+    "receptions": 7,
+    "receivingYards": 111,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe84087ad86fbfc68e571",
+    "date": "2015-10-04",
+    "week": 4,
+    "targets": 11,
+    "receptions": 7,
+    "receivingYards": 128,
+    "receivingTDs": 0,
+    "rushAttempts": 0,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe84087ad86fbfc68e583",
+    "date": "2015-09-27",
+    "week": 3,
+    "targets": 14,
+    "receptions": 10,
+    "receivingYards": 109,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}, {
+    "_id": "56afe84087ad86fbfc68e591",
+    "date": "2015-09-21",
+    "week": 2,
+    "targets": 10,
+    "receptions": 7,
+    "receivingYards": 101,
+    "receivingTDs": 1,
+    "rushAttempts": 1,
+    "player": {
+        "_id": "56afe83587ad86fbfc68e16a",
+        "name": "Brandon Marshall",
+        "playerLink": "http://www.pro-football-reference.com/players/M/MarsBr00.htm",
+        "team": "NYJ",
+        "age": 31,
+        "position": "WR",
+        "__v": 0,
+        "games": []
+    },
+    "__v": 0
+}]
