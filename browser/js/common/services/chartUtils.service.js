@@ -267,17 +267,11 @@ app.service('ChartUtilsService', function() {
                             .domain([min,max])
                             .range(['#887C7A',c.color])
                 
-                console.log(min,max)
                 chartOptions.colors = scale;
                 chartOptions.colorAccessor = function(d,i){
                     return d.value;
                 }
-                console.log(scale(min))
-                console.log(scale(max))
-                console.log(scale((max-min)/2))
-
-                // var min = _grp.bottom(1)[0];
-                // console.log('MAXANDMIN:',max,min)
+            
             }
         }
 
