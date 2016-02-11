@@ -48,7 +48,6 @@ router.get("/:datasetId", function(req, res, next) {
 
         // Retrieve the file so it can be sent back with the metadata
         var filePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
-        console.log(filePath)
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(rawFile => {
             // Convert csv file to a json object if needed
@@ -74,15 +73,18 @@ var upload = multer({
 // Route to create a new dataset in MongoDB and save a renamed csv file to the filesystem
 // POST /api/datasets/
 router.post('/', upload.single('file'), function(req, res, next) {
-    var metaData = req.body;
-    var originalFilePath = req.file.path;
+    var metaData = req.body,
+    originalFilePath = req.file.path,
+    newFilePath,
+    returnDataObject,
+    dataArray;
+
     metaData.fileType = "application/json";
+
     if (req.file.mimetype !== "text/csv" && req.file.mimetype !== "application/json") {
         fsp.unlink(originalFilePath);
         res.status(422).send("This is not valid file type. Upload either .csv or .json");
     }
-
-    var newFilePath, returnDataObject;
 
     DataSet.create(metaData)
     .then(dataset => {
@@ -90,39 +92,18 @@ router.post('/', upload.single('file'), function(req, res, next) {
         returnDataObject = dataset.toJSON();
         newFilePath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
 
-        //if filetype is not JSON, convert it to JSON and save it with new filename:
-        if (req.file.mimetype !== "application/json") {
-            fsp.readFile(originalFilePath, { encoding: 'utf8' })
-            .then(rawFile => {
-                // Convert csv file to a json object if needed
-                var dataArray = routeUtility.convertCsvToJson(rawFile);
-                //remove temp file:
-                fsp.unlink(originalFilePath).then(null, console.error);
-                //save JSON file to FS
-                fsp.writeFile(newFilePath, JSON.stringify(dataArray)).then(response =>{
-                    // Add the json as a property of the return object, so it an be sent with the metadata
-                    returnDataObject.jsonData = dataArray;
-                    res.status(201).json(returnDataObject);
-                });
-            });
-        }
-        else {
-
-            //convert it to flat JSON and save it with new filename:
-            fsp.readFile(originalFilePath, { encoding: 'utf8' })
-            .then(rawFile => {
-                // Convert csv file to a json object if needed
-                var dataArray = routeUtility.convertToFlatJson(JSON.parse(rawFile));
-                //remove temp file:
-                fsp.unlink(originalFilePath).then(null, console.error);
-                //save JSON file to FS
-                fsp.writeFile(newFilePath, JSON.stringify(dataArray)).then(response =>{
-                    // Add the json as a property of the return object, so it an be sent with the metadata
-                    returnDataObject.jsonData = dataArray;
-                    res.status(201).json(returnDataObject);
-                });
-            });
-        }
+        return fsp.readFile(originalFilePath, { encoding: 'utf8' });
+    })
+    .then(rawFile => {
+        // Convert csv file to a json object if needed, or flatten json object if needed
+        dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        //remove temp file:
+        fsp.unlink(originalFilePath);
+        //save JSON file to FS
+        fsp.writeFile(newFilePath, JSON.stringify(dataArray));
+        // Add the json as a property of the return object, so it an be sent with the metadata
+        returnDataObject.jsonData = dataArray;
+        res.status(201).json(returnDataObject);
     })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to create this dataset";
@@ -141,10 +122,58 @@ router.put("/:datasetId/updateDataset", function(req, res, next) {
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(file => {
             if (req.params)
-            res.status(200).send("Ability to update file is TBU")
+            res.status(200).send(file);
         })
     }).then(null, function(err) {
         err.message = "Something went wrong when trying to update this dataset";
+        next(err);
+    });
+});
+
+router.post('/:datasetId/updateDataset', upload.single('file'), function(req, res, next) {
+    var metaData = req.body,
+    originalFilePath = req.file.path,
+    datasetId = req.params.datasetId,
+    newFilePath,
+    returnDataObject,
+    dataArray;
+
+    metaData.fileType = "application/json";
+
+    if (req.file.mimetype !== "text/csv" && req.file.mimetype !== "application/json") {
+        // Remove temp file
+        fsp.unlink(originalFilePath);
+        res.status(422).send("This is not valid file type. Upload either .csv or .json");
+    }
+
+    DataSet.findByIdAndUpdate(datasetId, metaData)
+    .then(originalDataset => {
+        return DataSet.findById(originalDataset._id);
+    })
+    .then(updatedDataset => {
+        // Save the metadata on the return object
+        returnDataObject = updatedDataset.toJSON();
+        newFilePath = routeUtility.getFilePath(updatedDataset.user, updatedDataset._id, "application/json");
+
+        return fsp.readFile(originalFilePath, { encoding: 'utf8' });
+    })
+    .then(rawFile => {
+        // Convert csv file to a json object if needed, or flatten json object if needed
+        dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        // Remove temp file
+        fsp.unlink(originalFilePath);
+        // Remove old file name
+        return fsp.unlink(newFilePath);
+    })
+    .then(response => {
+        // Save JSON file to FS
+        fsp.writeFile(newFilePath, JSON.stringify(dataArray));
+        // Add the json as a property of the return object, so it an be sent with the metadata
+        returnDataObject.jsonData = dataArray;
+        res.status(201).json(returnDataObject);
+    })
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to create this dataset";
         next(err);
     });
 });

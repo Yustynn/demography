@@ -93,10 +93,6 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
         }
     };
 
-    $scope.updateDataset = dataset => {
-        console.log("Update: ", dataset);
-    }
-
     $scope.removeDataset = function(dataset) {
         DatasetFactory.delete(dataset)
         .then(deletedDataset => {
