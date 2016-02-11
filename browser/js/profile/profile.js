@@ -70,7 +70,7 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
     };
 
     // Function to open up the modal for creating a dashboard
-    $scope.openDashboardSettings = function (user, userDatasets) {
+    $scope.openDashboardSettings = function (user, userDatasets, currentDashboard = null) {
         // If the user tries to create a dashboard without a dataset, prompt them to upload one
         if ($scope.userDatasets.length === 0) $scope.tellUserToCreateDataset = true;
         else {
@@ -84,7 +84,10 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
                     },
                     userDatasets: function() {
                         return userDatasets;
-                    }
+                    },
+                currentDashboard: function() {
+                    return currentDashboard;
+                }
                 }
             });
         }

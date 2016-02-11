@@ -1,7 +1,22 @@
-app.controller('ProfileDashboardsSettingsCtrl', function ($scope, $timeout, $rootScope, $state, $uibModalInstance, user, userDatasets, DashboardFactory) {
+app.controller('ProfileDashboardsSettingsCtrl', function ($scope, $timeout, $rootScope, $state, $uibModalInstance, user, userDatasets, currentDashboard, DashboardFactory) {
 
     $scope.user = user;
     $scope.userDatasets = userDatasets;
+
+    // editMode to controle UI for uploading a new dashboard vs updating an existing dashboard
+    $scope.editMode = false;
+
+    // If editing an existing dashboard, pre-populate the metadata
+    if (currentDashboard) {
+        console.log("currentDashboard: ", currentDashboard);
+        $scope.editMode = true;
+        $scope.newDashboard = {
+            title: currentDashboard.title,
+            shortDescription: currentDashboard.shortDescription,
+            isPublic: currentDashboard.isPublic,
+            dataset: currentDashboard.dataset
+        }
+    }
 
     $scope.dismiss = function() {
         $uibModalInstance.dismiss();

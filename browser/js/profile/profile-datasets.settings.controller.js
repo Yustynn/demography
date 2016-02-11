@@ -28,14 +28,18 @@ app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootS
 
     // Function to send the file and metadata to the factory and then back-end
     $scope.uploadDataset = function(metaData) {
-        metaData.user = user._id;
-        DatasetFactory.create($scope.file, metaData)
-        .then(function(response) {
-            $scope.userDatasets.push(response.data);
-            $uibModalInstance.close();
-            $state.go('userDatasets');
-        })
-        .then(null, console.error);
+        if (!$scope.editMode) {
+            metaData.user = user._id;
+            return DatasetFactory.create($scope.file, metaData)
+            .then(function(response) {
+                $scope.userDatasets.push(response.data);
+                $uibModalInstance.close();
+                $state.go('userDatasets');
+            })
+            .then(null, console.error);
+        } else {
+            // NEW UPDATE ROUTE
+        }
     }
 
 });

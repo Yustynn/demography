@@ -1,7 +1,8 @@
 <div id="create-dashboard-container">
     <div class="modal-header">
         <button type="button" class="close" ng-click="dismiss()" aria-hidden="true">&times;</button>
-        <h3 class="modal-title">Create New Dashboard</h3>
+        <h3 class="modal-title" ng-show="!editMode">Create New Dashboard</h3>
+        <h3 class="modal-title" ng-show="editMode">Update Dashboard</h3>
     </div>
     <form id="dashboard-form" name="dashboardForm" ng-submit="createDashboard(newDashboard)">
         <div class="modal-body">
