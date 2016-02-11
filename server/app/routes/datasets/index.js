@@ -112,24 +112,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
 });
 
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
-// PUT /api/datasets/:datasetId
-router.put("/:datasetId/updateDataset", function(req, res, next) {
-    DataSet.findById(req.params.datasetId)
-    .then(mongoDataset => {
-        // Throw an error if a different user tries to update mongoDataset
-        if (!routeUtility.searchUserEqualsRequestUser(mongoDataset.user, req.user)) res.status(401).send("You are not authorized to access this mongoDataset");
-        var filePath = routeUtility.getFilePath(mongoDataset.user, mongoDataset._id, mongoDataset.fileType);
-        fsp.readFile(filePath, { encoding: 'utf8' })
-        .then(file => {
-            if (req.params)
-            res.status(200).send(file);
-        })
-    }).then(null, function(err) {
-        err.message = "Something went wrong when trying to update this dataset";
-        next(err);
-    });
-});
-
+// POST /api/datasets/:datasetId/updateDataset
 router.post('/:datasetId/updateDataset', upload.single('file'), function(req, res, next) {
     var metaData = req.body,
     originalFilePath = req.file.path,
