@@ -3,22 +3,29 @@ app.config(function($stateProvider) {
     $stateProvider.state('stream', {
         url: '/stream',
         templateUrl: 'js/stream/stream.html',
-        controller: 'StreamCtrl'
+        controller: 'StreamCtrl',
+        resolve: {
+            dashboards: function(DashboardFactory){
+                return DashboardFactory.fetchAll()
+            }
+        }
     });
 
 });
 
-app.controller('StreamCtrl', function($scope, $state, DashboardFactory) {
+app.controller('StreamCtrl', function($scope, $state, dashboards) {
 
-    DashboardFactory.fetchAll()
-        .then(function(allDashboards) {
-            
+    $scope.allDashboards = dashboards;
 
-            $scope.allDashboards = _.shuffle(allDashboards);
+    var listenerFunc = function(event, newDashboard) {
+        var changingIndex = $scope.allDashboards.findIndex(dashboard => {
+            return dashboard._id === newDashboard._id;
+        });
+        $scope.allDashboards[changingIndex].screenshot = $scope.allDashboards[changingIndex].screenshot + '?x=' + Math.floor(Math.random() * 1000)
+        $scope.$off("screenshotUpdated", listenerFunc)
+    }
 
-        })
-        .then(null, console.error);
-
+    $scope.$on("screenshotUpdated", listenerFunc)
 
 });
 

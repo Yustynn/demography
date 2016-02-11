@@ -1,7 +1,20 @@
-app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootScope, $state, $uibModalInstance, user, userDatasets, DatasetFactory) {
+app.controller('ProfileDatasetsSettingsCtrl', function ($scope, $timeout, $rootScope, $state, $uibModalInstance, user, userDatasets, currentDataset, DatasetFactory) {
 
     $scope.user = user;
     $scope.userDatasets = userDatasets;
+
+    // editMode to controle UI for uploading a new dataset vs updating an existing dataset
+    $scope.editMode = false;
+
+    // If editing an existing dataset, pre-populate the metadata
+    if (currentDataset) {
+        $scope.editMode = true;
+        $scope.metaData = {
+            title: currentDataset.title,
+            shortDescription: currentDataset.shortDescription,
+            isPublic: currentDataset.isPublic
+        }
+    }
 
     $scope.dismiss = function() {
         $uibModalInstance.dismiss();

@@ -10,7 +10,7 @@
         </div>
         <div class="container">
             <div class="stream">
-                <div ng-repeat="dashboard in allDashboards | filter: searchText" class="dashboard-div">
+                <div ng-repeat="dashboard in allDashboards | filter: searchText | orderBy: '-lastUpdated'" class="dashboard-div">
                     <div class="dashboard-header">
                         <h2 class="dashboard-title">{{dashboard.title}}</h2>
                         <div class="dashboard-profile">
