@@ -29,6 +29,10 @@ var schema = new mongoose.Schema({
     },
     tags: {
         type: [String]
+    },
+    originalCreator: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'User',
+        default: user
     }
 });
 

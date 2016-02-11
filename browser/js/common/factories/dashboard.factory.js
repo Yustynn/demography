@@ -49,6 +49,13 @@ app.factory('DashboardFactory', function ($http, $rootScope) {
                 return response.data
             })
             .then(null, console.error);
+        },
+
+        fork: function(dashboard) {
+            return $http.post('/api/dashboards', dashboard)
+                .then(function() {
+                    
+                })
         }
     };
 });

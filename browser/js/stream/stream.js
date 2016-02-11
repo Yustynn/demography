@@ -27,6 +27,10 @@ app.controller('StreamCtrl', function($scope, $state, dashboards) {
 
     $scope.$on("screenshotUpdated", listenerFunc)
 
+    $scope.forkDashboard = function(dashboard) {
+        DashboardFactory.forkDashboard(dashboard)
+    }
+
 });
 
 

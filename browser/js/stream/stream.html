@@ -22,6 +22,8 @@
                     <img class="dashboard-screenshot" ng-src="/{{dashboard.screenshot}}">
                     <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5>
                     <h5 class="dashboard-description">{{dashboard.dataset.shortDescription}}</h5>
+                    <button ng-click="forkDashboard(dashboard)">Fork Dashboard</button>
+                    <button>Fork Dataset</button>
                 </div>
             </div>
         </div>
