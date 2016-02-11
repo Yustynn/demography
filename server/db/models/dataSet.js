@@ -10,7 +10,7 @@ var schema = new mongoose.Schema({
         type: String
     },
     title: {
-        type: String
+        type: String, required: true
     },
     shortDescription: {
     	type: String
