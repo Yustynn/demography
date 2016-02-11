@@ -13,8 +13,8 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('StreamCtrl', function($scope, $state, dashboards) {
-
+app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFactory) {
+    console.log("yo yo bro",dashboards)
     $scope.allDashboards = dashboards;
 
     var listenerFunc = function(event, newDashboard) {
@@ -28,7 +28,7 @@ app.controller('StreamCtrl', function($scope, $state, dashboards) {
     $scope.$on("screenshotUpdated", listenerFunc)
 
     $scope.forkDashboard = function(dashboard) {
-        DashboardFactory.forkDashboard(dashboard)
+        DashboardFactory.fork(dashboard)
     }
 
 });

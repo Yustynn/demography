@@ -52,9 +52,11 @@ app.factory('DashboardFactory', function ($http, $rootScope) {
         },
 
         fork: function(dashboard) {
+            dashboard.originalDashboard = dashboard._id
+            delete dashboard._id
             return $http.post('/api/dashboards', dashboard)
                 .then(function() {
-                    
+
                 })
         }
     };

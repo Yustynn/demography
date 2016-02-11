@@ -30,14 +30,14 @@ var schema = new mongoose.Schema({
     tags: {
         type: [String]
     },
-    originalCreator: {
-        type: mongoose.Schema.Types.ObjectId, ref: 'User',
-        default: user
+    originalDashboard: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Dashboard',
     }
 });
 
 schema.pre('save', function (next) {
     this.lastUpdated = Date.now()
+    if(!this.originalCreator) this.originalCreator = this.user;
     next();
 });
 
