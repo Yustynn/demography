@@ -47,14 +47,16 @@
         font-size: 13px;
         color: rgb(136, 136, 136);
     }
-    .fa-trash-o {
+
+    i {
         margin-right: 8px;
     }
     button {
         border-radius: 5px;
         margin-top: 10px;
         margin-bottom: 30px;
-        display: block;
+        margin-right: 10px;
+        display: inline-block;
         width: 175px;
         text-align: left;
     }

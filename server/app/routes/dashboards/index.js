@@ -55,17 +55,36 @@ router.get("/:id", function(req, res, next) {
 		.then(null, next);
 });
 
+// Route to create a new dashboard in MongoDB
+// POST /api/dashboards
 router.post("/", ensureAuthenticated, function(req, res, next) {
     Dashboard.create(req.body)
     .then(createdDashboard => res.status(201).send(createdDashboard))
 });
 
+// Route to udpate an existing dashboard in MongoDB
+// PUT /api/dashboards/:dashboardId
 router.put("/:id", ensureAuthenticated, function(req, res, next) {
-    Widget.findByIdAndUpdate(req.params.id, req.body)
-    .then(function(widget) {
-        res.status(200).send(widget);
-    }).then(null, next)
+    Dashboard.findByIdAndUpdate(req.params.id, req.body)
+    .then(originalDashboard => {
+        return Dashboard.findById(originalDashboard._id);
+    })
+    .then(updatedDashboard => {
+        res.status(200).json(updatedDashboard);
+    })
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to update this dashboard";
+        next(err);
+    });
 });
+
+// BOBBY NOTE: Not sure who put this here
+// router.put("/:id", ensureAuthenticated, function(req, res, next) {
+//     Widget.findByIdAndUpdate(req.params.id, req.body)
+//     .then(function(widget) {
+//         res.status(200).send(widget);
+//     }).then(null, next)
+// });
 
 // Route to delete an existing dashboard in MongoDB
 // DELETE /api/dashboards/:dashboardId

@@ -30,8 +30,8 @@ app.factory('DashboardFactory', function ($http, $rootScope) {
             .then(null, console.error);
         },
 
-        update: function(dashboard) {
-            return $http.put('/api/dashboards/' + dashboard._id, dashboard)
+        update: function(dashboard, dashboardId) {
+            return $http.put('/api/dashboards/' + dashboardId, dashboard)
             .then(response => response.data)
             .then(null, console.error);
         },
