@@ -55,9 +55,8 @@ app.factory('DashboardFactory', function ($http, $rootScope) {
             dashboard.originalDashboard = dashboard._id
             delete dashboard._id
             return $http.post('/api/dashboards', dashboard)
-                .then(function() {
-
-                })
+            .then(response => response.data)
+            .then(null, console.error)
         }
     };
 });

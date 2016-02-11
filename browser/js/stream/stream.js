@@ -14,7 +14,6 @@ app.config(function($stateProvider) {
 });
 
 app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFactory) {
-    console.log("yo yo bro",dashboards)
     $scope.allDashboards = dashboards;
 
     var listenerFunc = function(event, newDashboard) {
