@@ -50,11 +50,13 @@ router.get("/:datasetId", function(req, res, next) {
 
         // Retrieve the file so it can be sent back with the metadata
         var filePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
+        console.log(filePath)
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(rawFile => {
             // Convert csv file to a json object if needed
-            var dataArray = dataset.fileType === "text/csv" ? routeUtility.convertCsvToJson(rawFile) : routeUtility.convertToFlatJson(JSON.parse(rawFile));
-
+            console.log('got the file:');
+            var dataArray = dataset.fileType === "text/csv" ? routeUtility.convertCsvToJson(rawFile) : JSON.parse(rawFile);
+            console.log(dataArray)
             // Add the json as a property of the return object, so it an be sent with the metadata
             returnDataObject.jsonData = dataArray;
             res.status(200).json(returnDataObject);
@@ -78,8 +80,8 @@ var upload = multer({
 router.post('/', upload.single('file'), function(req, res, next) {
     var metaData = req.body;
     var originalFilePath = req.file.path;
-    metaData.fileType = req.file.mimetype;
-    if (metaData.fileType !== "text/csv" && metaData.fileType !== "application/json") {
+    metaData.fileType = "application/json";
+    if (req.file.mimetype !== "text/csv" && req.file.mimetype !== "application/json") {
         fsp.unlink(originalFilePath);
         res.status(422).send("This is not valid file type. Upload either .csv or .json");
     }
@@ -93,7 +95,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
         newFilePath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
 
         //if filetype is not JSON, convert it to JSON and save it with new filename:
-        if (metaData.fileType !== "application/json") {
+        if (req.file.mimetype !== "application/json") {
             fsp.readFile(originalFilePath, { encoding: 'utf8' })
             .then(rawFile => {
                 // Convert csv file to a json object if needed
