@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory, $rootScope) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
@@ -136,5 +136,15 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
         })
         .then(null, console.error);
     };
+
+    var listenerFunc = function(event, newDashboard) {
+        var changingIndex = $scope.userDashboards.findIndex(userDashboard => {
+            return userDashboard._id === newDashboard._id;
+        });
+        $scope.userDashboards[changingIndex].screenshot = $scope.userDashboards[changingIndex].screenshot + '?x=' + Math.floor(Math.random() * 1000)
+        $scope.$off("screenshotUpdated", listenerFunc)
+    }
+
+    $scope.$on("screenshotUpdated", listenerFunc)
 
 });

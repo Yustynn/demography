@@ -9,16 +9,16 @@ module.exports = router;
 // /api/screenshots
 router.post("/", function(req, res, next) {
 	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
-    var pageres = new Pageres({cookies: [cookieString], filename: req.body.dashboardId, selector: '#main > div > div.ng-scope.gridster.gridster-desktop.gridster-loaded'})
-        .src('http://localhost:1337/users/' + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'], {crop: true})
+    var pageres = new Pageres({cookies: [cookieString], filename: req.body.dashboardId, selector: '#main > div > div.gridster.gridster-desktop.gridster-loaded', delay: 1})
+        .src('http://localhost:1337/users/' + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'])
         .dest(path.join(__dirname, "../../../db/screenshots"))
         .run()
         .then(data => {
-            return Dashboard.update({_id: req.body.dashboardId},{ $set: { screenshot: data[0].filename }})
+            return Dashboard.findByIdAndUpdate(req.body.dashboardId, { screenshot: data[0].filename }, { new: true })
         })
-        .then(data => {
+        .then(updatedDashboard => {
             console.log('Screenshot successful!')
-            res.status(200).send()
+            res.status(200).send(updatedDashboard)
         })
         .then(null, function (err) {
         	console.log(err);

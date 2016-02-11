@@ -17,6 +17,16 @@ app.controller('StreamCtrl', function($scope, $state, dashboards) {
 
     $scope.allDashboards = dashboards;
 
+    var listenerFunc = function(event, newDashboard) {
+        var changingIndex = $scope.allDashboards.findIndex(dashboard => {
+            return dashboard._id === newDashboard._id;
+        });
+        $scope.allDashboards[changingIndex].screenshot = $scope.allDashboards[changingIndex].screenshot + '?x=' + Math.floor(Math.random() * 1000)
+        $scope.$off("screenshotUpdated", listenerFunc)
+    }
+
+    $scope.$on("screenshotUpdated", listenerFunc)
+
 });
 
 

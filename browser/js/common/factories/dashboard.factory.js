@@ -1,4 +1,4 @@
-app.factory('DashboardFactory', function ($http) {
+app.factory('DashboardFactory', function ($http, $rootScope) {
     return {
 
         //save new dashboard upon creation
@@ -44,7 +44,10 @@ app.factory('DashboardFactory', function ($http) {
 
         takeScreenshot: function(stateParams) {
             return $http.post('/api/screenshots', stateParams)
-            .then(response => response.data)
+            .then(response => {
+                $rootScope.$broadcast("screenshotUpdated", response.data)
+                return response.data
+            })
             .then(null, console.error);
         }
     };
