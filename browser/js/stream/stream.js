@@ -3,17 +3,18 @@ app.config(function($stateProvider) {
     $stateProvider.state('stream', {
         url: '/stream',
         templateUrl: 'js/stream/stream.html',
-        controller: 'StreamCtrl'
+        controller: 'StreamCtrl',
+        resolve: {
+            dashboards: function(DashboardFactory){
+                return DashboardFactory.fetchAll()
+            }
+        }
     });
 
 });
 
-app.controller('StreamCtrl', function($scope, $state, DashboardFactory) {
+app.controller('StreamCtrl', function($scope, $state, dashboards) {
 
-    DashboardFactory.fetchAll()
-        .then(function(allDashboards) {
-            $scope.allDashboards = allDashboards;
-        })
-        .then(null, console.error);
+    $scope.allDashboards = dashboards;
 
 });
