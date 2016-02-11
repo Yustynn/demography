@@ -20,17 +20,18 @@
                     <a title="new text panel" role="button" tooltip-placement="bottom" uib-tooltip="New Text Panel" ng-click="createDatacountWidget(widget, dataset._id)" disabled><i class="material-icons">looks_one</i></a>
                 </div>
             </div>
+
             <div class="widget-settings">
-                <create-barchart bar-chart-collapsed="barChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-barchart>
-                <create-rowchart row-chart-collapsed="rowChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-rowchart>
-                <create-piechart pie-chart-collapsed="pieChartCollapsed" form="form" axis-dropdowns="axisDropdowns" graph-groups="graphGroups"></create-piechart>
-                <create-linechart line-chart-collapsed="lineChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-linechart>
-                <create-datatable datachart="datachart" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups"></create-datatable>
+                <create-barchart bar-chart-collapsed="barChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups" current-chart="widget.chartObject"></create-barchart>
+                <create-rowchart row-chart-collapsed="rowChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups" current-chart="widget.chartObject"></create-rowchart>
+                <create-piechart pie-chart-collapsed="pieChartCollapsed" form="form" axis-dropdowns="axisDropdowns" graph-groups="graphGroups" current-chart="widget.chartObject"></create-piechart>
+                <create-linechart line-chart-collapsed="lineChartCollapsed" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups" current-chart="widget.chartObject"></create-linechart>
+                <create-datatable datachart="datachart" form="form" axis-dropdowns="axisDropdowns" color-options="colorOptions" graph-groups="graphGroups" current-chart="widget.chartObject"></create-datatable>
             </div>
 
         </div>
         <div class="modal-footer">
-            <a ng-click="remove()" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+            <a ng-click="remove(true)" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>
             <a ng-click="remove()" class="btn btn-default"><i class="glyphicon glyphicon-remove"></i> Cancel</a>
             <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Save</button>
         </div>

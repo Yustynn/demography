@@ -19,7 +19,6 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
         if (accordionToKeepOpen !== "lineChart") $scope.lineChartCollapsed = true;
         if (accordionToKeepOpen !== "dataTable") $scope.datachart = true;
     }
-
     closeAllAccordions();
 
     // Functions to toggle accordions
@@ -111,10 +110,12 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
         $scope.graphGroups.options = WidgetFactory.getGraphGroups();
     };
 
-    $scope.remove = function() {
+    $scope.remove = function(bool) {
         $uibModalStack.dismissAll();
-        WidgetFactory.delete(widget._id);
-        $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
+        if(!widget.created || bool){            
+            WidgetFactory.delete(widget._id);
+            $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
+        }
     };
 
     $scope.submit = function() {
@@ -146,7 +147,7 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
                 columns: _chartOptions.columns,
                 order: _chartOptions.order
             };
-
+            widget.created = true;//Boolean to set whether or not the widget is empty(false) or has a chart(true)
             widget.chartObject = ChartService.create(chartConfig);
         } else {
             //only get updated properties:
