@@ -29,12 +29,13 @@
                 <div class="form-group">
                     <label for="style">Fill style</label>
                     <select name="style" ng-model="form.color.style">
-                        <option value="solid">Solid</option>
                         <option value="theme">Theme</option>
+                        <option value="solid">Solid</option>
                         <option value="gradient">Gradient</option>
                         <option value="breakPoint">Break Point</option>
                     </select>
                 </div>
+                <pre>{{ form | json}}</pre>
                 <div class="form-group">
                     <label for="color">Fill color</label>
                     <div class="colorSelect">
