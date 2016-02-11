@@ -12,8 +12,14 @@ app.controller('StreamCtrl', function($scope, $state, DashboardFactory) {
 
     DashboardFactory.fetchAll()
         .then(function(allDashboards) {
-            $scope.allDashboards = allDashboards;
+            
+
+            $scope.allDashboards = _.shuffle(allDashboards);
+
         })
         .then(null, console.error);
 
+
 });
+
+
