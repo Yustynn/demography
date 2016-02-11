@@ -7,7 +7,6 @@ app.config(function($stateProvider) {
         resolve: {
             dashboards: function(DashboardFactory){
                 return DashboardFactory.fetchAll()
-                        .then(null,console.err.bind(console))
             }
         }
     });
