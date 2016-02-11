@@ -9,8 +9,6 @@ var fsp = require('fs-promise');
 var path = require('path');
 var flatten = require('flat');
 var routeUtility = require('../route-utilities.js');
-// var jsonfile = require('jsonfile')
-// var util = require('util')
 
 // Path where uploaded files are saved
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
@@ -54,9 +52,7 @@ router.get("/:datasetId", function(req, res, next) {
         fsp.readFile(filePath, { encoding: 'utf8' })
         .then(rawFile => {
             // Convert csv file to a json object if needed
-            console.log('got the file:');
             var dataArray = dataset.fileType === "text/csv" ? routeUtility.convertCsvToJson(rawFile) : JSON.parse(rawFile);
-            console.log(dataArray)
             // Add the json as a property of the return object, so it an be sent with the metadata
             returnDataObject.jsonData = dataArray;
             res.status(200).json(returnDataObject);
@@ -153,12 +149,12 @@ router.put("/:datasetId/updateDataset", function(req, res, next) {
     });
 });
 
-//Route to update an existing dataset in mongodv and update/ add an array of entries based on unique _id or unique id:
+//FOR EXTERNAL API CALLS:
+//Route to update an existing dataset in mongodb and update/ add an array of entries based on unique _id or unique id:
 
 
 // Route to delete an existing dataset in MongoDB and the saved csv file in the filesystem
 // DELETE /api/datasets/:datasetId
-// BOBBY NOTE: Do we need a separate route to update the metadate and the file in the filesystem?
 router.delete("/:datasetId", function(req, res, next) {
     var filePath;
     DataSet.findById(req.params.datasetId)
