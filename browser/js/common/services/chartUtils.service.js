@@ -259,7 +259,7 @@ app.service('ChartUtilsService', function() {
       if(/^(\-|\+)?([0-9]+|Infinity)$/.test(value))
         return Number(value);
       return -1;
-    }
+    };
 
     var _createDimensionFromXAxisLabel = function(c, chartOptions) {
         let xAxisIsNumber = false;
@@ -350,7 +350,7 @@ app.service('ChartUtilsService', function() {
                 var scale = d3.scale.linear()
                             .domain([min,max])
                             .range(['#887C7A',c.color])
-                
+
                 chartOptions.colors = scale;
                 chartOptions.colorAccessor = function(d,i){
                     return d.value;
