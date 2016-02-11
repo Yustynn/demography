@@ -7,7 +7,8 @@ app.directive('createLinechart', function(WidgetFactory) {
             form: '=',
             axisDropdowns: '=',
             colorOptions: '=',
-            graphGroups: '='
+            graphGroups: '=',
+            currentChart: '='
         },
         link: function(scope, element, attrs) {
             // BOBBY NOTE: Is this something that needs to be repeated in each create-chart directive??
@@ -17,6 +18,11 @@ app.directive('createLinechart', function(WidgetFactory) {
                 scope.form.graphGroup = newGroup;
                 scope.graphGroups.options = WidgetFactory.getGraphGroups();
             };
+
+            if(scope.currentChart){
+                scope.form.labelY = {key: scope.currentChart.yAxis};
+                scope.form.labelX = {key: scope.currentChart.xAxis};
+            }
         }
     }
 })

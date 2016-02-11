@@ -7,7 +7,8 @@ app.directive('createDatatable', function(WidgetFactory) {
             form: '=',
             axisDropdowns: '=',
             colorOptions: '=',
-            graphGroups: '='
+            graphGroups: '=',
+            currentChart: '='
         },
         link: function(scope, element, attrs) {
             // BOBBY NOTE: Is this something that needs to be repeated in each create-chart directive??

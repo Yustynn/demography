@@ -30,8 +30,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     width: graphSize.width,
                     height: graphSize.height
                 };
-
                 ChartService.create(chartConstructor);
+                scope.widget.created = true;//Sets boolean to know if the widget is empty or contains a chart
                 //GraphService.create($(element).find('.widget-content-container')[0], c.id, c.chartType, c.xAxis, c.yAxis, c.groupType, c.chartOptions,graphSize,c.chartGroup,c.colorSettings);
             } else {
                 openSettings(scope.widget, scope.dashboard.dataset._id);
@@ -67,6 +67,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             scope.element = element;
 
             function openSettings (widget, datasetId) {
+                
                 $uibModal.open({
                     scope: scope,
                     templateUrl: 'js/widget/widget.settings.html',
@@ -87,6 +88,10 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     }
                 });
             };
+
+            scope.openSettings = function(widget,datasetId){
+                openSettings(widget,datasetId)
+            }
 
             //used to ng-hide new-widget-selector
             scope.noGraph = function (widget){

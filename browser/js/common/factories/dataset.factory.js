@@ -38,7 +38,7 @@ app.factory('DatasetFactory', function($http, Upload) {
             .then(null, console.error);
         },
 
-        // BOBBY NOTE: The update dataset is still TBU
+
         update: function(dataset) {
             return $http.put('/api/datasets/' + dataset._id, dataset)
             .then(response => response.data)

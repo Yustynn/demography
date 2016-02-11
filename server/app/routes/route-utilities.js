@@ -10,6 +10,13 @@ var exports = module.exports = {};
 // Path where uploaded files are saved
 var uploadFolderPath = path.join(__dirname + '/../../db/upload-files');
 
+var filterFloat = function (value) {
+    if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
+      .test(value))
+      return Number(value);
+  return NaN;
+}
+
 // Helper function to construct a file path
 exports.getFilePath = function(userId, datasetId, fileType) {
     if (fileType === "text/csv") return uploadFolderPath + '/user:' + userId + '-dataset:' + datasetId + '.csv';
@@ -37,6 +44,7 @@ exports.convertCsvToJson = function(rawFile) {
     return rawDataArray.map(function(line) {
         var dataFieldObject = {};
         line.forEach(function(item, index) {
+            if (filterFloat(item) !== NaN) item = filterFloat(item);
             dataFieldObject[headerArray[index]] = item;
         });
         return dataFieldObject;
