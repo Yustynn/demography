@@ -15,7 +15,7 @@ var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 
 // Route to retrieve all datasets
     // This sends metadata only. The GET /:datasetId will need to be used to access the actual data
-// GET /api/datasets/
+// GET /internalapi/datasets/
 router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
     var queryObject = req.query;
@@ -31,7 +31,7 @@ router.get("/", function(req, res, next) {
     });
 });
 
-// GET /api/datasets/:datasetId
+// GET /internalapi/datasets/:datasetId
 router.get("/:datasetId", function(req, res, next) {
     var returnDataObject;
     DataSet.findById(req.params.datasetId)
@@ -72,7 +72,7 @@ var upload = multer({
 });
 
 // Route to create a new dataset in MongoDB and save a renamed csv file to the filesystem
-// POST /api/datasets/
+// POST /internalapi/datasets/
 router.post('/', upload.single('file'), function(req, res, next) {
     var metaData = req.body;
     var originalFilePath = req.file.path;
@@ -131,7 +131,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
 });
 
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
-// PUT /api/datasets/:datasetId
+// PUT /internalapi/datasets/:datasetId
 router.put("/:datasetId/updateDataset", function(req, res, next) {
     DataSet.findById(req.params.datasetId)
     .then(mongoDataset => {
@@ -154,7 +154,7 @@ router.put("/:datasetId/updateDataset", function(req, res, next) {
 
 
 // Route to delete an existing dataset in MongoDB and the saved csv file in the filesystem
-// DELETE /api/datasets/:datasetId
+// DELETE /internalapi/datasets/:datasetId
 router.delete("/:datasetId", function(req, res, next) {
     var filePath;
     DataSet.findById(req.params.datasetId)

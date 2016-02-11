@@ -107,13 +107,13 @@ describe('Dashboard Route', function() {
     describe('Logged in Users', function() {
         //This test checks to make sure a logged in user can make Dashboards that are either public or private
         it('can make a Public and Private Dashboard', function(done) {
-            userAgent.post('/api/dashboards').send(publicDashboard)
+            userAgent.post('/internalapi/dashboards').send(publicDashboard)
                 .expect(201)
                 .end(function(err, response) {
                     if (err) return done(err);
                     expect(response.body.title).to.be.equal('Test Public Dashboard');
                     expect(response.body.isPublic).to.be.true;
-                    userAgent.post('/api/dashboards').send(privateDashboard)
+                    userAgent.post('/internalapi/dashboards').send(privateDashboard)
                         .expect(201)
                         .end(function(err, response) {
                             if (err) return done(err);
@@ -131,7 +131,7 @@ describe('Dashboard Route', function() {
     describe('Non logged in Users', function() {
 
         it('cannot make a Dashboard', function(done) {
-            guestAgent.post('/api/dashboards').send(publicDashboard)
+            guestAgent.post('/internalapi/dashboards').send(publicDashboard)
                 .expect(401)
                 .end(done)
 
@@ -144,10 +144,10 @@ describe('Dashboard Route', function() {
 
         //Before each test add a private and a public dashboard into the database tied to the logged in user
         beforeEach('Create public and private dashboard for logged in user', function(done) {
-            userAgent.post('/api/dashboards').send(publicDashboard)
+            userAgent.post('/internalapi/dashboards').send(publicDashboard)
                 .end(function(err, response) {
                     if (err) return done(err);
-                    userAgent.post('/api/dashboards').send(privateDashboard)
+                    userAgent.post('/internalapi/dashboards').send(privateDashboard)
                         .end(function(err, response) {
                             done()
                         })
@@ -158,7 +158,7 @@ describe('Dashboard Route', function() {
 
         it('Logged in users can view all of their private and public dashboards', function(done) {
 
-            userAgent.get('/api/dashboards')
+            userAgent.get('/internalapi/dashboards')
                 .expect(200)
                 .end(function(err, res) {
                     if (err) return done(err)
@@ -174,7 +174,7 @@ describe('Dashboard Route', function() {
         // Not adding in any functionality for "non logged in users"
         xit('Non Logged in users can view only public dashboards', function(done) {
 
-            guestAgent.get('/api/dashboards')
+            guestAgent.get('/internalapi/dashboards')
                 .expect(200)
                 .end(function(err, res) {
                     if (err) return done(err)

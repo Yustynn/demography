@@ -11,7 +11,7 @@ var ensureAuthenticated = function (req, res, next) {
     }
 };
 
-// /api/widgets
+// /internalapi/widgets
 router.post("/", ensureAuthenticated, function (req, res, next) {
     Widget.create(req.body)
     .then(newWidget => res.status(201).send(newWidget))
@@ -30,7 +30,7 @@ router.delete('/:id', ensureAuthenticated, function (req, res, next){
     .then(null, next);
 });
 
-// /api/widgets/:dashboardId
+// /internalapi/widgets/:dashboardId
 router.get("/:dashboardId", ensureAuthenticated, function (req, res, next) {
     Widget.find({dashboard: dashboardId})
     .then(allWidgets => res.status(200).send(allWidgets))

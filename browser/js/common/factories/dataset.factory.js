@@ -4,7 +4,7 @@ app.factory('DatasetFactory', function($http, Upload) {
         //save new dashboard upon creation
         create: function(datasetFile, datasetMetaData) {
             return Upload.upload({
-                url: '/api/datasets/',
+                url: '/internalapi/datasets/',
                 method: 'POST',
                 data: {
                     file: datasetFile,
@@ -21,13 +21,13 @@ app.factory('DatasetFactory', function($http, Upload) {
         },
 
         fetchAll: function() {
-            return $http.get('/api/datasets')
+            return $http.get('/internalapi/datasets')
             .then(response => response.data)
             .then(null, console.error);
         },
 
         fetchAllByUser: function(userId) {
-            return $http.get('/api/datasets?user=' + userId)
+            return $http.get('/internalapi/datasets?user=' + userId)
             .then(response => response.data)
             .then(null, console.error);
         },
@@ -40,13 +40,13 @@ app.factory('DatasetFactory', function($http, Upload) {
 
 
         update: function(dataset) {
-            return $http.put('/api/datasets/' + dataset._id, dataset)
+            return $http.put('/internalapi/datasets/' + dataset._id, dataset)
             .then(response => response.data)
             .then(null, console.error);
         },
 
         delete: function(dataset) {
-            return $http.delete('/api/datasets/' + dataset._id)
+            return $http.delete('/internalapi/datasets/' + dataset._id)
             .then(response => response.data)
             .then(null, console.error);
         }

@@ -16,7 +16,7 @@ var ensureAuthenticated = function (req, res, next) {
     }
 };
 
-// /api/dashboards/?filterCriteria=XYZ
+// /internalapi/dashboards/?filterCriteria=XYZ
 router.get("/", function (req, res, next) {
 	Dashboard.find(req.query).populate("user dataset")
 	.then(allDashboards => {
@@ -26,7 +26,7 @@ router.get("/", function (req, res, next) {
 	.then(null, next)
 });
 
-// /api/dashboards/id
+// /internalapi/dashboards/id
 router.get("/:id", function(req, res, next) {
 	Dashboard.findById(req.params.id)
     .populate('user', 'firstName lastName email')
@@ -68,7 +68,7 @@ router.put("/:id", ensureAuthenticated, function(req, res, next) {
 });
 
 // Route to delete an existing dashboard in MongoDB
-// DELETE /api/dashboards/:dashboardId
+// DELETE /internalapi/dashboards/:dashboardId
 router.delete("/:id", ensureAuthenticated, function(req, res, next) {
     Dashboard.findById(req.params.id)
     .then(dashboard => {
@@ -84,7 +84,7 @@ router.delete("/:id", ensureAuthenticated, function(req, res, next) {
     });
 });
 
-// /api/dashboards/id/widgets
+// /internalapi/dashboards/id/widgets
 router.get("/:id/widgets", function (req, res, next) {
     Widget.find({dashboard: req.params.id})
     .then(widgets => res.status(201).send(widgets))

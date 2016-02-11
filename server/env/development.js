@@ -1,3 +1,5 @@
+process.env.TOKEN_SECRET = "qE19G2Lnmf8EXE60gdztw8ajMHfTc0S9";
+
 module.exports = {
   "DATABASE_URI": "mongodb://localhost:27017/demography",
   "SESSION_SECRET": "Optimus Prime is my real dad",
@@ -15,5 +17,6 @@ module.exports = {
     "clientID": "298064356219-e3hi8qkfat96nsvmae2ojggorn5mcn7n.apps.googleusercontent.com",
     "clientSecret": "rIwPdYD8FBtQu0aEsprOb9Bl",
     "callbackURL": "http://localhost:1337/auth/google/callback"
-  }
+  },
+  "TOKEN_SECRET": "qE19G2Lnmf8EXE60gdztw8ajMHfTc0S9"    //http://randomkeygen.com/
 };

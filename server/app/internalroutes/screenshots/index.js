@@ -6,7 +6,7 @@ var _ = require("lodash")
 var Dashboard = mongoose.model('Dashboard')
 module.exports = router;
 
-// /api/screenshots
+// /internalapi/screenshots
 router.post("/", function(req, res, next) {
 	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
     var pageres = new Pageres({cookies: [cookieString], filename: req.body.dashboardId, selector: '#main > div > div.ng-scope.gridster.gridster-desktop.gridster-loaded'})

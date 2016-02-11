@@ -9,8 +9,9 @@ module.exports = app;
 require('./configure')(app);
 
 // Routes that will be accessed via AJAX should be prepended with
-// /api so they are isolated from our GET /* wildcard.
-app.use('/api', require('./routes'));
+// /internalapi so they are isolated from our GET /* wildcard.
+app.use('/internalapi', require('./internalRoutes'));
+app.use('/api', require('./externalRoutes'));
 
 
 /*

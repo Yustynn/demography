@@ -115,7 +115,7 @@ describe('Dataset Route', function() {
 
         // The req.user shows up as undefined, so this test does not work
         xit('can view their own private datasets', function(done) {
-            userAgent1.get('/api/datasets?user=' + userId1)//This user should have access to their private datasets
+            userAgent1.get('/internalapi/datasets?user=' + userId1)//This user should have access to their private datasets
                 .expect(200)
                 .end(function(err, response) {
                     if (err) return done(err);
@@ -131,7 +131,7 @@ describe('Dataset Route', function() {
     describe('Non logged in Users', function() {
 
         it('can only view public datasets', function(done) {
-            guestAgent.get('/api/datasets')
+            guestAgent.get('/internalapi/datasets')
                 .expect(200)
                 .end(function(err,response){
                     if(err) return done(err);
