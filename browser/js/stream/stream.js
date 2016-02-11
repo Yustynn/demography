@@ -7,6 +7,7 @@ app.config(function($stateProvider) {
         resolve: {
             dashboards: function(DashboardFactory){
                 return DashboardFactory.fetchAll()
+                        .then(null,console.err.bind(console))
             }
         }
     });
@@ -18,3 +19,5 @@ app.controller('StreamCtrl', function($scope, $state, dashboards) {
     $scope.allDashboards = dashboards;
 
 });
+
+
