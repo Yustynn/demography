@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory, $rootScope) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
@@ -129,5 +129,14 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, loggedInUser, 
             $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
         });
     };
+
+    $scope.$on("screenshotUpdated", function(event, newDashboard) {
+        console.log("in here")
+        var changingIndex = $scope.userDashboards.findIndex(userDashboard => {
+            return userDashboard._id === newDashboard._id;
+        });
+        $scope.userDashboards[changingIndex] = newDashboard
+    })
+    //REMOVE THE LISTENER on destroy
 
 });
