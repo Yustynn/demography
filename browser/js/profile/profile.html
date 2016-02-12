@@ -17,6 +17,31 @@
                         <br><span class="glyphicon glyphicon glyphicon-signal"></span></button>
                 </div>
             </div>
+            <div class="row" id="api-access">
+                <div class="col-md-12">
+                    <p>New Feature: Request an <a href="" ng-click="generateAPIkey()">API key</a>.</p>
+                </div>
+            </div>
+            <div class="row" id="api-access">
+                <div class="col-md-12">
+                    <p>Head to the <a href="https://github.com/JonatanS/demography/wiki/How-to-use-the-API-to-post-data-from-your-app" target="_blank">wiki</a> for more info.</p>
+                </div>
+            </div>
+            <div class="showAPIKey" ng-show="apiKey.show">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Your API Key:</span>
+                            <button class="btn btn-default" ngclipboard data-clipboard-target="#apiKeyDisplay" ngclipboard-success="resetToken(e);"><span class="glyphicon glyphicon-copy" aria-hidden="true"></span> copy</button>
+                        </div>
+                    </div>
+                </div>
+                <div class=row>
+                    <div class="col-md-10">
+                        <textarea id="apiKeyDisplay" disabled="true">{{apiKey.token}}</textarea>
+                    </div>
+                </div>
+            </div>
             <uib-alert type="danger" ng-show="userDatasets.length === 0 && tellUserToCreateDataset" id="createDatasetAlert">You must upload a dataset before you can create a dashboard</uib-alert>
         </div>
         <div class="col-xs-9">

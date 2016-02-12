@@ -50,11 +50,10 @@ router.delete("/:userId",ensureAuthenticated, function(req, res, next) {
 
 //request a token from within our app (cant be done remotely)
 router.get("/:id/generateToken",ensureAuthenticated, function (req, res, next) {
-    console.log(tokenSecret);
     User.findById(req.params.id)
     .then(user => {
         //generate token and send to user
-        var token = jwt.sign(user, tokenSecret,{});
+        var token = jwt.sign(user._id.toString(), tokenSecret,{});
         res.status(200).send({success: true, token:token});
     })
     .then(null, next);

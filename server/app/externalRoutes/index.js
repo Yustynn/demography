@@ -16,9 +16,7 @@ var tokenSecret = process.env.TOKEN_SECRET; //TODO: hope this will work once dep
 // route middleware to verify a token
 router.use(function(req, res, next) {
     // check header or url parameters or post parameters for token
-    console.log(req.body)
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log("GOT THE TOKEN", token);
     // decode token
     if (token) {
         // verifies secret (and checks exp date)
@@ -30,7 +28,7 @@ router.use(function(req, res, next) {
                 });
             } else {
                 // if everything is good, save to request for use in other routes
-                req.decoded = decoded._doc;
+                req.decoded = decoded;
                 next();
             }
         });
@@ -47,8 +45,8 @@ router.use(function(req, res, next) {
 //Route to GET all datasets by USER from TOKEN
 // /dash/datasets
 router.get('/datasets', function(req, res, next) {
-    var authenticatedUser = req.decoded;
-    DataSet.find({user: authenticatedUser._id}).select('-user -__v')
+    var authenticatedUserId = req.decoded;
+    DataSet.find({user: authenticatedUserId}).select('-user -__v')
     .then(allSets => res.status(200).json(allSets))
     .then(null, next);
 });
@@ -56,20 +54,16 @@ router.get('/datasets', function(req, res, next) {
 //Route to POST new dataset
 // /dash/datasets
 router.post("/datasets", function(req, res, next){
-    console.log("POSTING");
-    var authenticatedUser = req.decoded;
-
+    var authenticatedUserId = req.decoded;
     var filepath, returnDataObject;
-console.log(authenticatedUser);
     //var dataArray = routeUtility.convertToFlatJson(JSON.parse(req.body.data.toString()));
     //not sure we need to parse
     var dataArray = (typeof req.body.data === 'string' ? routeUtility.convertToFlatJson(JSON.parse(req.body.data)) : routeUtility.convertToFlatJson(req.body.data));
-console.log(dataArray);
     //req.body contains all information for new dataset:
     var metaData = req.body;
     delete metaData.data;
-    metaData.user = authenticatedUser._id;
-
+    delete metaData.token;
+    metaData.user = authenticatedUserId;
     DataSet.create(metaData)
     .then(dataset => {
         filepath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
@@ -86,11 +80,9 @@ console.log(dataArray);
 //Route to UPDATE dataset entries by ID
 // /dash/datasets/:id/entries
 router.post('/datasets/:id/entries', function(req, res, next){
-    console.log('updating');
-    var authenticatedUser = req.decoded;
+    var authenticatedUserId = req.decoded;
     var datasetId = datasetId = req.params.id;
     var entries = req.body.data;
-    console.log(entries);
     //expecting that every entry in the file has a unique id or _id property by which to update.
     //req.body.data [] with id or _id property
     var metaData = req.body;
@@ -102,7 +94,7 @@ router.post('/datasets/:id/entries', function(req, res, next){
     };
 
     //1. load entire file into memory.
-    var filePath = routeUtility.getFilePath(authenticatedUser._id, datasetId, "application/json");
+    var filePath = routeUtility.getFilePath(authenticatedUserId, datasetId, "application/json");
     fsp.readFile(filePath, { encoding: 'utf8' })
     .then(rawFile=> {
         //2. update properties by ID
@@ -111,7 +103,9 @@ router.post('/datasets/:id/entries', function(req, res, next){
         //loop through entries and add to/ update dataArr
         entries.forEach(function(entry) {
             if(entry.id) {
-                var idx = _.indexOf(dataArray, {id: entry.id})
+                var idx = dataArray.findIndex(function(element, index){
+                    return element.id === entry.id
+                });
                 if(idx != -1) {
                     dataArray[idx] = entry;  //replace old entry
                     respObj.updatedEntries ++;
@@ -122,7 +116,9 @@ router.post('/datasets/:id/entries', function(req, res, next){
                 }
             }
             else if (entry._id) {
-                var idx = _.indexOf(dataArray, {_id: entry._id})
+                var idx = dataArray.findIndex(function(element, index){
+                    return element._id === entry._id
+                });
                 if(idx != -1) {
                     dataArray[idx] = entry;  //replace old entry
                     respObj.updatedEntries ++;
@@ -156,10 +152,10 @@ router.post('/datasets/:id/entries', function(req, res, next){
 //Route to delete entries of existing dataset by ID
 // /dash/datasets/:id/entries
 router.delete('/datasets/:id/entries', function(req, res, next){
-    var authenticatedUser = req.decoded;
+    var authenticatedUserId = req.decoded;
     var datasetId = datasetId = req.params.id;
     var entries = req.body.data;
-    if(!req.body.data) res.status(422).json({success:false, message: "you must specify id's of entries to delete as {data:[id1,id2,...]}"});
+    if(!req.body.data) res.status(422).json({success:false, message: "you must specify id's of entries to delete as {data:[{id:1},{_id:2},...]}"});
     var metaData = req.body;
     delete metaData.data;
     var respObj = {
@@ -168,7 +164,7 @@ router.delete('/datasets/:id/entries', function(req, res, next){
         success: false
     };
      //1. load entire file into memory.
-    var filePath = routeUtility.getFilePath(authenticatedUser._id, datasetId, "application/json");
+    var filePath = routeUtility.getFilePath(authenticatedUserId, datasetId, "application/json");
     fsp.readFile(filePath, { encoding: 'utf8' })
     .then(rawFile=> {
         //2. update properties by ID
@@ -177,15 +173,19 @@ router.delete('/datasets/:id/entries', function(req, res, next){
         //loop through entries and add to/ update dataArr
         entries.forEach(function(entry) {
             if(entry.id) {
-                var idx = _.indexOf(dataArray, {id: entry.id})
+                var idx = dataArray.findIndex(function(element, index){
+                    return element.id === entry.id
+                });
                 if(idx != -1) {
                     dataArray.splice(idx,1);  //delete entry
                     respObj.deletedEntries ++;
                 }
                 else respObj.entriesNotDeleted ++;
             }
-            else if (entry._id) {
-                var idx = _.indexOf(dataArray, {_id: entry._id})
+            else if(entry._id) {
+                var idx = dataArray.findIndex(function(element, index){
+                    return element._id === entry._id
+                });
                 if(idx != -1) {
                     dataArray.splice(idx,1);  //delete entry
                     respObj.deletedEntries ++;
@@ -211,5 +211,3 @@ router.delete('/datasets/:id/entries', function(req, res, next){
         res.status(422).json({success:false, message: err.message});
     });
 });
-
-

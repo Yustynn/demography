@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, userDashboards, userDatasets, DashboardFactory, DatasetFactory, $rootScope) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, UserFactory, userDashboards, userDatasets, DashboardFactory, DatasetFactory, $rootScope) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
@@ -137,6 +137,27 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, logg
         })
         .then(null, console.error);
     };
+
+    $scope.apiKey = {
+        show: false
+    };
+
+    $scope.generateAPIkey = function() {
+        UserFactory.generateToken(loggedInUser._id)
+        .then(token => {
+            $scope.apiKey.token = token;
+            $scope.apiKey.show = true;
+
+        })
+        .then(null, console.error);
+    };
+
+    $scope.resetToken = function(e) {
+        console.log("reset", e);
+        $scope.apiKey.show = false;
+        $scope.apiKey.token = '';
+        $scope.$apply();
+    }
 
     var listenerFunc = function(event, newDashboard) {
         var changingIndex = $scope.userDashboards.findIndex(userDashboard => {

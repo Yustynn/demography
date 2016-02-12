@@ -11,11 +11,19 @@ var path = require('path');
 var routeUtility = require('../route-utilities.js');
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 
+var ensureAuthenticated = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+
+        res.status(401).send("You are not authenticated");
+    }
+};
 
 // Route to retrieve all datasets
 // This sends metadata only. The GET /:datasetId will need to be used to access the actual data
 // GET /api/datasets/
-router.get("/", function(req, res, next) {
+router.get("/",ensureAuthenticated, function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
     var queryObject = req.query;
     queryObject.isPublic = true;
@@ -31,7 +39,7 @@ router.get("/", function(req, res, next) {
 });
 
 // GET /api/datasets/:datasetId
-router.get("/:datasetId", function(req, res, next) {
+router.get("/:datasetId",ensureAuthenticated, function(req, res, next) {
     var returnDataObject;
     DataSet.findById(req.params.datasetId)
     .then(dataset => {
@@ -71,7 +79,7 @@ var upload = multer({
 
 // Route to create a new dataset in MongoDB and save a renamed csv file to the filesystem
 // POST /api/datasets/
-router.post('/uploadFile', upload.single('file'), function(req, res, next) {
+router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(req, res, next) {
     var metaData = req.body,
     originalFilePath = req.file.path,
     newFilePath,
@@ -112,7 +120,7 @@ router.post('/uploadFile', upload.single('file'), function(req, res, next) {
 
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
 // POST /api/datasets/:datasetId/updateDataset
-router.post('/:datasetId/replaceDataset', upload.single('file'), function(req, res, next) {
+router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('file'), function(req, res, next) {
     var metaData = req.body,
     originalFilePath = req.file.path,
     datasetId = req.params.datasetId,
@@ -166,7 +174,7 @@ router.post('/:datasetId/replaceDataset', upload.single('file'), function(req, r
 
 // Route to delete an existing dataset in MongoDB and the saved csv file in the filesystem
 // DELETE /api/datasets/:datasetId
-router.delete("/:datasetId", function(req, res, next) {
+router.delete("/:datasetId",ensureAuthenticated, function(req, res, next) {
     var filePath;
     DataSet.findById(req.params.datasetId)
     .then(dataset => {
@@ -187,7 +195,7 @@ router.delete("/:datasetId", function(req, res, next) {
 
 // Route to fork a dataset to another user's account
 // POST /api/datasets/:datasetId/fork
-router.post("/:datasetId/fork", function(req, res, next) {
+router.post("/:datasetId/fork",ensureAuthenticated, function(req, res, next) {
     //When forking, make sure the user on the forked dataset is the current logged in user (not the creator of the dataset).
     var clonedDataset = {},
     datasetToFork,
