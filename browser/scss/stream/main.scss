@@ -63,6 +63,22 @@
         float: left;
     }
     .dashboard-description {
-        margin: 10px;
+        margin-top: 20px;
+    }
+    i {
+        margin-right: 8px;
+    }
+    button {
+        display: inline-block;
+        margin-right: 20px;
+        margin-bottom: 30px;
+        border-radius: 5px;
+    }
+    .fork-dashboard {
+        margin-left: 50px;
+    }
+    h5 {
+        margin-left: 50px;
+        margin-bottom: 30px;
     }
 }
