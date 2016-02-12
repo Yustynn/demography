@@ -164,7 +164,7 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, logg
             return userDashboard._id === newDashboard._id;
         });
         $scope.userDashboards[changingIndex].screenshot = $scope.userDashboards[changingIndex].screenshot + '?x=' + Math.floor(Math.random() * 1000)
-        $scope.$off("screenshotUpdated", listenerFunc)
+        // $scope.$off("screenshotUpdated", listenerFunc)
     }
 
     $scope.$on("screenshotUpdated", listenerFunc)
