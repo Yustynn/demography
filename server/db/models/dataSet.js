@@ -22,6 +22,9 @@ var schema = new mongoose.Schema({
     lastUpdated: {
         type: Date,
         default: Date.now
+    },
+    originalDataset: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'DataSet',
     }
 });
 

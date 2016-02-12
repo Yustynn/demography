@@ -11,6 +11,7 @@
     <p class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></p>
     <p class="dashboard-description">{{dashboard.dataset.shortDescription}}</p>
     <p class="dashboard-last-updated">Updated on {{dashboard.lastUpdated | date: "MMM d, yyyy 'at' h:mm a" }}</p>
+    <p ng-if="dashboard.originalDashboard">forked from {{dashboard.originalDashboard.title}} by {{dashboard.originalDashboard.user.firstName  + " " + dashboard.originalDashboard.user.lastName}}</p>
     <button class="btn btn-warning" ng-click="openDashboardSettings(user, userDatasets, dashboard)"><i class="glyphicon glyphicon-edit"></i>Update dashboard</button>
     <button class="btn btn-danger" ng-click="removeDashboard(dashboard)"><i class="fa fa-trash-o"></i>Remove dashboard</button>
 </div>

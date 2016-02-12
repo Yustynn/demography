@@ -121,8 +121,10 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, logg
     $scope.createDashboard = function(dataset) {
         return DashboardFactory.create({ user: $scope.user._id, dataset: dataset._id, title: dataset.title, shortDescription: dataset.shortDescription, isPublic: dataset.isPublic })
         .then(newDashboard => {
+            console.log("newDashboard", newDashboard)
             $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
-        });
+        })
+        .then(null, console.error)
     };
 
     $scope.removeDashboard = function(dashboard) {
