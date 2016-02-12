@@ -7,7 +7,7 @@ var DataSet = mongoose.model('DataSet');
 var _ = require('lodash');
 var fsp = require('fs-promise');
 var path = require('path');
-var flatten = require('flat');
+//var flatten = require('flat');
 var routeUtility = require('../route-utilities.js');
 
 // Path where uploaded files are saved
