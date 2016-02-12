@@ -20,6 +20,28 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="timeInUse">Is this a date?</label>
+                    <select name="timeInUse" ng-model="form.timeOptions.inUse">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateFormat">What format?</label>
+                    <select name="dateFormat" ng-model="form.timeOptions.dateFormatType">
+                        <option value="d">Day/Month/Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="timeOptions">Any Grouping?</label>
+                    <select name="timeOptions" ng-model="form.timeOptions.timeUnit">
+                        <option value="Day">Day</option>
+                        <option value="Month">Month</option>
+                        <option value="Year">Year</option>
+                        <option value="Season">Season</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="graphGroup">Graph Group</label>
                     <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options"></select>
                     <span ng-click="addGraphGroup()"><i class="glyphicon glyphicon-plus"></i></span>

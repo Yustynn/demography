@@ -138,14 +138,15 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
                 container: element,
                 chartType: $scope.chartType,
                 chartGroup: widget.graphGroup,
-                xAxis: widget.labelX.key,
-                yAxis: widget.labelY.key,
+                xAxisKey: widget.labelX.key,
+                yAxisKey: widget.labelY.key,
                 groupType: widget.group,
                 colorSettings: widget.color,
                 width: graphSize.width,
                 height: graphSize.height,
                 columns: _chartOptions.columns,
-                order: _chartOptions.order
+                order: _chartOptions.order,
+                timeOptions: widget.timeOptions
             };
             widget.created = true;//Boolean to set whether or not the widget is empty(false) or has a chart(true)
             widget.chartObject = ChartService.create(chartConfig);

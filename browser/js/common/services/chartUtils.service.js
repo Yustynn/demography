@@ -1,4 +1,4 @@
-app.service('ChartUtilsService', function() {
+app.service('ChartUtilsService', function(TimeService) {
     var _ndx, _dataset;
 
     //c = user selected options
@@ -82,7 +82,15 @@ app.service('ChartUtilsService', function() {
 
     var configurePieChart = function(c) {
         var pieOptions = _overWriteDefaults(c,'pieChart');
-        let _currentDim = _createDimensionFromXAxisLabel(c)
+        let _currentDim;
+        if(c.timeOptions && c.timeOptions.inUse){
+            TimeService.loadData(_dataset,_ndx)
+            var timeObj = TimeService.create(c.timeOptions,c.xAxis);
+            _currentDim = timeObj._configureDimension(c.timeOptions.timeUnit);
+            pieOptions = timeObj._configureLabel(pieOptions)
+        }else{
+            _currentDim = _createDimensionFromXAxisLabel(c)
+        }
         pieOptions.dimension = _currentDim;
         pieOptions.group = _createGroup(c,_currentDim)
 
@@ -137,11 +145,21 @@ app.service('ChartUtilsService', function() {
 
     var configureLineChart = function(c){
         var lineOptions = _overWriteDefaults(c,'lineChart')
-        let _currentDim = _createDimensionFromXAxisLabel(c,lineOptions);
+        let _currentDim;
+        if(c.timeOptions && c.timeOptions.inUse){
+            TimeService.loadData(_dataset,_ndx)
+            var timeObj = TimeService.create(c.timeOptions,c.xAxis);
+            _currentDim = timeObj._configureDimension(c.timeOptions.timeUnit);
+            lineOptions = timeObj._configureLabel(lineOptions)
+            lineOptions = timeObj._configureScale(lineOptions,c.timeOptions.scaleType)
+
+        }else{
+            _currentDim = _createDimensionFromXAxisLabel(c,lineOptions)
+            lineOptions = _configureXAxis(lineOptions,_currentDim);
+        }
 
         lineOptions.dimension = _currentDim;
         lineOptions.group = _createGroup(c,_currentDim);
-        lineOptions = _configureXAxis(lineOptions,_currentDim);
         lineOptions = _setColors(lineOptions);
 
         var maxXLength = _getMaxXAxisLabelLength(c,lineOptions);
@@ -158,7 +176,6 @@ app.service('ChartUtilsService', function() {
                     .attr('transform', 'translate(0,'+maxXLength*4.3+')')
                 }
         }
-
         if (lineOptions.xAxisIsNumber) lineOptions.margins.bottom = maxXLength*20
         else lineOptions.margins.bottom = maxXLength*10;
         lineOptions.margins.left = maxYLength*15;

@@ -14,13 +14,16 @@ app.service('TimeService', function() {
             timeFormats = {
                 a: "%m-%d-%Y",
                 b: "%Y-%m-%d",
-                c: "%d-%m-%Y"
+                c: "%d-%m-%Y",
+                d: "%m/%d/%Y",
+                e: "%Y/%m/%d",
+                f: "%d/%m/%Y"
             },
             seasons = {
-                Winter: ["0", "1", "2"],
-                Spring: ["3", "4", "5"],
-                Summer: ["6", "7", "8"],
-                Fall: ["9", "10", "11"]
+                Winter: [0,1,2],
+                Spring: [3,4,5],
+                Summer: [6,7,8],
+                Fall: [9,10,11]
             },
             timeUnitFunction = {
                 Day: function(time) {
@@ -36,9 +39,17 @@ app.service('TimeService', function() {
                     let month = time.getMonth();
 
                     for (let key in seasons) {
-                        if (season[key].indexOf(month) > -1) return key;
+                        
+                        if (seasons[key].indexOf(month) > -1){                        
+                            return key;  
+                        } 
                     }
                 }
+            },
+            unitMap = {
+                Day: days,
+                Month: monthsLong,
+                Season: seasons
             }
 
 
@@ -47,8 +58,8 @@ app.service('TimeService', function() {
 		    _dataSet = dataset;
 		}
 
-		this.create = function(timeOptions,xAxis){
-			return new TimeFormat(timeOptions,xAxis)
+		this.create = function (timeOptions,xAxis){
+			return new TimeFormat(timeOptions,xAxis)   
 		}
 
         class TimeFormat {
@@ -62,7 +73,8 @@ app.service('TimeService', function() {
             
                 //Parses the time and also adds a property to the row [i.e. Day, month, Year, Season, etc]
             _configureData(xAxis) {
-                _dataSet.forEach(function(d) {
+                
+                _dataSet.forEach(d => {
                     let c = d[xAxis]
                     c = this.format.parse(c);
                     if (this.timeUnit) {
@@ -76,33 +88,46 @@ app.service('TimeService', function() {
                 let c = chartOptions;
                 if (scaleType === "ordinal") {
                     c.x = d3.scale.ordinal();
-                    c.xUnits = d3.units.ordinal;
-                    c.xAxis().tickFormat = function(d) {
+                    c.xUnits = dc.units.ordinal;
+                    c.xAxis = tickFormat(function(d) {
                         return d;
-                    }
+                    })
+                    c.xAxisIsNumber = false;
                 } else {
                     c.x = d3.time.scale().domain([d3.min(_dataSet, function(d) {
                             return d[c.xAxis]
                         }), d3.max(_dataSet, function(d) {
                             return d[c.xAxis]
                         })])
+                    c.xAxisIsNumber = true;
                 }
                 return c;
             }
 
             _configureDimension (timeUnit) {
                 var _dim;
+                var self = this;
                 if (timeUnit) {
                     _dim = _ndx.dimension(function(d) {
                         return d[timeUnit];
                     })
                 } else {
                     _dim = _ndx.dimension(function(d) {
-                        return d[this.xAxis];
+                        return d[self.xAxis];
                     })
                 }
-
                 return _dim;
+            }
+
+            _configureLabel (chartOptions){
+                if(this.timeUnit){
+                    var self = this;
+                    chartOptions.label = function(d){
+                        if(self.timeUnit==="Year" || "Season") return d.key
+                        return unitMap[self.timeUnit][d.key]
+                    }
+                }
+                return chartOptions;
             }
         }
 	//Creates the date formatting function based on user input

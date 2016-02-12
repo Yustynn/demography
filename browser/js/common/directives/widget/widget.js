@@ -28,7 +28,8 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
                     groupType: c.groupType,
                     colorSettings: c.colorSettings,
                     width: graphSize.width,
-                    height: graphSize.height
+                    height: graphSize.height,
+                    timeOptions: c.timeOptions
                 };
                 ChartService.create(chartConstructor);
                 scope.widget.created = true;//Sets boolean to know if the widget is empty or contains a chart

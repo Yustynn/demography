@@ -35,11 +35,44 @@
                         <option value="breakPoint">Break Point</option>
                     </select>
                 </div>
+                <pre>
+                {{form | json}}
+                    
+                </pre>
                 <div class="form-group">
                     <label for="color">Fill color</label>
                     <div class="colorSelect">
                         <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="timeInUse">Is this a date?</label>
+                    <select name="timeInUse" ng-model="form.timeOptions.inUse">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dateFormat">What format?</label>
+                    <select name="dateFormat" ng-model="form.timeOptions.dateFormatType">
+                        <option value="d">Day/Month/Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="timeOptions">Any Grouping?</label>
+                    <select name="timeOptions" ng-model="form.timeOptions.timeUnit">
+                        <option value="Day">Day</option>
+                        <option value="Month">Month</option>
+                        <option value="Year">Year</option>
+                        <option value="Season">Season</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="timeInUse">Is this Ordinal?</label>
+                    <select name="timeInUse" ng-model="form.timeOptions.scaleType">
+                        <option value="ordinal">Yes</option>
+                        <option value="linear">No</option>
+                    </select>
                 </div>
             </div>
         </div>

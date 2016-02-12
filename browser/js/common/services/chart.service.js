@@ -30,12 +30,13 @@ app.service('ChartService', function (ChartUtilsService){
             //default settings that every dc chart needs regardless of type:
             this.id = chartConfig.id;
             if(chartConfig.groupType) this.groupType = chartConfig.groupType;
-            if(chartConfig.xAxis) this.xAxis = chartConfig.xAxis;
-            if(chartConfig.yAxis) this.yAxis = chartConfig.yAxis;
+            if(chartConfig.xAxisKey) this.xAxisKey = chartConfig.xAxisKey;
+            if(chartConfig.yAxisKey) this.yAxisKey = chartConfig.yAxisKey;
             if(chartConfig.colorSettings) this.colorSettings = chartConfig.colorSettings;
             this.chartType = chartConfig.chartType;
             this.height = chartConfig.height;
             this.width = chartConfig.width;
+            this.timeOptions = chartConfig.timeOptions;
             this.chartGroup = chartConfig.chartGroup || 'Group1';
             var chartSpecificConfig = ChartUtilsService.createChartOptions(chartConfig, ndx, myData); //configure with chart specific properties and user settings such as colors
             this.chart = dc[this.chartType](chartSpecificConfig.container,this.chartGroup);
