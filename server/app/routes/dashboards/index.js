@@ -24,7 +24,10 @@ router.get("/", function (req, res, next) {
 		//send the dashboard if it is public OR if it belongs to the user requesting it
         res.status(200).send(allDashboards.filter(dashboard => dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()))
     })
-	.then(null, next)
+	.then(null, function(err) {
+        err.message = "Something went wrong when trying to access these dashboards";
+        next(err);
+    });
 });
 
 // /api/dashboards/id
@@ -53,7 +56,10 @@ router.get("/:id", function(req, res, next) {
                 else res.status(401).send("You are not authorized to view this dashboard");
             }
         })
-		.then(null, next);
+		.then(null, function(err) {
+            err.message = "Something went wrong when trying to access this dashboard";
+            next(err);
+        });
 });
 
 // Route to create a new dashboard in MongoDB
@@ -63,7 +69,10 @@ router.post("/", ensureAuthenticated, function(req, res, next) {
     req.body.user = req.user
     Dashboard.create(req.body)
     .then(createdDashboard => res.status(201).send(createdDashboard))
-    .then(null, next)
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to create this dashboard";
+        next(err);
+    });
 });
 
 // Route to udpate an existing dashboard in MongoDB
@@ -81,14 +90,6 @@ router.put("/:id", ensureAuthenticated, function(req, res, next) {
         next(err);
     });
 });
-
-// BOBBY NOTE: Not sure who put this here
-// router.put("/:id", ensureAuthenticated, function(req, res, next) {
-//     Widget.findByIdAndUpdate(req.params.id, req.body)
-//     .then(function(widget) {
-//         res.status(200).send(widget);
-//     }).then(null, next)
-// });
 
 // Route to delete an existing dashboard in MongoDB
 // DELETE /api/dashboards/:dashboardId
@@ -111,5 +112,31 @@ router.delete("/:id", ensureAuthenticated, function(req, res, next) {
 router.get("/:id/widgets", function (req, res, next) {
     Widget.find({dashboard: req.params.id})
     .then(widgets => res.status(201).send(widgets))
-    .then(null, next);
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to access this widget";
+        next(err);
+    });
+});
+
+// Route to fork another user's dashboard
+// POST /api/dashboards/:dashboardId/fork
+router.post("/:dashboardId/fork", ensureAuthenticated, function(req, res, next) {
+    // Create a dashboard for the new user
+    var dashboardToFork = req.body,
+    datasetId = dashboardToFork.dataset._id;
+
+    // Cleanse the original dashboard so a fresh one can be created in Mongo
+    delete dashboardToFork._id;
+    delete dashboardToFork.__v;
+    dashboardToFork.user = req.user._id;
+
+    // Make sure the dashboard being forked is public
+    if (!dashboardToFork.isPublic) res.status(401).send("You are not authorized to access this dashboard");
+
+    Dashboard.create(dashboardToFork)
+    .then(forkedDashboard => res.status(201).json(forkedDashboard))
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to fork this dashboard";
+        next(err);
+    });
 });

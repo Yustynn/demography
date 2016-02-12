@@ -1,7 +1,6 @@
 <div class="container">
     <div class="row">
         <div id="search-and-filter">
-            <div class="container">
                 <div class="form-group">
                     <i class="fa fa-search"></i>
                     <input type="text" ng-model="searchText" class="form-control" placeholder="Search through all of our dashboards">
@@ -20,10 +19,10 @@
                         </div>
                     </div>
                     <img class="dashboard-screenshot" ng-src="/{{dashboard.screenshot}}">
-                    <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5>
+                    <!-- <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5> -->
                     <h5 class="dashboard-description">{{dashboard.dataset.shortDescription}}</h5>
-                    <button ng-click="forkDashboard(dashboard)">Fork Dashboard</button>
-                    <button ng-click="forkDataset(dashboard.dataset)">Fork Dataset</button>
+                    <button class="btn btn-default fork-dashboard" ng-click="forkDashboard(dashboard)" ng-show="dashboard.isPublic && dashboard.dataset.isPublic"><i class="fa fa-code-fork"></i>Fork Dashboard</button>
+                    <button class="btn btn-default" ng-click="forkDataset(dashboard.dataset)" ng-show="dashboard.dataset.isPublic"><i class="fa fa-code-fork"></i>Fork Dataset</button>
                 </div>
             </div>
         </div>
