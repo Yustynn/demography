@@ -14,7 +14,7 @@ var filterFloat = function (value) {
     if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
       .test(value))
       return Number(value);
-  return NaN;
+  return undefined;//<--- NaN !== NaN is true, needed to change this to a falsey value
 }
 
 // Helper function to construct a file path
@@ -44,7 +44,7 @@ exports.convertCsvToJson = function(rawFile) {
     return rawDataArray.map(function(line) {
         var dataFieldObject = {};
         line.forEach(function(item, index) {
-            if (filterFloat(item) !== NaN) item = filterFloat(item);
+            if (filterFloat(item)) item = filterFloat(item);
             dataFieldObject[headerArray[index]] = item;
         });
         return dataFieldObject;
