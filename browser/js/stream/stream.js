@@ -20,20 +20,24 @@ app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFacto
         var changingIndex = $scope.allDashboards.findIndex(dashboard => {
             return dashboard._id === newDashboard._id;
         });
-        $scope.allDashboards[changingIndex].screenshot = $scope.allDashboards[changingIndex].screenshot + '?x=' + Math.floor(Math.random() * 1000)
-        $scope.$off("screenshotUpdated", listenerFunc)
+        $scope.allDashboards[changingIndex].screenshot = $scope.allDashboards[changingIndex].screenshot + '?x=' + Math.floor(Math.random() * 1000);
+        $scope.$off("screenshotUpdated", listenerFunc);
     }
 
-    $scope.$on("screenshotUpdated", listenerFunc)
+    $scope.$on("screenshotUpdated", listenerFunc);
 
     $scope.forkDashboard = function(dashboard) {
         DashboardFactory.fork(dashboard)
-    }
+        .then(forkedDashboard => {
+            console.log("forkedDashboard: ", forkedDashboard);
+        });
+    };
 
     $scope.forkDataset = function(dataset) {
         DatasetFactory.fork(dataset)
-    }
+        .then(forkedDataset => {
+            $state.go('userDatasets');
+        });
+    };
 
 });
-
-

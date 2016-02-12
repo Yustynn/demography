@@ -62,13 +62,8 @@ app.factory('DatasetFactory', function($http, Upload) {
         },
 
         fork: function(dataset) {
-            dataset.originalDataset = dataset._id
-            delete dataset._id
-            return $http.post('/api/datasets/fork', dataset)
-            .then(response => {
-                console.log(response.data)
-                return response.data
-            })
+            return $http.post('/api/datasets/' + dataset._id + '/fork')
+            .then(response => response.data)
             .then(null, console.error)
         }
     };

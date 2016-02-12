@@ -186,10 +186,51 @@ router.delete("/:datasetId", function(req, res, next) {
     });
 });
 
-router.post("/fork", function(req, res, next) {
+// Route to fork a dataset to another user's account
+// POST /api/datasets/:datasetId/fork
+router.post("/:datasetId/fork", function(req, res, next) {
     //When forking, make sure the user on the forked dataset is the current logged in user (not the creator of the dataset).
-    req.body.user = req.user
-    DataSet.create(req.body)
-    .then(forkedDataSet => res.status(201).send(forkedDataSet))
-    .then(null, next)
-})
+    var clonedDataset = {},
+    datasetToFork,
+    originalFilePath,
+    forkedFilePath,
+    returnDataObject,
+    dataArray;
+
+    DataSet.findById(req.params.datasetId)
+    .then(datasetToFork => {
+        // Make sure the dataset being forked is public
+        if (!datasetToFork.isPublic) res.status(401).send("You are not authorized to access this dataset");
+
+        // Save the original file path
+        originalFilePath = routeUtility.getFilePath(datasetToFork.user, datasetToFork._id, "application/json");
+
+        // Create a "fork" ofr the dataset metadata and assign it to the req user
+        datasetToFork = datasetToFork.toJSON();
+        Object.keys(datasetToFork).forEach(prop => {
+            if (datasetToFork.hasOwnProperty(prop) && prop !== "_id" && prop !== "__v") {
+                clonedDataset[prop] = datasetToFork[prop];
+            };
+        })
+        clonedDataset.user = req.user._id;
+        return DataSet.create(clonedDataset);
+    })
+    .then(forkedDatasetMetadata => {
+        // Save the metadata on the return object
+        returnDataObject = forkedDatasetMetadata.toJSON();
+        // Save the forked file path
+        forkedFilePath = routeUtility.getFilePath(forkedDatasetMetadata.user, forkedDatasetMetadata._id, "application/json");
+        return fsp.readFile(originalFilePath, { encoding: 'utf8' });
+    })
+    .then(rawFile => {
+        // Create a new file based on the forked file path
+        fsp.writeFile(forkedFilePath, rawFile);
+        // Add the json as a property of the return object, so it an be sent with the metadata
+        returnDataObject.jsonData = JSON.parse(rawFile);
+        res.status(201).json(returnDataObject);
+    })
+    .then(null, function(err) {
+        err.message = "Something went wrong when trying to fork this dataset";
+        next(err);
+    });
+});
