@@ -22,8 +22,8 @@
                     <img class="dashboard-screenshot" ng-src="/{{dashboard.screenshot}}">
                     <h5 class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></h5>
                     <h5 class="dashboard-description">{{dashboard.dataset.shortDescription}}</h5>
-                    <button ng-click="forkDashboard(dashboard)">Fork Dashboard</button>
-                    <button ng-click="forkDataset(dashboard.dataset)">Fork Dataset</button>
+                    <button ng-click="forkDashboard(dashboard)" ng-show="dashboard.isPublic && dashboard.dataset.isPublic">Fork Dashboard</button>
+                    <button ng-click="forkDataset(dashboard.dataset)" ng-show="dashboard.dataset.isPublic">Fork Dataset</button>
                 </div>
             </div>
         </div>

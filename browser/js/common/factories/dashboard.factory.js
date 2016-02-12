@@ -51,10 +51,12 @@ app.factory('DashboardFactory', function ($http, $rootScope) {
             .then(null, console.error);
         },
 
-        fork: function(dashboard) {
-            dashboard.originalDashboard = dashboard._id
-            delete dashboard._id
-            return $http.post('/api/dashboards', dashboard)
+        fork: function(dashboard, datasetId) {
+            // Assign the forked datasetId to the dashboard
+            delete dashboard.dataset;
+            dashboard.dataset = datasetId;
+
+            return $http.post('/api/dashboards/' + dashboard._id + '/fork', dashboard)
             .then(response => response.data)
             .then(null, console.error)
         }
