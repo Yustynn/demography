@@ -23,7 +23,7 @@ router.get("/", function(req, res, next) {
 
     // If a specific user data is requested by the same user, send it back
     if (queryObject.user && routeUtility.searchUserEqualsRequestUser(queryObject.user, req.user)) delete queryObject.isPublic;
-    DataSet.find(queryObject)
+    DataSet.find(queryObject).populate("originalDataset")
     .then(datasets => res.status(200).json(datasets))
     .then(null, function(err) {
         err.message = "Something went wrong when trying to access these datasets";
@@ -185,3 +185,11 @@ router.delete("/:datasetId", function(req, res, next) {
         next(err);
     });
 });
+
+router.post("/fork", function(req, res, next) {
+    //When forking, make sure the user on the forked dataset is the current logged in user (not the creator of the dataset).
+    req.body.user = req.user
+    DataSet.create(req.body)
+    .then(forkedDataSet => res.status(201).send(forkedDataSet))
+    .then(null, next)
+})

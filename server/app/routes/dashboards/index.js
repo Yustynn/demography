@@ -1,6 +1,7 @@
 'use strict'
 
 var mongoose = require('mongoose');
+var deepPopulate = require('mongoose-deep-populate');
 var Dashboard = mongoose.model('Dashboard');
 var Widget = mongoose.model('Widget');
 var router = require('express').Router();
@@ -18,7 +19,7 @@ var ensureAuthenticated = function (req, res, next) {
 
 // /api/dashboards/?filterCriteria=XYZ
 router.get("/", function (req, res, next) {
-	Dashboard.find(req.query).populate("user dataset")
+	Dashboard.find(req.query).deepPopulate("user dataset originalDashboard originalDashboard.user")
 	.then(allDashboards => {
 		//send the dashboard if it is public OR if it belongs to the user requesting it
         res.status(200).send(allDashboards.filter(dashboard => dashboard.isPublic || dashboard.user._id.toString() === req.user._id.toString()))

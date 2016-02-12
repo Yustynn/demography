@@ -13,7 +13,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFactory) {
+app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFactory, DatasetFactory) {
     $scope.allDashboards = dashboards;
 
     var listenerFunc = function(event, newDashboard) {
@@ -28,6 +28,10 @@ app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFacto
 
     $scope.forkDashboard = function(dashboard) {
         DashboardFactory.fork(dashboard)
+    }
+
+    $scope.forkDataset = function(dataset) {
+        DatasetFactory.fork(dataset)
     }
 
 });

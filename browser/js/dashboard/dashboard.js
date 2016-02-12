@@ -5,22 +5,32 @@ app.config(function ($stateProvider) {
         controller: 'DashboardCtrl',
         resolve: {
             loggedInUser: function(AuthService ) {
+                console.log("in first")
                 return AuthService.getLoggedInUser()
                 .then(function(user) {
                     return user;
-                });
+                })
+                .then(null, console.error)
             },
             currentDashboard:function(DashboardFactory, $stateParams ) {
+                console.log("in second")
+                console.log("PLEASE", $stateParams.dashboardId)                
                 return DashboardFactory.fetchOne($stateParams.dashboardId)
                 .then(function(dash){
+                    console.log("in second in here")
                     return dash;
-                });
+                })
+                .then(null, console.error)
             },
             currentDataset: function(DatasetFactory, $stateParams ) {
+                console.log("GOD", $stateParams.datasetId)                
+                console.log("in third")
                 return DatasetFactory.fetchOne($stateParams.datasetId)//This was fetchById but that function no longer exists
                 .then(function(dataset){
+                    console.log("the third in here")
                     return dataset;
-                });
+                })
+                .then(null, console.error)
             }
         }
     });
