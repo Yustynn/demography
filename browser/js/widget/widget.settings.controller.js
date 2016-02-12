@@ -112,7 +112,7 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
 
     $scope.remove = function(bool) {
         $uibModalStack.dismissAll();
-        if(!widget.created || bool){            
+        if(!widget.created || bool){
             WidgetFactory.delete(widget._id);
             $scope.dashboard.widgets.splice($scope.dashboard.widgets.indexOf(widget), 1);
         }
@@ -164,8 +164,6 @@ app.controller('WidgetSettingsCtrl', function($scope, $timeout, $rootScope, $uib
     }, function() {
         $uibModalStack.dismissAll();
     });
-
-    // BOBBY NOTE: Need to move this in so the statistics box works
 
     $scope.createDatacountWidget = function(widget, datasetId) {
         widget.title = "Statistics";
