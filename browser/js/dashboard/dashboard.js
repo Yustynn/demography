@@ -8,19 +8,22 @@ app.config(function ($stateProvider) {
                 return AuthService.getLoggedInUser()
                 .then(function(user) {
                     return user;
-                });
+                })
+                .then(null, console.error)
             },
             currentDashboard:function(DashboardFactory, $stateParams ) {
                 return DashboardFactory.fetchOne($stateParams.dashboardId)
                 .then(function(dash){
                     return dash;
-                });
+                })
+                .then(null, console.error)
             },
             currentDataset: function(DatasetFactory, $stateParams ) {
                 return DatasetFactory.fetchOne($stateParams.datasetId)//This was fetchById but that function no longer exists
                 .then(function(dataset){
                     return dataset;
-                });
+                })
+                .then(null, console.error)
             }
         }
     });
@@ -104,7 +107,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     };
 
     $scope.$on('gridster-resized', function(sizes, gridster) {
-        console.log("RESIZED TRIGGERED IN DASHBOARD>JS");
     // sizes[0] = width
     // sizes[1] = height
     // gridster.

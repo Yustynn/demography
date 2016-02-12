@@ -7,7 +7,7 @@ var schema = new mongoose.Schema({
         required: true
     },
     fileType: {
-        type: String
+        type: String, default: "application/json"
     },
     title: {
         type: String, required: true
@@ -22,6 +22,9 @@ var schema = new mongoose.Schema({
     lastUpdated: {
         type: Date,
         default: Date.now
+    },
+    originalDataset: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'DataSet',
     }
 });
 

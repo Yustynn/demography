@@ -49,6 +49,14 @@ app.factory('DashboardFactory', function ($http, $rootScope) {
                 return response.data
             })
             .then(null, console.error);
+        },
+
+        fork: function(dashboard) {
+            dashboard.originalDashboard = dashboard._id
+            delete dashboard._id
+            return $http.post('/api/dashboards', dashboard)
+            .then(response => response.data)
+            .then(null, console.error)
         }
     };
 });
