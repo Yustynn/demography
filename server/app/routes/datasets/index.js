@@ -1,20 +1,19 @@
 'use strict';
-
 var router = require('express').Router();
 module.exports = router;
 var mongoose = require('mongoose');
 var DataSet = mongoose.model('DataSet');
+var User = mongoose.model('User');
 var _ = require('lodash');
 var fsp = require('fs-promise');
 var path = require('path');
 //var flatten = require('flat');
 var routeUtility = require('../route-utilities.js');
-
-// Path where uploaded files are saved
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 
+
 // Route to retrieve all datasets
-    // This sends metadata only. The GET /:datasetId will need to be used to access the actual data
+// This sends metadata only. The GET /:datasetId will need to be used to access the actual data
 // GET /api/datasets/
 router.get("/", function(req, res, next) {
     // If a specific user data is requested by a different user, only send the public data
@@ -72,7 +71,7 @@ var upload = multer({
 
 // Route to create a new dataset in MongoDB and save a renamed csv file to the filesystem
 // POST /api/datasets/
-router.post('/', upload.single('file'), function(req, res, next) {
+router.post('/uploadFile', upload.single('file'), function(req, res, next) {
     var metaData = req.body,
     originalFilePath = req.file.path,
     newFilePath,
@@ -113,7 +112,7 @@ router.post('/', upload.single('file'), function(req, res, next) {
 
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
 // POST /api/datasets/:datasetId/updateDataset
-router.post('/:datasetId/updateDataset', upload.single('file'), function(req, res, next) {
+router.post('/:datasetId/replaceDataset', upload.single('file'), function(req, res, next) {
     var metaData = req.body,
     originalFilePath = req.file.path,
     datasetId = req.params.datasetId,

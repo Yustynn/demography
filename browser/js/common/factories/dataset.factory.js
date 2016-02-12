@@ -4,7 +4,7 @@ app.factory('DatasetFactory', function($http, Upload) {
         //save new dashboard upon creation
         create: function(datasetFile, datasetMetaData) {
             return Upload.upload({
-                url: '/api/datasets/',
+                url: '/api/datasets/uploadFile',
                 method: 'POST',
                 data: {
                     file: datasetFile,
@@ -40,7 +40,7 @@ app.factory('DatasetFactory', function($http, Upload) {
 
         update: function(datasetFile, datasetMetaData) {
             return Upload.upload({
-                url: '/api/datasets/' + datasetMetaData.id + '/updateDataset',
+                url: '/api/datasets/' + datasetMetaData.id + '/replaceDataset',
                 method: 'POST',
                 data: {
                     file: datasetFile,
