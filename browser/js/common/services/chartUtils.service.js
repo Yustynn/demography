@@ -81,9 +81,8 @@ app.service('ChartUtilsService', function() {
 
 
     var configurePieChart = function(c) {
-        let _currentDim = _createDimensionFromXAxisLabel(c)
         var pieOptions = _overWriteDefaults(c,'pieChart');
-
+        let _currentDim = _createDimensionFromXAxisLabel(c)
         pieOptions.dimension = _currentDim;
         pieOptions.group = _createGroup(c,_currentDim)
 
