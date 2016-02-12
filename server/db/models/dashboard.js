@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 var Widget = mongoose.model('Widget');
 
 var schema = new mongoose.Schema({
@@ -29,6 +30,9 @@ var schema = new mongoose.Schema({
     },
     tags: {
         type: [String]
+    },
+    originalDashboard: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'Dashboard',
     }
 });
 
@@ -51,5 +55,7 @@ schema.methods.getWidgets = function getWidgets() {
         return widgets;
     });
 };
+
+schema.plugin(deepPopulate)
 
 mongoose.model('Dashboard', schema);

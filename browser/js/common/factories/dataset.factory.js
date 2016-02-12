@@ -59,6 +59,12 @@ app.factory('DatasetFactory', function($http, Upload) {
             return $http.delete('/api/datasets/' + dataset._id)
             .then(response => response.data)
             .then(null, console.error);
+        },
+
+        fork: function(dataset) {
+            return $http.post('/api/datasets/' + dataset._id + '/fork')
+            .then(response => response.data)
+            .then(null, console.error)
         }
     };
 });

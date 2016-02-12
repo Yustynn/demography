@@ -5,6 +5,7 @@ app.controller('ProfileDashboardsSettingsCtrl', function ($scope, $timeout, $roo
 
     // editMode to controle UI for uploading a new dashboard vs updating an existing dashboard
     $scope.editMode = false;
+    $scope.dontChangeStates = false;
 
     // If editing an existing dashboard, pre-populate the metadata
     if (currentDashboard) {
@@ -18,10 +19,17 @@ app.controller('ProfileDashboardsSettingsCtrl', function ($scope, $timeout, $roo
     }
 
     $scope.dismiss = function() {
+        $scope.dontChangeStates = true;
         $uibModalInstance.dismiss();
     };
 
     $scope.createDashboard = function(newDashboard) {
+        // Prevent "createDashboard" from being Inadvertently called after the cancel button is clicked
+        if ($scope.dontChangeStates) {
+            $scope.dontChangeStates = false;
+            return;
+        };
+
         // If a new dashboard, use create route, otherwise use update
         if (!$scope.editMode) {
             DashboardFactory.create({ user: $scope.user._id, dataset: newDashboard.dataset._id, title: newDashboard.title, shortDescription: newDashboard.shortDescription, isPublic: newDashboard.isPublic })
