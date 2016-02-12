@@ -14,7 +14,7 @@ var filterFloat = function (value) {
     if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
       .test(value))
       return Number(value);
-  return undefined;
+  return undefined;//<--- NaN !== NaN is true, needed to change this to a falsey value
 }
 
 // Helper function to construct a file path
