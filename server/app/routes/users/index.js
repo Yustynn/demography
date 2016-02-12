@@ -4,9 +4,7 @@ module.exports = router;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var jwt = require('jsonwebtoken');
-
-var tokenSecret = process.env.TOKEN_SECRET; //TODO: hope this will work once deployed
-
+var tokenSecret = require('../../../env/index.js').TOKEN_SECRET;
 
 var ensureAuthenticated = function (req, res, next) {
     if (req.isAuthenticated()) {
