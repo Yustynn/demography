@@ -109,6 +109,11 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
     .then(rawFile => {
         // Convert csv file to a json object if needed, or flatten json object if needed
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        // dataArray = dataArray.map(function(row, index){
+        //     row['dashIndex'] = index; //insert a private index column
+        //     return row;
+        // });
+
         //remove temp file:
         fsp.unlink(originalFilePath);
         //save JSON file to FS
@@ -155,6 +160,10 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
     .then(rawFile => {
         // Convert csv file to a json object if needed, or flatten json object if needed
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        // dataArray = dataArray.map(function(row, index){
+        //     row['dashIndex'] = index; //insert a private index column
+        //     return row;
+        // });
         // Remove temp file
         fsp.unlink(originalFilePath);
         // Remove old file name
@@ -172,10 +181,6 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
         next(err);
     });
 });
-
-//FOR EXTERNAL API CALLS:
-//Route to update an existing dataset in mongodb and update/ add an array of entries based on unique _id or unique id:
-
 
 // Route to delete an existing dataset in MongoDB and the saved csv file in the filesystem
 // DELETE /api/datasets/:datasetId
