@@ -17,16 +17,13 @@ var phantomAuthenticated = function(req){
 }
 
 var ensureAuthenticated = function (req, res, next) {
-    console.log("DATASET AUTH:")
-    console.log('isauth: ',req.isAuthenticated())
-    console.log('phantomAuth: ',phantomAuthenticated(req))
     if (req.isAuthenticated() || phantomAuthenticated(req)) {
-        console.log("YOU ARE AUTHENTICATED :)");
         next();
     } else {
         res.status(401).send("You are not authenticated");
     }
 };
+
 
 // Route to retrieve all datasets
 // This sends metadata only. The GET /:datasetId will need to be used to access the actual data

@@ -9,7 +9,6 @@ var tokenSecret = require('../../../env/index.js').TOKEN_SECRET;
 router.use(function(req, res, next) {
     // check header or url parameters or post parameters for token
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-    console.log('token:', token)
     // decode token
     if (token) {
         // verifies secret (and checks exp date)
@@ -23,7 +22,6 @@ router.use(function(req, res, next) {
             } else {
                 // if everything is good, save to request for use in other routes
                 req.phantom = decoded;
-                console.log('decoded:', decoded);
             }
         });
     }
