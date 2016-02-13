@@ -12,7 +12,7 @@ app.config(function($stateProvider) {
                         return user;
                     });
             },
-            userDashboards: function(DashboardFactory, loggedInUser, $state) {
+            userDashboards: function(DashboardFactory, loggedInUser) {
                 return DashboardFactory.fetchAllByUser(loggedInUser)
                 .then(dashboards => dashboards)
                 .then(null, console.error);
@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, UserFactory, userDashboards, userDatasets, DashboardFactory, DatasetFactory, $rootScope) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, UserFactory, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
