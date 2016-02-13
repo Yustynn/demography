@@ -13,7 +13,6 @@ var phantomAuthenticated = function(req){
 }
 
 var ensureAuthenticated = function (req, res, next) {
-    console.log("FROM USERS")
     if (req.isAuthenticated() || phantomAuthenticated(req)) {
         next();
     } else {
