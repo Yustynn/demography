@@ -6,15 +6,15 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="selectX">Group by</label>
-                    <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
+                    <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys | orderBy:'key' track by option.key" ng-model="form.labelX"></select>
                 </div>
                 <div class="form-group">
                     <label for="selectY">Order By</label>
-                    <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
+                    <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys | orderBy:'key' track by option.key" ng-model="form.labelY"></select>
                 </div>
                 <div class="form-group">
                     <label for="select-columns">Columns</label>
-                    <select multiple name="select-columns" ng-model="form.columns" ng-options="column.key for column in axisDropdowns.objectKeys"></select>
+                    <select multiple name="select-columns" ng-model="form.columns" ng-options="column.key for column in axisDropdowns.objectKeys | orderBy:'key'"></select>
                 </div>
                 <div class="form-group">
                     <label for="orderData">Order</label>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group">
                     <label for="graphGroup">Graph Group</label>
-                    <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options"></select>
+                    <select ng-model="form.graphGroup" name="graphGroup" ng-options="option for option in graphGroups.options | orderBy:'options'"></select>
                     <span ng-click="addGraphGroup()"><i class="glyphicon glyphicon-plus"></i></span>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <div class="form-group">
                     <label for="color">Fill color</label>
                     <div class="colorSelect">
-                        <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions" color="color" ng-click="form.color.color=color"></my-color>
+                        <my-color ng-init="form.color.color=colorOptions[0]" ng-repeat="color in colorOptions " color="color" ng-click="form.color.color=color"></my-color>
                     </div>
                 </div>
             </div>

@@ -6,11 +6,11 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="selectX">X-Axis</label>
-                    <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelX"></select>
+                    <select name="selectX" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys  | orderBy:'key' track by option.key" ng-model="form.labelX"></select>
                 </div>
                 <div class="form-group">
                     <label for="selectY">Y-Axis</label>
-                    <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys track by option.key" ng-model="form.labelY"></select>
+                    <select name="selectY" class="settings-select" ng-options="option.key for option in axisDropdowns.objectKeys  | orderBy:'key' track by option.key" ng-model="form.labelY"></select>
                 </div>
                 <div class="form-group">
                     <label for="groupBy">Group by</label>
