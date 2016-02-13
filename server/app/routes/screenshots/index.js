@@ -10,12 +10,13 @@ var jwt = require('jsonwebtoken');
 
 var phantomAPI = require('../../../env/index.js').PHANTOM_API;
 var tokenSecret = require('../../../env/index.js').TOKEN_SECRET;
+var screenshotUrl = require('../../../env/index.js').SCREENSHOT_URL;
 
 // /api/screenshots
 router.post("/", function(req, res, next) {
 	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
     var pageres = new Pageres({headers: {"x-access-token": phantomAPI},cookies: [cookieString], username: 'test@test.test', password: 'password', filename: req.body.dashboardId, selector: '#main > div > div.gridster.gridster-desktop.gridster-loaded', delay: 1})
-        .src('http://localhost:1337/users/' + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'])
+        .src(screenshotUrl + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'])
         .dest(path.join(__dirname, "../../../db/screenshots"))
         .run()
         .then(data => {

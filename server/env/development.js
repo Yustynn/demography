@@ -18,7 +18,7 @@ module.exports = {
     "callbackURL": "http://localhost:1337/auth/google/callback"
   },
   "TOKEN_SECRET": "qE19G2Lnmf8EXE60gdztw8ajMHfTc0S9",    //http://randomkeygen.com/
-  "PHANTOM_SECRET": "56b79c90350318795f366482",    
-  "PHANTOM_API": "eyJhbGciOiJIUzI1NiJ9.NTZiNzljOTAzNTAzMTg3OTVmMzY2NDgy.JpvhWq8fKnFaUzp8KJoQ3YEvWMI8-h0_Un7LnYyuBio"    
-
+  "PHANTOM_SECRET": "56b79c90350318795f366482",
+  "PHANTOM_API": "eyJhbGciOiJIUzI1NiJ9.NTZiNzljOTAzNTAzMTg3OTVmMzY2NDgy.JpvhWq8fKnFaUzp8KJoQ3YEvWMI8-h0_Un7LnYyuBio",
+  "SCREENSHOT_URL" : 'http://localhost:1337/users/'
 };

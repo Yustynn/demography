@@ -26,6 +26,7 @@ module.exports = {
         "callbackURL": process.env.CALLBACK_URL
     },
     "PHANTOM_SECRET": process.env.PHANTOM_SECRET,
-    "PHANTOM_API": process.env.PHANTOM_API
+    "PHANTOM_API": process.env.PHANTOM_API,
+    "SCREENSHOT_URL": process.env.SCREENSHOT_URL
 
 };
