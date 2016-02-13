@@ -57,6 +57,11 @@ router.post("/datasets", function(req, res){
     var authenticatedUserId = req.decoded;
     var filepath;
     var dataArray = (typeof req.body.data === 'string' ? routeUtility.convertToFlatJson(JSON.parse(req.body.data)) : routeUtility.convertToFlatJson(req.body.data));
+    // dataArray = dataArray.map(function(row, index){
+    //     row['dashIndex'] = index; //insert a private index column
+    //     return row;
+    // });
+
     //req.body contains all information for new dataset:
     var metaData = req.body;
     delete metaData.data;
