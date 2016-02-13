@@ -10,8 +10,7 @@ var jwt = require('jsonwebtoken');
 var routeUtility = require('../routes/route-utilities.js');
 var fsp = require('fs-promise');
 
-var tokenSecret = process.env.TOKEN_SECRET; //TODO: hope this will work once deployed
-
+var tokenSecret = process.env.TOKEN_SECRET; 
 //https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens
 // route middleware to verify a token
 router.use(function(req, res, next) {

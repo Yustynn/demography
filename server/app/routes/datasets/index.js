@@ -11,11 +11,16 @@ var path = require('path');
 var routeUtility = require('../route-utilities.js');
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
 
+var phantomSecret = process.env.PHANTOM_SECRET;
+
+var phantomAuthenticated = function(req){
+    return req.phantom === phantomSecret;
+}
+
 var ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || phantomAuthenticated(req)) {
         next();
     } else {
-
         res.status(401).send("You are not authenticated");
     }
 };

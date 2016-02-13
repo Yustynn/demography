@@ -13,6 +13,7 @@ module.exports = function (app) {
         User.findOne({ email: email })
             .then(function (user) {
                 // user.correctPassword is a method from the User schema.
+                console.log("HIT: ",user)
                 if (!user || !user.correctPassword(password)) {
                     done(null, false);
                 } else {

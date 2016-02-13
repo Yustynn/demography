@@ -5,17 +5,22 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var jwt = require('jsonwebtoken');
 
-var tokenSecret = process.env.TOKEN_SECRET; //TODO: hope this will work once deployed
+var tokenSecret = process.env.TOKEN_SECRET;
+var phantomSecret = process.env.PHANTOM_SECRET; 
 
+
+var phantomAuthenticated = function(req){
+    return req.phantom === phantomSecret;
+}
 
 var ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || phantomAuthenticated(req)) {
         next();
     } else {
-
         res.status(401).send("You are not authenticated");
     }
 };
+
 
 // BOBBY NOTE: Need to add some "admin" controls to these routes, so only they can delete, etc
 
