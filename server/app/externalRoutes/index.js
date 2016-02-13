@@ -10,11 +10,13 @@ var jwt = require('jsonwebtoken');
 var routeUtility = require('../routes/route-utilities.js');
 var fsp = require('fs-promise');
 
-var tokenSecret = process.env.TOKEN_SECRET; 
+var tokenSecret = require('../../env/index.js').TOKEN_SECRET;
+
 //https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens
 // route middleware to verify a token
 router.use(function(req, res, next) {
     // check header or url parameters or post parameters for token
+
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     // decode token
     if (token) {

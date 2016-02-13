@@ -10,8 +10,7 @@ var path = require('path');
 //var flatten = require('flat');
 var routeUtility = require('../route-utilities.js');
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
-
-var phantomSecret = process.env.PHANTOM_SECRET;
+var phantomSecret = require('../../../env/index.js').PHANTOM_SECRET;
 
 var phantomAuthenticated = function(req){
     return req.phantom === phantomSecret;

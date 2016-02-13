@@ -6,13 +6,14 @@ var _ = require("lodash")
 var Dashboard = mongoose.model('Dashboard')
 module.exports = router;
 var jwt = require('jsonwebtoken');
-var tokenSecret = process.env.TOKEN_SECRET; 
-var phantomAPI = process.env.PHANTOM_API;
+
+
+var phantomAPI = require('../../../env/index.js').PHANTOM_API;
+var tokenSecret = require('../../../env/index.js').TOKEN_SECRET;
 
 // /api/screenshots
 router.post("/", function(req, res, next) {
 	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
-
     var pageres = new Pageres({headers: {"x-access-token": phantomAPI},cookies: [cookieString], username: 'test@test.test', password: 'password', filename: req.body.dashboardId, selector: '#main > div > div.gridster.gridster-desktop.gridster-loaded', delay: 1})
         .src('http://localhost:1337/users/' + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'])
         .dest(path.join(__dirname, "../../../db/screenshots"))

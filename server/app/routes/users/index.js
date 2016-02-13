@@ -5,15 +5,15 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var jwt = require('jsonwebtoken');
 
-var tokenSecret = process.env.TOKEN_SECRET;
-var phantomSecret = process.env.PHANTOM_SECRET; 
-
+var phantomSecret = require('../../../env/index.js').PHANTOM_SECRET;
+var tokenSecret = require('../../../env/index.js').TOKEN_SECRET;
 
 var phantomAuthenticated = function(req){
     return req.phantom === phantomSecret;
 }
 
 var ensureAuthenticated = function (req, res, next) {
+    console.log("FROM USERS")
     if (req.isAuthenticated() || phantomAuthenticated(req)) {
         next();
     } else {
