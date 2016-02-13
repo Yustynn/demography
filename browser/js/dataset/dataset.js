@@ -21,8 +21,6 @@ app.controller('DatasetCtrl', function($scope, theDataset, ChartService) {
     //$scope.dataset = theDataset;  //this was used by dataset_json view
 
     var colNames = Object.keys(theDataset.jsonData[0]);
-    console.log('colNames:', colNames);
-
 
     var element = $('#dataViewContainer')[0];
     var gridWidth = element.offsetWidth;
