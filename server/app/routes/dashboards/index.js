@@ -7,7 +7,7 @@ var Widget = mongoose.model('Widget');
 var router = require('express').Router();
 module.exports = router;
 var routeUtility = require('../route-utilities.js');
-var phantomSecret = process.env.PHANTOM_SECRET; 
+var phantomSecret = process.env.PHANTOM_SECRET;
 
 
 var phantomAuthenticated = function(req){
@@ -15,8 +15,11 @@ var phantomAuthenticated = function(req){
 }
 
 var ensureAuthenticated = function (req, res, next) {
-    
+    console.log("DSHBOARD AUTH:")
+    console.log('isauth: ',req.isAuthenticated())
+    console.log('phantomAuth: ',phantomAuthenticated(req))
     if (req.isAuthenticated() || phantomAuthenticated(req)) {
+        console.log("YOU ARE AUTHENTICATED :)");
         next();
     } else {
         res.status(401).send("You are not authenticated");

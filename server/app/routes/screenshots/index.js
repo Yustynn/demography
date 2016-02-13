@@ -14,8 +14,13 @@ var screenshotUrl = require('../../../env/index.js').SCREENSHOT_URL;
 
 // /api/screenshots
 router.post("/", function(req, res, next) {
+    console.log("SCREENSHOT ROUTE");
+    console.log('phantomAPI:', phantomAPI)
+    console.log('screenshotUrl:', screenshotUrl)
+    console.log('tokenSecret:', tokenSecret)
+    console.log("DB ID", req.body.dashboardId);
 	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
-    var pageres = new Pageres({headers: {"x-access-token": phantomAPI},cookies: [cookieString], username: 'test@test.test', password: 'password', filename: req.body.dashboardId, selector: '#main > div > div.gridster.gridster-desktop.gridster-loaded', delay: 1})
+    var pageres = new Pageres({headers: {"x-access-token": phantomAPI, "token": phantomAPI},cookies: [cookieString], filename: req.body.dashboardId, selector: '#main > div > div.gridster.gridster-desktop.gridster-loaded', delay: 1})
         .src(screenshotUrl + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'])
         .dest(path.join(__dirname, "../../../db/screenshots"))
         .run()
@@ -27,6 +32,7 @@ router.post("/", function(req, res, next) {
             res.status(200).send(updatedDashboard)
         })
         .then(null, function (err) {
+            console.log("SHIT WENT WRONG POSTING A SCREENSHOT:");
         	console.log(err);
 			console.log(err.stack);
 			next(err);
