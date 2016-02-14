@@ -1,4 +1,4 @@
-app.directive('dashboardEntryStream', function(DashboardFactory, DatasetFactory){
+app.directive('dashboardEntryStream', function(DashboardFactory, DatasetFactory, $state){
     return {
         restrict: "E",
         templateUrl: "js/common/directives/dashboard-entry/dashboard-entry-stream.html",

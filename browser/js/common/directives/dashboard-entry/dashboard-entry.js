@@ -34,7 +34,7 @@ app.directive('dashboardEntry', function($uibModal, DashboardFactory) {
                                 return user;
                             },
                             userDatasets: function() {
-                                return userDatasets;
+                                return scope.$parent.$parent.userDatasets;
                             },
                             currentDashboard: function() {
                                 return currentDashboard;
