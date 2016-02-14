@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="stream">
-        <div ng-repeat="dashboard in allDashboards | filter: searchText | orderBy: '-lastUpdated'" darken-on-hover ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })" class="dashboard-div">
+        <div ng-repeat="dashboard in allDashboards | filter: searchText | orderBy: '-lastUpdated'" darken-on-hover ui-sref="dashboard({ userId: dashboard.user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })" class="dashboard-div">
             <div class="dashboard-header">
                 <h2 class="dashboard-title">{{dashboard.title}}</h2>
                 <div class="dashboard-profile">

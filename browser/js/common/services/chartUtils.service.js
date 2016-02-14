@@ -68,7 +68,7 @@ app.service('ChartUtilsService', function() {
         },
         dataTable : {
             order: d3.ascending, //can be ascending and descending
-            size: 1000    //how many rows to display
+            size: 500    //how many rows to display
         },
         dataCount : {
             html: {
@@ -299,7 +299,7 @@ app.service('ChartUtilsService', function() {
             //then overwrite defaults
             _newConfigObj[key] = c[key];
         }
-        
+
         return _newConfigObj;
     }
 
@@ -337,7 +337,7 @@ app.service('ChartUtilsService', function() {
         let c = chartOptions.colorSettings;
         if(c){
             if(c.style === "solid"){
-                
+
 
                 chartOptions.colors = c.color;
             }else if(c.style === "theme"){
