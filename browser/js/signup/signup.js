@@ -18,7 +18,7 @@ app.controller('SignupCtrl', function($scope, AuthService, $state) {
         $scope.error = null;
 
         AuthService.signup(signupInfo).then(function() {
-            $state.go('home');
+            $state.go('stream');
         }).catch(function() {
             $scope.error = 'That user already exists.';
         });

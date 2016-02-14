@@ -44,9 +44,7 @@ app.controller('StreamCtrl', function($scope, $state, dashboards, DashboardFacto
         if (!dataset.isPublic) return;
 
         DatasetFactory.fork(dataset._id)
-        .then(forkedDataset => {
-            $state.go('userDatasets');
-        });
+        .then($state.go('userDatasets'));
     };
 
 });

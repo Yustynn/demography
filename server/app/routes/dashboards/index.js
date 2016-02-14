@@ -7,15 +7,21 @@ var Widget = mongoose.model('Widget');
 var router = require('express').Router();
 module.exports = router;
 var routeUtility = require('../route-utilities.js');
+var phantomSecret = process.env.PHANTOM_SECRET;
+
+
+var phantomAuthenticated = function(req){
+    return req.phantom === phantomSecret;
+}
 
 var ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || phantomAuthenticated(req)) {
         next();
     } else {
-
         res.status(401).send("You are not authenticated");
     }
 };
+
 
 // /api/dashboards/?filterCriteria=XYZ
 router.get("/", function (req, res, next) {

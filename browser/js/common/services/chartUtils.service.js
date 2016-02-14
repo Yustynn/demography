@@ -299,7 +299,7 @@ app.service('ChartUtilsService', function() {
             //then overwrite defaults
             _newConfigObj[key] = c[key];
         }
-        //debugger
+        
         return _newConfigObj;
     }
 
@@ -337,7 +337,8 @@ app.service('ChartUtilsService', function() {
         let c = chartOptions.colorSettings;
         if(c){
             if(c.style === "solid"){
-                //debugger;
+                
+
                 chartOptions.colors = c.color;
             }else if(c.style === "theme"){
                 chartOptions.colorAccessor = function(d,i){
