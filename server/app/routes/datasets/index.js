@@ -10,15 +10,20 @@ var path = require('path');
 //var flatten = require('flat');
 var routeUtility = require('../route-utilities.js');
 var uploadFolderPath = path.join(__dirname + '/../../../db/upload-files');
+var phantomSecret = require('../../../env/index.js').PHANTOM_SECRET;
+
+var phantomAuthenticated = function(req){
+    return req.phantom === phantomSecret;
+}
 
 var ensureAuthenticated = function (req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() || phantomAuthenticated(req)) {
         next();
     } else {
-
         res.status(401).send("You are not authenticated");
     }
 };
+
 
 // Route to retrieve all datasets
 // This sends metadata only. The GET /:datasetId will need to be used to access the actual data
@@ -104,6 +109,11 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
     .then(rawFile => {
         // Convert csv file to a json object if needed, or flatten json object if needed
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        // dataArray = dataArray.map(function(row, index){
+        //     row['dashIndex'] = index; //insert a private index column
+        //     return row;
+        // });
+
         //remove temp file:
         fsp.unlink(originalFilePath);
         //save JSON file to FS
@@ -150,6 +160,10 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
     .then(rawFile => {
         // Convert csv file to a json object if needed, or flatten json object if needed
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        // dataArray = dataArray.map(function(row, index){
+        //     row['dashIndex'] = index; //insert a private index column
+        //     return row;
+        // });
         // Remove temp file
         fsp.unlink(originalFilePath);
         // Remove old file name
@@ -167,10 +181,6 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
         next(err);
     });
 });
-
-//FOR EXTERNAL API CALLS:
-//Route to update an existing dataset in mongodb and update/ add an array of entries based on unique _id or unique id:
-
 
 // Route to delete an existing dataset in MongoDB and the saved csv file in the filesystem
 // DELETE /api/datasets/:datasetId

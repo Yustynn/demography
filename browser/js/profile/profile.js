@@ -12,7 +12,7 @@ app.config(function($stateProvider) {
                         return user;
                     });
             },
-            userDashboards: function(DashboardFactory, loggedInUser, $state) {
+            userDashboards: function(DashboardFactory, loggedInUser) {
                 return DashboardFactory.fetchAllByUser(loggedInUser)
                 .then(dashboards => dashboards)
                 .then(null, console.error);
@@ -39,7 +39,7 @@ app.config(function($stateProvider) {
 
 });
 
-app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, UserFactory, userDashboards, userDatasets, DashboardFactory, DatasetFactory, $rootScope) {
+app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, loggedInUser, UserFactory, userDashboards, userDatasets, DashboardFactory, DatasetFactory) {
     $scope.user = loggedInUser;
     $scope.userDashboards = userDashboards;
     $scope.userDatasets = userDatasets;
@@ -121,7 +121,6 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, logg
     $scope.createDashboard = function(dataset) {
         return DashboardFactory.create({ user: $scope.user._id, dataset: dataset._id, title: dataset.title, shortDescription: dataset.shortDescription, isPublic: dataset.isPublic })
         .then(newDashboard => {
-            console.log("newDashboard", newDashboard)
             $state.go('dashboard', { userId: newDashboard.user, datasetId: newDashboard.dataset, dashboardId: newDashboard._id });
         })
         .then(null, console.error)
@@ -153,7 +152,6 @@ app.controller('ProfileCtrl', function($scope, $state, $uibModal, $timeout, logg
     };
 
     $scope.resetToken = function(e) {
-        console.log("reset", e);
         $scope.apiKey.show = false;
         $scope.apiKey.token = '';
         $scope.$apply();

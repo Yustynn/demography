@@ -106,11 +106,11 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
         });
     };
 
-    $scope.$on('gridster-resized', function(sizes, gridster) {
-    // sizes[0] = width
-    // sizes[1] = height
-    // gridster.
-})
+    // $scope.$on('gridster-resized', function(sizes, gridster) {
+    // // sizes[0] = width
+    // // sizes[1] = height
+    // // gridster.
+    // })
 
     ChartService.loadData(currentDataset.jsonData)
 });
