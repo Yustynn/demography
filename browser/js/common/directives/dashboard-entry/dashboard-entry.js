@@ -8,8 +8,6 @@ app.directive('dashboardEntry', function($uibModal, DashboardFactory) {
         },
         link: function(scope, element) {
             scope.removeDashboard = function(dashboard) {
-                console.dir(scope);
-
                 DashboardFactory.delete(dashboard)
                     .then(deletedDashboard => {
                         var userDashboardIndex = scope.$parent.$parent.userDashboards.findIndex(userDashboard => {
