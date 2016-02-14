@@ -5,7 +5,7 @@
         <input type="text" ng-model="searchText" class="form-control" placeholder="Search through all of our dashboards">
     </div>
 </div>
-<div ng-repeat="dashboard in userDashboards | filter: searchText" class="profile-dashboard">
+<div ng-repeat="dashboard in userDashboards | filter: searchText" class="profile-dashboard" darken-on-hover ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })">
     <h2 class="dashboard-title">{{dashboard.title}}</h2>
     <a ui-sref="dashboard({ userId: user._id, datasetId: dashboard.dataset._id, dashboardId: dashboard._id })"><h3><img ng-src="/{{dashboard.screenshot}}"></h3></a>
     <p class="dashboard-tags" ng-repeat="tag in dashboard.tags"><strong>{{tag}}</strong></p>
