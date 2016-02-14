@@ -20,7 +20,8 @@
 
 .profile-dashboard {
     @include clearfix;
-    background-color: #f7f7f7;
+    background-color: #222222;
+    box-shadow: 3px 4px 5px 1px #6b6b6b;
     border-radius: 5px;
     padding-left: 30px;
     padding-right: 30px;
@@ -38,10 +39,11 @@
         margin-top: 20px;
         margin-bottom: 0px;
         text-align: center;
+        color: white;
     }
     .dashboard-description {
         font-size: 14px;
-        color: rgb(102, 102, 102);
+        color: #dddddd;
     }
     .dashboard-last-updated {
         font-size: 13px;
