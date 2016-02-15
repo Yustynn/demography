@@ -14,7 +14,7 @@ var screenshotUrl = require('../../../env/index.js').SCREENSHOT_URL;
 
 // /api/screenshots
 router.post("/", function(req, res, next) {
-	var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
+    var cookieString = `connect.sid=${req.cookies['connect.sid']}`;
     var pageres = new Pageres({headers: {"x-access-token": phantomAPI, "token": phantomAPI},cookies: [cookieString], filename: req.body.dashboardId, selector: '#main > div > div.gridster.gridster-desktop.gridster-loaded', delay: 1})
         .src(screenshotUrl + req.user._id + '/datasets/' + req.body.datasetId + '/dashboards/' + req.body.dashboardId, ['1024x768'])
         .dest(path.join(__dirname, "../../../db/screenshots"))
@@ -28,8 +28,8 @@ router.post("/", function(req, res, next) {
         })
         .then(null, function (err) {
             console.log("SHIT WENT WRONG POSTING A SCREENSHOT:");
-        	console.log(err);
-			console.log(err.stack);
-			next(err);
+            console.log(err);
+            console.log(err.stack);
+            next(err);
         })
 })
