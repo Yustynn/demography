@@ -21,7 +21,11 @@
 .stream {
     margin: 0 auto;
     .dashboard-div {
-    background-color: #dddddd;
+    background-color: #e7e7e7;
+    margin-top: 30px;
+    border-style: solid;
+    border-width: thin;
+    border-color: #cccccc;
     border-radius: 5px;
         @include clearfix;
         width: 90%;
@@ -58,6 +62,7 @@
     .dashboard-title {
         text-align: center;
         padding-top: 15px;
+        margin-top: 0px;
     }
     .dashboard-tags {
         margin: 10px;
