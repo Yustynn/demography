@@ -12,7 +12,7 @@ module.exports = function (app) {
     var browserPath = path.join(root, './browser');
     var bowerPath = path.join(root,'./bower_components')
     var screenshotsPath = path.join(root, './server/db/screenshots')
-    
+
     app.use(favicon(app.getValue('faviconPath')));
     app.use(express.static(npmPath));
     app.use(express.static(publicPath));

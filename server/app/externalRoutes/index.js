@@ -15,7 +15,6 @@ var tokenSecret = require('../../env/index.js').TOKEN_SECRET;
 // route middleware to verify a token
 router.use(function(req, res, next) {
     // check header or url parameters or post parameters for token
-
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     // decode token
     if (token) {
@@ -55,12 +54,8 @@ router.get('/datasets', function(req, res, next) {
 // /dash/datasets
 router.post("/datasets", function(req, res){
     var authenticatedUserId = req.decoded;
-    var filepath;
+    var filePath, awsFileName, datasetId;
     var dataArray = (typeof req.body.data === 'string' ? routeUtility.convertToFlatJson(JSON.parse(req.body.data)) : routeUtility.convertToFlatJson(req.body.data));
-    // dataArray = dataArray.map(function(row, index){
-    //     row['dashIndex'] = index; //insert a private index column
-    //     return row;
-    // });
 
     //req.body contains all information for new dataset:
     var metaData = req.body;
@@ -69,10 +64,22 @@ router.post("/datasets", function(req, res){
     metaData.user = authenticatedUserId;
     DataSet.create(metaData)
     .then(dataset => {
-        filepath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
-        fsp.writeFile(filepath, JSON.stringify(dataArray));
-
-        res.status(201).json({success: true, datasetId: dataset._id});
+        console.log(dataset)
+        datasetId = dataset._id;
+        filePath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
+        awsFileName = 'user:' + dataset.user + '-dataset:' + dataset._id + '.json';
+        return fsp.writeFile(filePath, JSON.stringify(dataArray));
+    })
+    .then(savedToFS =>{
+        return routeUtility.uploadFileToS3(filePath, awsFileName)
+    })
+    .then(savedToAws => {
+        console.log('removing temp file');
+        console.log(datasetId);
+        //remove temp file:
+        console.log('filePath', filePath);
+        fsp.unlink(filePath);
+        res.status(201).json({success: true, datasetId: datasetId});
     })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to create this dataset";
@@ -84,7 +91,7 @@ router.post("/datasets", function(req, res){
 // /dash/datasets/:id/entries
 router.post('/datasets/:id/entries', function(req, res){
     var authenticatedUserId = req.decoded;
-    var datasetId = datasetId = req.params.id;
+    var datasetId = req.params.id;
     var entries = req.body.data;
     //expecting that every entry in the file has a unique id or _id property by which to update.
     //req.body.data [] with id or _id property
@@ -98,8 +105,13 @@ router.post('/datasets/:id/entries', function(req, res){
 
     //1. load entire file into memory.
     var filePath = routeUtility.getFilePath(authenticatedUserId, datasetId, "application/json");
-    fsp.readFile(filePath, { encoding: 'utf8' })
+    var awsFileName = 'user:' + authenticatedUserId + '-dataset:' + datasetId + '.json';
+    return routeUtility.getFileFromS3(filePath, awsFileName)
+    .then(awsFile => {
+        return fsp.readFile(filePath, { encoding: 'utf8' })
+    })
     .then(rawFile=> {
+        console.log("read from FS", rawFile);
         //2. update properties by ID
         var dataArray = JSON.parse(rawFile);
 
@@ -135,13 +147,18 @@ router.post('/datasets/:id/entries', function(req, res){
         //3. save modified file
         return fsp.writeFile(filePath, JSON.stringify(dataArray));
     })
-    .then(savedFile=>{
+    .then(savedToFS=>{
         metaData.lastUpdated = new Date();
         //4. update 'last updated' property
         return DataSet.findByIdAndUpdate(datasetId, metaData);
-
     })
     .then(updatedDataSet=>{
+        return routeUtility.uploadFileToS3(filePath, awsFileName)
+    })
+    .then(savedToAws => {
+        console.log('removing temp file');
+        //remove temp file:
+        fsp.unlink(filePath);
         respObj.success = true;
         res.status(201).json(respObj);
     })
@@ -156,7 +173,7 @@ router.post('/datasets/:id/entries', function(req, res){
 // /dash/datasets/:id/entries
 router.delete('/datasets/:id/entries', function(req, res, next){
     var authenticatedUserId = req.decoded;
-    var datasetId = datasetId = req.params.id;
+    var datasetId = req.params.id;
     var entries = req.body.data;
     if(!req.body.data) res.status(422).json({success:false, message: "you must specify id's of entries to delete as {data:[{id:1},{_id:2},...]}"});
     var metaData = req.body;
@@ -168,7 +185,11 @@ router.delete('/datasets/:id/entries', function(req, res, next){
     };
      //1. load entire file into memory.
     var filePath = routeUtility.getFilePath(authenticatedUserId, datasetId, "application/json");
-    fsp.readFile(filePath, { encoding: 'utf8' })
+    var awsFileName = 'user:' + authenticatedUserId + '-dataset:' + datasetId + '.json';
+    return routeUtility.getFileFromS3(filePath, awsFileName)
+    .then(awsFile => {
+        return fsp.readFile(filePath, { encoding: 'utf8' })
+    })
     .then(rawFile=> {
         //2. update properties by ID
         var dataArray = JSON.parse(rawFile);
@@ -202,10 +223,13 @@ router.delete('/datasets/:id/entries', function(req, res, next){
     .then(savedFile=>{
         metaData.lastUpdated = new Date();
         //4. update 'last updated' property
-        return DataSet.findByIdAndUpdate(datasetId, metaData);
-
+        DataSet.findByIdAndUpdate(datasetId, metaData);
+        return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
-    .then(updatedDataSet=>{
+    .then(savedToAws => {
+        console.log('removing temp file');
+        //remove temp file:
+        fsp.unlink(filePath);
         respObj.success = true;
         res.status(201).json(respObj);
     })
