@@ -109,7 +109,7 @@ exports.uploadDatasetToS3 = function(fileToWrite, fileName) {
 };
 
 exports.getFileFromS3 = function(localFileToCreate,fileName) {
-    console.log("begin reading from S3")
+    console.log("begin reading from S3");
     var params = {
         localFile: localFileToCreate,
         s3Params: {
@@ -128,7 +128,7 @@ exports.getFileFromS3 = function(localFileToCreate,fileName) {
             reject(err);
         });
         downloader.on('end', function() {
-            console.log("Dataset downloaded to S3.");
+            console.log("Dataset downloaded from S3.");
             resolve();
         });
     });

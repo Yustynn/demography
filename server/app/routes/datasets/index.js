@@ -115,12 +115,13 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
         returnDataObject = dataset.toJSON();
         newFilePath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
         awsFileName = 'user:' + dataset.user + '-dataset:' + dataset._id + '.json';
-        console.log('name:', awsFileName);
         return fsp.readFile(originalFilePath, { encoding: 'utf8' });
     })
     .then(rawFile => {
         // Convert csv file to a json object if needed, or flatten json object if needed
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
+        // Add the json as a property of the return object, so it an be sent with the metadata
+        returnDataObject.jsonData = dataArray;
 
         //save JSON file to FS
         fsp.writeFile(newFilePath, JSON.stringify(dataArray));
@@ -132,9 +133,6 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
         console.log('removing temp file');
         //remove temp file:
         fsp.unlink(originalFilePath);
-
-        // Add the json as a property of the return object, so it an be sent with the metadata
-        returnDataObject.jsonData = dataArray;
         res.status(201).json(returnDataObject);
     })
     .then(null, function(err) {
@@ -143,18 +141,13 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
     });
 });
 
-
-///TODO: MAKE THIS BETTER:
-
 // Route to update an existing dataset in MongoDB and overwrite the saved csv file in the filesystem
 // POST /api/datasets/:datasetId/updateDataset
 router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('file'), function(req, res, next) {
-    var metaData = req.body,
-    originalFilePath = req.file.path,
-    datasetId = req.params.datasetId,
-    newFilePath, awsFileName,
-    returnDataObject,
-    dataArray;
+    var metaData = req.body;
+    var originalFilePath = req.file.path;
+    var datasetId = req.params.datasetId;
+    var newFilePath, awsFileName,returnDataObject, dataArray;
 
     metaData.fileType = "application/json";
 
@@ -172,34 +165,27 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
         // Save the metadata on the return object
         returnDataObject = updatedDataset.toJSON();
         newFilePath = routeUtility.getFilePath(updatedDataset.user, updatedDataset._id, "application/json");
-
+        awsFileName = 'user:' + updatedDataset.user + '-dataset:' + updatedDataset._id + '.json';
         return fsp.readFile(originalFilePath, { encoding: 'utf8' });
     })
     .then(rawFile => {
         // Convert csv file to a json object if needed, or flatten json object if needed
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
-        console.log("entering S3 lands");
-        //additionally save to AWS:
-        return routeUtility.uploadDatasetToS3(originalFilePath, awsFileName)
-    })
-    .then(function(s3Response){
-        console.log('removing temp file');
-        try {
-            //remove prev file
-            fsp.unlink(newFilePath);
-        }
-        catch(e) {
-            //there was no temp file
-        }
-        //remove temp file:
-        return fsp.unlink(originalFilePath);
-
-    })
-    .then(response => {
-        // Save JSON file to FS
-        fsp.writeFile(newFilePath, JSON.stringify(dataArray));
         // Add the json as a property of the return object, so it an be sent with the metadata
         returnDataObject.jsonData = dataArray;
+
+        console.log('removing temp file');
+        //remove temp file:
+        fsp.unlink(originalFilePath);
+
+        //Save JSON file to FS
+        return fsp.writeFile(newFilePath, JSON.stringify(dataArray));
+    })
+    .then(response => {
+        //additionally save to AWS:
+        return routeUtility.uploadDatasetToS3(newFilePath, awsFileName)
+    })
+    .then(awsResponse => {
         res.status(201).json(returnDataObject);
     })
     .then(null, function(err) {
