@@ -67,7 +67,7 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             scope.element = element;
 
             function openSettings (widget, datasetId) {
-                
+
                 $uibModal.open({
                     scope: scope,
                     templateUrl: 'js/widget/widget.settings.html',
@@ -99,8 +99,6 @@ app.directive('widgetView', function (WidgetFactory, $uibModal, DatasetFactory, 
             };
 
             scope.$on('item-needs-update', function(item) {
-
-                console.log("changed");
                 graphSize = {
                     width: gridWidth/(12/scope.widget.sizeX)-40,
                     height: gridWidth/(12/scope.widget.sizeY)-74

@@ -8,6 +8,7 @@ router.use('/dashboards', require('./dashboards'));
 router.use('/datasets', require('./datasets'));
 router.use('/widgets', require('./widgets'));
 router.use('/screenshots', require('./screenshots'));
+//router.use('/s3',require('./s3Screenshots'));
 
 
 // Make sure this is after all of

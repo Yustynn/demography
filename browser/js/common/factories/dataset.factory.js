@@ -14,7 +14,6 @@ app.factory('DatasetFactory', function($http, Upload) {
                     isPublic: datasetMetaData.isPublic,
                 }
             }).success(function(data, status, headers, config) {
-                // console.log('Dataset created: ', data);
             }).error(function(data, status, headers, config) {
                 console.log('error status: ', status);
             });
@@ -49,7 +48,6 @@ app.factory('DatasetFactory', function($http, Upload) {
                     isPublic: datasetMetaData.isPublic
                 }
             }).success(function(data, status, headers, config) {
-                // console.log('Dataset updated: ', data);
             }).error(function(data, status, headers, config) {
                 console.log('error status: ', status);
             });

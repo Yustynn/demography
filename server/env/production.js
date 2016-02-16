@@ -27,5 +27,11 @@ module.exports = {
     },
     "PHANTOM_SECRET": process.env.PHANTOM_SECRET,
     "PHANTOM_API": process.env.PHANTOM_API,
-    "SCREENSHOT_URL": process.env.SCREENSHOT_URL
+    "SCREENSHOT_URL": process.env.SCREENSHOT_URL,
+    "S3": {
+        "ACCESS_KEY_ID":process.env.AWS_ACCESS_KEY_ID,
+        "SECRET_ACCESS_KEY":process.env.AWS_SECRET_ACCESS_KEY,
+        "SCREENSHOT_URL" : process.env.AWS_SCREENSHOT_URL
+    }
+
 };
