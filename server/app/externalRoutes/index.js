@@ -66,6 +66,7 @@ router.post("/datasets", function(req, res){
     var metaData = req.body;
     delete metaData.data;
     delete metaData.token;
+
     metaData.user = authenticatedUserId;
     DataSet.create(metaData)
     .then(dataset => {
