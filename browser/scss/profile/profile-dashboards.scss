@@ -20,7 +20,11 @@
 
 .profile-dashboard {
     @include clearfix;
-    background-color: #dddddd;
+    background-color: #e7e7e7;
+    border-color: #cccccc;
+    border-style: solid;
+    border-width: thin;
+    margin-top: 30px;
     border-radius: 5px;
     padding-left: 30px;
     padding-right: 30px;
@@ -34,8 +38,6 @@
         width: 100%;
     }
     .dashboard-title {
-        padding-top: 20px;
-        margin-top: 20px;
         margin-bottom: 0px;
         text-align: center;
     }
