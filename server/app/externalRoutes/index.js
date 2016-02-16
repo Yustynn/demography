@@ -5,6 +5,7 @@ var router = require('express').Router();
 module.exports = router;
 
 // NPM MODULES
+var chalk = require('chalk');
 var fsp = require('fs-promise');
 var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
@@ -88,7 +89,9 @@ router.post("/datasets", function(req, res){
 
         // if no template dashboard sent, respond with dataset id
         if (!templateDashboardId) {
+            console.log(chalk.green('Created dataset from API request! :)'));
             return res.status(201).json({success: true, datasetId: dataset._id});
+
         // if template dashboard sent, then clone template ->
         // clone widgets -> respond with dataset & dashboard ids
         } else {
@@ -128,6 +131,7 @@ router.post("/datasets", function(req, res){
                 });
             })
             .then((widgets) => {
+                console.log(chalk.green('Created dataset and dashboard from API request! :)'));
                 res.status(201).json({
                     success: true,
                     dashboardId: dashboardId,
@@ -135,11 +139,12 @@ router.post("/datasets", function(req, res){
                 });
             })
         }
-
     })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to create this dataset";
         res.status(422).json({success:false, message: err.message});
+
+        console.log(chalk.red('Failed to create relevant things from API request :('));
     });
 
 
