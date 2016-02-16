@@ -65,7 +65,6 @@ router.post("/datasets", function(req, res){
     metaData.user = authenticatedUserId;
     DataSet.create(metaData)
     .then(dataset => {
-        console.log(dataset)
         datasetId = dataset._id;
         filePath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
         awsFileName = 'user:' + dataset.user + '-dataset:' + dataset._id + '.json';
@@ -75,10 +74,7 @@ router.post("/datasets", function(req, res){
         return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
     .then(savedToAws => {
-        console.log('removing temp file');
-        console.log(datasetId);
         //remove temp file:
-        console.log('filePath', filePath);
         fsp.unlink(filePath);
         res.status(201).json({success: true, datasetId: datasetId});
     })
@@ -112,7 +108,6 @@ router.post('/datasets/:id/entries', function(req, res){
         return fsp.readFile(filePath, { encoding: 'utf8' })
     })
     .then(rawFile=> {
-        console.log("read from FS", rawFile);
         //2. update properties by ID
         var dataArray = JSON.parse(rawFile);
 
@@ -157,7 +152,6 @@ router.post('/datasets/:id/entries', function(req, res){
         return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
     .then(savedToAws => {
-        console.log('removing temp file');
         //remove temp file:
         fsp.unlink(filePath);
         respObj.success = true;
@@ -228,7 +222,6 @@ router.delete('/datasets/:id/entries', function(req, res, next){
         return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
     .then(savedToAws => {
-        console.log('removing temp file');
         //remove temp file:
         fsp.unlink(filePath);
         respObj.success = true;

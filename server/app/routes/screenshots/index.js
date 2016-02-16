@@ -30,9 +30,7 @@ router.post("/", function(req, res, next) {
             return routeUtility.uploadFileToS3(screenshotPathOnFS + '/' + origFileName, newFileName)
         })
         .then(savedToAws => {
-            console.log('removing temp file', screenshotPathOnFS + '/' + origFileName);
             fsp.unlink(screenshotPathOnFS + '/' + origFileName);
-            console.log('saving dashboard');
             //update Dashboard screenshot parameter:
             //return Dashboard.findByIdAndUpdate(req.body.dashboardId, { screenshot: data[0].filename }, { new: true })
             return Dashboard.findByIdAndUpdate(req.body.dashboardId, { screenshot: s3ScreenshotPath + newFileName }, { new: true });

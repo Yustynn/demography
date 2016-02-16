@@ -83,7 +83,6 @@ var client = s3.createClient({
 });
 
 exports.uploadFileToS3 = function(fileToWrite, fileName) {
-    console.log("begin uploading to S3")
     var params = {
         localFile: fileToWrite,
         s3Params: {
@@ -97,19 +96,16 @@ exports.uploadFileToS3 = function(fileToWrite, fileName) {
         uploader.on('error', function(err) {
 
             console.log("S3 upload failed")
-            console.error("unable to upload:", JSON.stringify(err));
             console.error(err.stack);
             reject(err);
         });
         uploader.on('end', function() {
-            console.log("Dataset uploaded to S3.");
             resolve();
         });
     });
 };
 
 exports.getFileFromS3 = function(localFileToCreate,fileName) {
-    console.log("begin reading from S3");
     var params = {
         localFile: localFileToCreate,
         s3Params: {
@@ -123,12 +119,10 @@ exports.getFileFromS3 = function(localFileToCreate,fileName) {
         downloader.on('error', function(err) {
 
             console.log("S3 download failed")
-            console.error("unable to download:", JSON.stringify(err));
             console.error(err.stack);
             reject(err);
         });
         downloader.on('end', function() {
-            console.log("Dataset downloaded from S3.");
             resolve();
         });
     });
@@ -150,7 +144,6 @@ exports.removeDatasetFromS3 = function(fileName) {
             reject(err);
         });
         remover.on('end', function() {
-            console.log("Dataset removed from S3.");
             resolve();
         });
     });

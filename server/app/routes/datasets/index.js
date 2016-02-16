@@ -63,15 +63,9 @@ router.get("/:datasetId",ensureAuthenticated, function(req, res, next) {
         awsFileName = 'user:' + dataset.user + '-dataset:' + dataset._id + '.json';
         routeUtility.getFileFromS3(filePath, awsFileName)
         .then(awsResponse =>{
-            console.log("AWS file stored at ",filePath);
             return fsp.readFile(filePath, { encoding: 'utf8' })
         })
         .then(rawFile => {
-            console.log(rawFile);
-            console.log('\n\n\n')
-            console.log(rawFile[0]);
-            console.log('\n\n\n')
-            console.log(rawFile[1]);
             // Convert csv file to a json object if needed
             var dataArray = JSON.parse(rawFile);
             // Add the json as a property of the return object, so it an be sent with the metadata
@@ -95,11 +89,9 @@ var upload = multer({
 // Route to create a new dataset in MongoDB and save a renamed csv file to the filesystem
 // POST /api/datasets/
 router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(req, res, next) {
-    console.log("POSTING", req.body);
     var metaData = req.body,
     originalFilePath = req.file.path,
     newFilePath, awsFileName, returnDataObject, dataArray;
-    console.log(originalFilePath);
 
     metaData.fileType = "application/json";
 
@@ -110,7 +102,6 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
 
     DataSet.create(metaData)
     .then(dataset => {
-        console.log("Metadata stored");
         // Save the metadata on the return object
         returnDataObject = dataset.toJSON();
         newFilePath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
@@ -130,7 +121,6 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
         return routeUtility.uploadFileToS3(newFilePath, awsFileName)
     })
     .then(savedToAws => {
-        console.log('removing temp file');
         //remove temp file:
         fsp.unlink(originalFilePath);
         res.status(201).json(returnDataObject);
@@ -173,8 +163,6 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
         dataArray = req.file.mimetype === "application/json" ? routeUtility.convertToFlatJson(JSON.parse(rawFile)) : routeUtility.convertCsvToJson(rawFile);
         // Add the json as a property of the return object, so it an be sent with the metadata
         returnDataObject.jsonData = dataArray;
-
-        console.log('removing temp file');
         //remove temp file:
         fsp.unlink(originalFilePath);
 
@@ -201,7 +189,6 @@ router.delete("/:datasetId",ensureAuthenticated, function(req, res, next) {
     DataSet.findById(req.params.datasetId)
     .then(dataset => {
         returnData = dataset;
-        console.log("Got Metadata from DB");
         // Throw an error if a different user tries to delete dataset
         if (!routeUtility.searchUserEqualsRequestUser(dataset.user, req.user)) res.status(401).send("You are not authorized to access this dataset");
         filePath = routeUtility.getFilePath(dataset.user, dataset._id, dataset.fileType);
@@ -212,7 +199,6 @@ router.delete("/:datasetId",ensureAuthenticated, function(req, res, next) {
         return routeUtility.removeDatasetFromS3(awsFileName)
     })
     .then(AWSresponse => {
-        console.log("now deleting tempfile from:", filePath);
         fsp.unlink(filePath);
         res.status(200).send(returnData);
     })
