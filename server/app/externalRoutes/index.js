@@ -3,12 +3,20 @@
 'use strict';
 var router = require('express').Router();
 module.exports = router;
-var mongoose = require('mongoose');
-var DataSet = mongoose.model('DataSet');
-var jwt = require('jsonwebtoken');
-var routeUtility = require('../routes/route-utilities.js');
-var fsp = require('fs-promise');
 
+// NPM MODULES
+var fsp = require('fs-promise');
+var jwt = require('jsonwebtoken');
+var mongoose = require('mongoose');
+var Promise = require('bluebird');
+
+// MONGOOSE MODELS
+var Dashboard = mongoose.model('Dashboard');
+var DataSet = mongoose.model('DataSet');
+var Widget = mongoose.model('Widget');
+
+// OWN MODULES
+var routeUtility = require('../routes/route-utilities.js');
 var tokenSecret = require('../../env/index.js').TOKEN_SECRET;
 
 //https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens
@@ -63,9 +71,14 @@ router.post("/datasets", function(req, res){
     // });
 
     //req.body contains all information for new dataset:
+
+    var templateDashboardId = req.body.templateDashboard;
     var metaData = req.body;
     delete metaData.data;
     delete metaData.token;
+    delete metaData.templateDashboard;
+
+    var dashboardId;
 
     metaData.user = authenticatedUserId;
     DataSet.create(metaData)
@@ -73,12 +86,63 @@ router.post("/datasets", function(req, res){
         filepath = routeUtility.getFilePath(dataset.user, dataset._id, "application/json");
         fsp.writeFile(filepath, JSON.stringify(dataArray));
 
-        res.status(201).json({success: true, datasetId: dataset._id});
+        // if no template dashboard sent, respond with dataset id
+        if (!templateDashboardId) {
+            return res.status(201).json({success: true, datasetId: dataset._id});
+        // if template dashboard sent, then clone template ->
+        // clone widgets -> respond with dataset & dashboard ids
+        } else {
+            return Dashboard.findById(templateDashboardId)
+            .then((template) => {
+
+                if (!template) throw new Error('No matching template found!');
+
+                const templateDashboard = template.toObject();
+
+                templateDashboard.title = dataset.title;
+                templateDashboard.shortDescription = dataset.shortDescription;
+                templateDashboard.isPublic = dataset.isPublic;
+                templateDashboard.dataset = dataset._id;
+
+                delete templateDashboard._id;
+                delete templateDashboard.screenshot;
+
+                const dashboardProm = Dashboard.create(templateDashboard);
+                const templateWidgetsProm = template.getWidgets();
+
+                return Promise.all([dashboardProm, templateWidgetsProm]);
+            })
+            .then((resolvedArr) => {
+                const dashboard = resolvedArr[0];
+                const templateWidgets = resolvedArr[1];
+
+                dashboardId = dashboard._id;
+
+                return Promise.map(templateWidgets, (templateWidget) => {
+                    templateWidget = templateWidget.toObject();
+                    templateWidget.dashboard = dashboard._id;
+                    delete templateWidget.lastUpdated;
+                    delete templateWidget._id;
+
+                    return Widget.create(templateWidget);
+                });
+            })
+            .then((widgets) => {
+                res.status(201).json({
+                    success: true,
+                    dashboardId: dashboardId,
+                    datasetId: dataset._id
+                });
+            })
+        }
+
     })
     .then(null, function(err) {
         err.message = "Something went wrong when trying to create this dataset";
         res.status(422).json({success:false, message: err.message});
     });
+
+
 });
 
 //Route to UPDATE dataset entries by ID
