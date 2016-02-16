@@ -30,7 +30,8 @@ module.exports = {
     "SCREENSHOT_URL": process.env.SCREENSHOT_URL,
     "S3": {
         "ACCESS_KEY_ID":process.env.AWS_ACCESS_KEY_ID,
-        "SECRET_ACCESS_KEY":process.env.AWS_SECRET_ACCESS_KEY
+        "SECRET_ACCESS_KEY":process.env.AWS_SECRET_ACCESS_KEY,
+        "SCREENSHOT_URL" : process.env.SCREENSHOT_URL
     }
 
 };
