@@ -70,6 +70,7 @@ schema.post('save', (doc, next) => {
         templateDashboard.title = doc.title;
         templateDashboard.shortDescription = doc.shortDescription;
         templateDashboard.isPublic = doc.isPublic;
+        templateDashboard.dataset = doc._id;
 
         delete templateDashboard._id;
 
