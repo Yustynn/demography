@@ -75,10 +75,6 @@ exports.searchUserEqualsRequestUser = function(searchUser, requestUser) {
     return false;
 };
 
-console.log('\n\n\n\n\n',env.S3.ACCESS_KEY_ID,'\n\n\n\n')
-console.log(env)
-console.log('\n\n\nHERE\n\n\n')
-
 var client = s3.createClient({
     s3Options: {
         accessKeyId: env.S3.ACCESS_KEY_ID,
