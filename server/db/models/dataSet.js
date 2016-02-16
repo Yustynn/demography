@@ -66,7 +66,10 @@ schema.post('save', (doc, next) => {
 
     return Dashboard.findById(doc.templateDashboard)
     .then((template) => {
+        if (!template) throw new Error('No matching template found!');
+
         templateDashboard = template.toObject();
+
         templateDashboard.title = doc.title;
         templateDashboard.shortDescription = doc.shortDescription;
         templateDashboard.isPublic = doc.isPublic;
@@ -88,6 +91,7 @@ schema.post('save', (doc, next) => {
             templateWidget = templateWidget.toObject();
             templateWidget.dashboard = promArr[0]._id;
             delete templateWidget.lastUpdated;
+            delete templateWidget._id;
 
             return Widget.create(templateWidget);
         });
