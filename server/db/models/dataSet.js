@@ -57,10 +57,7 @@ schema.pre('remove', function(next) {
 
 schema.post('save', (doc, next) => {
 
-    console.log('it!')
     if (!doc.templateDashboard) return next();
-
-    console.log('getting it!')
 
     let templateDashboard;
 
@@ -76,8 +73,6 @@ schema.post('save', (doc, next) => {
 
         delete templateDashboard._id;
 
-        console.log('coming!');
-
         const dashboardProm = Dashboard.create(templateDashboard);
         const templateWidgetsProm = template.getWidgets();
 
@@ -89,7 +84,7 @@ schema.post('save', (doc, next) => {
 
         return Promise.map(templateWidgets, (templateWidget) => {
             templateWidget = templateWidget.toObject();
-            templateWidget.dashboard = promArr[0]._id;
+            templateWidget.dashboard = dashboard._id;
             delete templateWidget.lastUpdated;
             delete templateWidget._id;
 
@@ -97,8 +92,8 @@ schema.post('save', (doc, next) => {
         });
     })
     .then( (widgets) => {
-        console.log(widgets);
-    }, console.error.bind(console))
+        next()
+    }, next)
 })
 
 mongoose.model('DataSet', schema);
