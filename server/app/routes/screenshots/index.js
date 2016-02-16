@@ -44,8 +44,8 @@ router.post("/", function(req, res, next) {
         })
         .then(null, function (err) {
             console.log("SHIT WENT WRONG POSTING A SCREENSHOT:");
-        	console.log(err);
-			console.log(err.stack);
-			next(err);
+            console.log(err);
+            console.log(err.stack);
+            next(err);
         })
 })
