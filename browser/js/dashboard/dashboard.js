@@ -5,6 +5,7 @@ app.config(function ($stateProvider) {
         controller: 'DashboardCtrl',
         resolve: {
             loggedInUser: function(AuthService ) {
+                console.log(1)
                 return AuthService.getLoggedInUser()
                 .then(function(user) {
                     return user;
@@ -12,6 +13,7 @@ app.config(function ($stateProvider) {
                 .then(null, console.error)
             },
             currentDashboard:function(DashboardFactory, $stateParams ) {
+                console.log(2)
                 return DashboardFactory.fetchOne($stateParams.dashboardId)
                 .then(function(dash){
                     return dash;
@@ -19,6 +21,7 @@ app.config(function ($stateProvider) {
                 .then(null, console.error)
             },
             currentDataset: function(DatasetFactory, $stateParams ) {
+                console.log(3)
                 return DatasetFactory.fetchOne($stateParams.datasetId)//This was fetchById but that function no longer exists
                 .then(function(dataset){
                     return dataset;
@@ -31,6 +34,8 @@ app.config(function ($stateProvider) {
 
 //https://github.com/ManifestWebDesign/angular-gridster/blob/master/demo/dashboard/script.js
 app.controller('DashboardCtrl', function (currentDataset, currentDashboard, loggedInUser, $scope, $timeout, $uibModal, DatasetFactory, DashboardFactory, WidgetFactory, $stateParams, $rootScope, ChartService){
+
+    console.log('ARRIVED')
     //$scope.user = loggedInUser;
     $scope.dashboard = currentDashboard;
     $scope.dataset = currentDataset;  //dont want to expose this
@@ -111,6 +116,6 @@ app.controller('DashboardCtrl', function (currentDataset, currentDashboard, logg
     // // sizes[1] = height
     // // gridster.
     // })
-
+    // debugger;
     ChartService.loadData(currentDataset.jsonData)
 });
