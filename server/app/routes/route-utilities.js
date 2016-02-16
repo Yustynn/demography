@@ -82,7 +82,7 @@ var client = s3.createClient({
     }
 });
 
-exports.uploadDatasetToS3 = function(fileToWrite, fileName) {
+exports.uploadFileToS3 = function(fileToWrite, fileName) {
     console.log("begin uploading to S3")
     var params = {
         localFile: fileToWrite,

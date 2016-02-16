@@ -24,6 +24,7 @@ module.exports = {
   "SCREENSHOT_URL" : 'http://localhost:1337/users/',
   "S3": {
     "ACCESS_KEY_ID":"AKIAI6V5AMRSDNVYREGA",
-    "SECRET_ACCESS_KEY":"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"
+    "SECRET_ACCESS_KEY":"6cNldEulqtbCUl/YDfQjebPWzn1azef3p5jGIAvx",
+    "SCREENSHOT_URL" : 'https://s3.amazonaws.com/dashjs/'
   }
 };

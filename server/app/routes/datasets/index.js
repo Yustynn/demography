@@ -127,7 +127,7 @@ router.post('/uploadFile',ensureAuthenticated, upload.single('file'), function(r
         fsp.writeFile(newFilePath, JSON.stringify(dataArray));
     })
     .then(savedToFS =>{
-        return routeUtility.uploadDatasetToS3(newFilePath, awsFileName)
+        return routeUtility.uploadFileToS3(newFilePath, awsFileName)
     })
     .then(savedToAws => {
         console.log('removing temp file');
@@ -183,7 +183,7 @@ router.post('/:datasetId/replaceDataset',ensureAuthenticated, upload.single('fil
     })
     .then(response => {
         //additionally save to AWS:
-        return routeUtility.uploadDatasetToS3(newFilePath, awsFileName)
+        return routeUtility.uploadFileToS3(newFilePath, awsFileName)
     })
     .then(awsResponse => {
         res.status(201).json(returnDataObject);

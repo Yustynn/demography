@@ -71,7 +71,7 @@ router.post("/datasets", function(req, res){
         return fsp.writeFile(filePath, JSON.stringify(dataArray));
     })
     .then(savedToFS =>{
-        return routeUtility.uploadDatasetToS3(filePath, awsFileName)
+        return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
     .then(savedToAws => {
         console.log('removing temp file');
@@ -153,7 +153,7 @@ router.post('/datasets/:id/entries', function(req, res){
         return DataSet.findByIdAndUpdate(datasetId, metaData);
     })
     .then(updatedDataSet=>{
-        return routeUtility.uploadDatasetToS3(filePath, awsFileName)
+        return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
     .then(savedToAws => {
         console.log('removing temp file');
@@ -224,7 +224,7 @@ router.delete('/datasets/:id/entries', function(req, res, next){
         metaData.lastUpdated = new Date();
         //4. update 'last updated' property
         DataSet.findByIdAndUpdate(datasetId, metaData);
-        return routeUtility.uploadDatasetToS3(filePath, awsFileName)
+        return routeUtility.uploadFileToS3(filePath, awsFileName)
     })
     .then(savedToAws => {
         console.log('removing temp file');
